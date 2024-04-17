@@ -1,5 +1,7 @@
 package clinicaltrialsPOJO;
 
+import java.util.*;
+
 public class TrialsAplication {
 	private Date dateOfResolution;
 	private Date dateOfApplication;
@@ -24,8 +26,6 @@ public class TrialsAplication {
 	public void setResolution(String resolution) {
 		this.resolution = resolution;
 	}
-	
-	
 	
 
 }
