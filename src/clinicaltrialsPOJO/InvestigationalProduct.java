@@ -25,5 +25,5 @@ public class InvestigationalProduct {
 		this.type = type;
 	}
 	
-
+ //PRUEBA
 }
