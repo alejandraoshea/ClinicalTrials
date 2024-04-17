@@ -1,7 +1,65 @@
 package clinicaltrialsPOJO;
 
+import java.util.Objects;
+
 public class Administrator {
 	private Integer admin_id;
+	private String name; 
+	private String email;
+	private Integer phone;
+	public Administrator(Integer admin_id, String name, String email, Integer phone) {
+		super();
+		this.admin_id = admin_id;
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+	}
+	public Integer getAdmin_id() {
+		return admin_id;
+	}
+	public void setAdmin_id(Integer admin_id) {
+		this.admin_id = admin_id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Integer getPhone() {
+		return phone;
+	}
+	public void setPhone(Integer phone) {
+		this.phone = phone;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(admin_id, email, name, phone);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Administrator other = (Administrator) obj;
+		return Objects.equals(admin_id, other.admin_id) && Objects.equals(email, other.email)
+				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone);
+	}
+	@Override
+	public String toString() {
+		return "Administrator [admin_id=" + admin_id + ", name=" + name + ", email=" + email + ", phone=" + phone + "]";
+	}
+	
+	
 	
 
 }
