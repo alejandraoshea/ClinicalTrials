@@ -23,7 +23,7 @@ public class InvestigationalProduct {
 	}
 	public void setType(String type) {
 		this.type = type;
-	} 
+	}
 	
 
 }
