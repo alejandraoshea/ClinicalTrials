@@ -1,5 +1,5 @@
 package clinicaltrialsPOJO;
 
-public class Doctor {
-	private 
+public class Patient {
+
 }
