@@ -12,6 +12,9 @@ public class Patient {
 	private String bloodType;
 	private String disease;
 	private boolean cured;
+	
+	
+	
 	public Patient(Integer patient_id, String name, String email, Integer phone, Date dateOfBirth, String bloodType,
 			String disease, boolean cured) {
 		super();
@@ -24,6 +27,8 @@ public class Patient {
 		this.disease = disease;
 		this.cured = cured;
 	}
+	
+	
 	public Integer getPatient_id() {
 		return patient_id;
 	}
@@ -72,6 +77,8 @@ public class Patient {
 	public void setCured(boolean cured) {
 		this.cured = cured;
 	}
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(bloodType, cured, dateOfBirth, disease, email, name, patient_id, phone);
