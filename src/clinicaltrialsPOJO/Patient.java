@@ -1,6 +1,7 @@
 package clinicaltrialsPOJO;
 
 import java.io.Serializable;
+import java.sql.Blob;
 import java.sql.Date;
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ public class Patient implements Serializable{
 	private String bloodType;
 	private String disease;
 	private boolean cured;
+	private Blob foto;
 	
 	
 	
@@ -100,12 +102,25 @@ public class Patient implements Serializable{
 	}
 	
 	
+	
+	public Blob getFoto() {
+		return foto;
+	}
+
+
+	public void setFoto(Blob foto) {
+		this.foto = foto;
+	}
+
+
+
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(bloodType, cured, dateOfBirth, disease, email, name, patient_id, phone);
+		return Objects.hash(bloodType, cured, dateOfBirth, disease, email, foto, name, patient_id, phone);
 	}
-	
-	
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -117,11 +132,12 @@ public class Patient implements Serializable{
 		Patient other = (Patient) obj;
 		return Objects.equals(bloodType, other.bloodType) && cured == other.cured
 				&& Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(disease, other.disease)
-				&& Objects.equals(email, other.email) && Objects.equals(name, other.name)
-				&& Objects.equals(patient_id, other.patient_id) && Objects.equals(phone, other.phone);
+				&& Objects.equals(email, other.email) && Objects.equals(foto, other.foto)
+				&& Objects.equals(name, other.name) && Objects.equals(patient_id, other.patient_id)
+				&& Objects.equals(phone, other.phone);
 	}
-	
-	
+
+
 	@Override
 	public String toString() {
 		return "Patient [patient_id=" + patient_id + ", name=" + name + ", email=" + email + ", phone=" + phone
