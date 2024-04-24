@@ -2,7 +2,6 @@ package ClinicalTrialInterfaces;
 
 import java.util.List;
 
-import VetClinicPOJOs.Pet;
 import clinicaltrialsPOJO.Reports;
 import clinicaltrialsPOJO.Sponsor;
 
