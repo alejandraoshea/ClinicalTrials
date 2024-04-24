@@ -61,10 +61,21 @@ public class InvestigationalProduct implements Serializable{
 	}
 
 
+	public List<Trial> getTrial() {
+		return trial;
+	}
+
+
+
+	public void setTrial(List<Trial> trial) {
+		this.trial = trial;
+	}
+
+
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(amount, description, invProduct_id, type);
+		return Objects.hash(amount, description, invProduct_id, trial, type);
 	}
 
 
@@ -79,7 +90,8 @@ public class InvestigationalProduct implements Serializable{
 			return false;
 		InvestigationalProduct other = (InvestigationalProduct) obj;
 		return Objects.equals(amount, other.amount) && Objects.equals(description, other.description)
-				&& Objects.equals(invProduct_id, other.invProduct_id) && Objects.equals(type, other.type);
+				&& Objects.equals(invProduct_id, other.invProduct_id) && Objects.equals(trial, other.trial)
+				&& Objects.equals(type, other.type);
 	}
 
 
@@ -87,21 +99,10 @@ public class InvestigationalProduct implements Serializable{
 	@Override
 	public String toString() {
 		return "InvestigationalProduct [invProduct_id=" + invProduct_id + ", amount=" + amount + ", description="
-				+ description + ", type=" + type + "]";
+				+ description + ", type=" + type + ", trial=" + trial + "]";
 	}
 
-
-
-	public List<Trial> getTrial() {
-		return trial;
-	}
-
-
-
-	public void setTrial(List<Trial> trial) {
-		this.trial = trial;
-	}
-
+	
 	
 	
 }
