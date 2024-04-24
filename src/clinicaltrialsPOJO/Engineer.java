@@ -59,13 +59,22 @@ public class Engineer implements Serializable{
 		this.phone = phone;
 	}
 	
-	
+	public List<InvestigationalProduct> getInvestigationalProduct() {
+		return investigationalProduct;
+	}
+
+
+	public void setInvestigationalProduct(List<InvestigationalProduct> investigationalProduct) {
+		this.investigationalProduct = investigationalProduct;
+	}
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, engineer_id, name, phone);
+		return Objects.hash(email, engineer_id, investigationalProduct, name, phone);
 	}
-	
-	
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -76,27 +85,17 @@ public class Engineer implements Serializable{
 			return false;
 		Engineer other = (Engineer) obj;
 		return Objects.equals(email, other.email) && Objects.equals(engineer_id, other.engineer_id)
+				&& Objects.equals(investigationalProduct, other.investigationalProduct)
 				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone);
 	}
-	
-	
+
+
 	@Override
 	public String toString() {
 		return "Engineer [engineer_id=" + engineer_id + ", name=" + name + ", email=" + email + ", phone=" + phone
-				+ "]";
+				+ ", investigationalProduct=" + investigationalProduct + "]";
 	}
-
-
-	public List<InvestigationalProduct> getInvestigationalProduct() {
-		return investigationalProduct;
-	}
-
-
-	public void setInvestigationalProduct(List<InvestigationalProduct> investigationalProduct) {
-		this.investigationalProduct = investigationalProduct;
-	}
-	
-	
+		
 	
 	
 }
