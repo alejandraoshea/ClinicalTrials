@@ -1,9 +1,16 @@
 package clinicaltrialsPOJO;
 
+import java.io.Serializable;
+import java.sql.Blob;
 import java.sql.Date;
 import java.util.Objects;
 
-public class Patient {
+public class Patient implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4568065003661484119L;
+	
 	private Integer patient_id;
 	private String name; 
 	private String email;
@@ -12,6 +19,7 @@ public class Patient {
 	private String bloodType;
 	private String disease;
 	private boolean cured;
+	private Blob foto;
 	
 	
 	
@@ -32,57 +40,87 @@ public class Patient {
 	public Integer getPatient_id() {
 		return patient_id;
 	}
+	
 	public void setPatient_id(Integer patient_id) {
 		this.patient_id = patient_id;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	public Integer getPhone() {
 		return phone;
 	}
+	
 	public void setPhone(Integer phone) {
 		this.phone = phone;
 	}
+	
 	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
+	
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
+	
 	public String getBloodType() {
 		return bloodType;
 	}
+	
 	public void setBloodType(String bloodType) {
 		this.bloodType = bloodType;
 	}
+	
 	public String getDisease() {
 		return disease;
 	}
+	
 	public void setDisease(String disease) {
 		this.disease = disease;
 	}
+	
 	public boolean isCured() {
 		return cured;
 	}
+	
 	public void setCured(boolean cured) {
 		this.cured = cured;
 	}
 	
 	
+	
+	public Blob getFoto() {
+		return foto;
+	}
+
+
+	public void setFoto(Blob foto) {
+		this.foto = foto;
+	}
+
+
+
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(bloodType, cured, dateOfBirth, disease, email, name, patient_id, phone);
+		return Objects.hash(bloodType, cured, dateOfBirth, disease, email, foto, name, patient_id, phone);
 	}
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -94,16 +132,18 @@ public class Patient {
 		Patient other = (Patient) obj;
 		return Objects.equals(bloodType, other.bloodType) && cured == other.cured
 				&& Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(disease, other.disease)
-				&& Objects.equals(email, other.email) && Objects.equals(name, other.name)
-				&& Objects.equals(patient_id, other.patient_id) && Objects.equals(phone, other.phone);
+				&& Objects.equals(email, other.email) && Objects.equals(foto, other.foto)
+				&& Objects.equals(name, other.name) && Objects.equals(patient_id, other.patient_id)
+				&& Objects.equals(phone, other.phone);
 	}
+
+
 	@Override
 	public String toString() {
 		return "Patient [patient_id=" + patient_id + ", name=" + name + ", email=" + email + ", phone=" + phone
 				+ ", dateOfBirth=" + dateOfBirth + ", bloodType=" + bloodType + ", disease=" + disease + ", cured="
 				+ cured + "]";
 	} 
-	
 	
 
 }

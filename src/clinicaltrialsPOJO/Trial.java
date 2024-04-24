@@ -1,8 +1,14 @@
 package clinicaltrialsPOJO;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Trial {
+public class Trial implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7385326989948946572L;
+	
 	private Integer trial_id;
 	private Integer totalAmountInvested;
 	
@@ -58,7 +64,6 @@ public class Trial {
 	public String toString() {
 		return "Trial [trial_id=" + trial_id + ", totalAmountInvested=" + totalAmountInvested + "]";
 	}
-	
 	
 	
 
