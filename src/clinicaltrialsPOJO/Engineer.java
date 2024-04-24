@@ -85,6 +85,16 @@ public class Engineer implements Serializable{
 		return "Engineer [engineer_id=" + engineer_id + ", name=" + name + ", email=" + email + ", phone=" + phone
 				+ "]";
 	}
+
+
+	public List<InvestigationalProduct> getInvestigationalProduct() {
+		return investigationalProduct;
+	}
+
+
+	public void setInvestigationalProduct(List<InvestigationalProduct> investigationalProduct) {
+		this.investigationalProduct = investigationalProduct;
+	}
 	
 	
 	

@@ -47,6 +47,48 @@ public class Trial implements Serializable{
 	}
 
 
+
+	public List<Trial> getPatients() {
+		return patients;
+	}
+
+
+	public void setPatients(List<Trial> patients) {
+		this.patients = patients;
+	}
+
+
+	public List<TrialsApplication> getTrialsApplications() {
+		return trialsApplications;
+	}
+
+
+	public void setTrialsApplications(List<TrialsApplication> trialsApplications) {
+		this.trialsApplications = trialsApplications;
+	}
+
+
+	public List<InvestigationalProduct> getInvestigationalProduct() {
+		return investigationalProduct;
+	}
+
+
+	public void setInvestigationalProduct(List<InvestigationalProduct> investigationalProduct) {
+		this.investigationalProduct = investigationalProduct;
+	}
+
+
+	public List<Sponsor> getSponsor() {
+		return sponsor;
+	}
+
+
+	public void setSponsor(List<Sponsor> sponsor) {
+		this.sponsor = sponsor;
+	}
+	
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(totalAmountInvested, trial_id);
@@ -71,7 +113,8 @@ public class Trial implements Serializable{
 	public String toString() {
 		return "Trial [trial_id=" + trial_id + ", totalAmountInvested=" + totalAmountInvested + "]";
 	}
-	
+
+
 	
 
 }
