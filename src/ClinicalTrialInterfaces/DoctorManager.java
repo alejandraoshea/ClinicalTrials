@@ -2,9 +2,17 @@ package ClinicalTrialInterfaces;
 
 import java.util.List;
 
-public interface DoctorManager {
+import clinicaltrialsPOJO.Doctor;
 
-	public void addPet(Pet p);
-	public List<Pet> getPetsOfanOwner(Integer owner_id);
-	public void assignPetToVet(Integer pet_id, Integer vet_id);
+
+public interface DoctorManager {
+	public void createDoctor(Doctor doctor);
+	public void assignDoctorToPatient(Integer patient_id, Integer doctor_id);
+	
+	public void updateSpeciality(Integer doctor_id, String newSpeciality);
+	public void assignReportToPatient(Integer report_id, Integer patient_id);
+	public void assignInvProdToPatient(Integer investigationalProduct_id, Integer patient_id);
+	
+
+	
 }
