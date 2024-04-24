@@ -105,6 +105,26 @@ public class Sponsor implements Serializable{
 		return "Sponsor [sponsor_id=" + sponsor_id + ", name=" + name + ", email=" + email + ", phone=" + phone
 				+ ", cardNumber=" + cardNumber + "]";
 	}
+
+
+	public List<Trial> getTrials() {
+		return trials;
+	}
+
+
+	public void setTrials(List<Trial> trials) {
+		this.trials = trials;
+	}
+
+
+	public List<Reports> getReports() {
+		return reports;
+	}
+
+
+	public void setReports(List<Reports> reports) {
+		this.reports = reports;
+	}
 	
 
 	

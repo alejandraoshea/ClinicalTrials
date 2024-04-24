@@ -90,6 +90,18 @@ public class InvestigationalProduct implements Serializable{
 				+ description + ", type=" + type + "]";
 	}
 
+
+
+	public List<Trial> getTrial() {
+		return trial;
+	}
+
+
+
+	public void setTrial(List<Trial> trial) {
+		this.trial = trial;
+	}
+
 	
 	
 }
