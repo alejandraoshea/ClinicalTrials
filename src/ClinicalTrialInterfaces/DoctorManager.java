@@ -13,6 +13,5 @@ public interface DoctorManager {
 	public void assignReportToPatient(Integer report_id, Integer patient_id);
 	public void assignInvProdToPatient(Integer investigationalProduct_id, Integer patient_id);
 	
-
 	
 }

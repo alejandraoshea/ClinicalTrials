@@ -15,6 +15,5 @@ public interface AdministratorManager {
 	public void updateAcceptancePatient(Integer patient_id);	
 	public void assignPatientToTrial(Integer patient_id, Integer trial_id);
 	
-	
 
 }

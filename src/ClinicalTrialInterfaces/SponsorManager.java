@@ -14,5 +14,4 @@ public interface SponsorManager {
 	public List<Reports> getReportsOfAPatient(Integer patient_id);
 	
 	
-	
 }

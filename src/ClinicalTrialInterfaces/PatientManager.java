@@ -12,4 +12,5 @@ public interface PatientManager {
 	public void deletePatientbyId(Integer patient_id);
 	
 	public void getStateRequest(Integer patient_id);
+
 }
