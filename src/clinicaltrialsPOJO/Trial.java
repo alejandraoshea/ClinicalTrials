@@ -47,31 +47,6 @@ public class Trial implements Serializable{
 	}
 
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(totalAmountInvested, trial_id);
-	}
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Trial other = (Trial) obj;
-		return Objects.equals(totalAmountInvested, other.totalAmountInvested)
-				&& Objects.equals(trial_id, other.trial_id);
-	}
-
-
-	@Override
-	public String toString() {
-		return "Trial [trial_id=" + trial_id + ", totalAmountInvested=" + totalAmountInvested + "]";
-	}
-
 
 	public List<Trial> getPatients() {
 		return patients;
@@ -112,6 +87,34 @@ public class Trial implements Serializable{
 		this.sponsor = sponsor;
 	}
 	
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(totalAmountInvested, trial_id);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Trial other = (Trial) obj;
+		return Objects.equals(totalAmountInvested, other.totalAmountInvested)
+				&& Objects.equals(trial_id, other.trial_id);
+	}
+
+
+	@Override
+	public String toString() {
+		return "Trial [trial_id=" + trial_id + ", totalAmountInvested=" + totalAmountInvested + "]";
+	}
+
+
 	
 
 }
