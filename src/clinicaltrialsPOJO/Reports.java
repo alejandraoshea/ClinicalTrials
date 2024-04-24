@@ -72,9 +72,8 @@ public class Reports implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(medicalHistory, report_id, treatment);
+		return Objects.hash(medicalHistory, report_id, sponsor, treatment);
 	}
-
 
 
 	@Override
@@ -87,16 +86,21 @@ public class Reports implements Serializable{
 			return false;
 		Reports other = (Reports) obj;
 		return Objects.equals(medicalHistory, other.medicalHistory) && Objects.equals(report_id, other.report_id)
-				&& Objects.equals(treatment, other.treatment);
+				&& Objects.equals(sponsor, other.sponsor) && Objects.equals(treatment, other.treatment);
 	}
-
 
 
 	@Override
 	public String toString() {
 		return "Reports [report_id=" + report_id + ", medicalHistory=" + medicalHistory + ", treatment=" + treatment
-				+ "]";
+				+ ", sponsor=" + sponsor + "]";
 	}
+	
+	
+
+	
+
+	
 	
 	
 
