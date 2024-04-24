@@ -1,6 +1,7 @@
 package clinicaltrialsPOJO;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class Sponsor implements Serializable{
@@ -14,6 +15,8 @@ public class Sponsor implements Serializable{
 	private String email;
 	private Integer phone;
 	private Integer cardNumber;
+	private List<Trial> trials; 
+	private List<Reports> reports; 
 	
 	
 	public Sponsor(Integer sponsor_id, String name, String email, Integer phone, Integer cardNumber) {

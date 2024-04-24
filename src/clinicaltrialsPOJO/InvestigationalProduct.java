@@ -1,6 +1,7 @@
 package clinicaltrialsPOJO;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class InvestigationalProduct implements Serializable{
@@ -13,6 +14,8 @@ public class InvestigationalProduct implements Serializable{
 	private Integer amount; 
 	private String description; 
 	private String type;
+	private List<Trial> trial;
+	
 	
 	
 	
