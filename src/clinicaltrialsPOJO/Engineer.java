@@ -1,6 +1,7 @@
 package clinicaltrialsPOJO;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class Engineer implements Serializable{
@@ -13,6 +14,8 @@ public class Engineer implements Serializable{
 	private String name; 
 	private String email;
 	private Integer phone;
+	private List<InvestigationalProduct> investigationalProduct;
+	
 	
 	
 	public Engineer(Integer engineer_id, String name, String email, Integer phone) {
@@ -81,6 +84,16 @@ public class Engineer implements Serializable{
 	public String toString() {
 		return "Engineer [engineer_id=" + engineer_id + ", name=" + name + ", email=" + email + ", phone=" + phone
 				+ "]";
+	}
+
+
+	public List<InvestigationalProduct> getInvestigationalProduct() {
+		return investigationalProduct;
+	}
+
+
+	public void setInvestigationalProduct(List<InvestigationalProduct> investigationalProduct) {
+		this.investigationalProduct = investigationalProduct;
 	}
 	
 	

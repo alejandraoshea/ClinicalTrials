@@ -1,6 +1,7 @@
 package clinicaltrialsPOJO;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class Reports implements Serializable{
@@ -12,6 +13,7 @@ public class Reports implements Serializable{
 	private Integer report_id; 
 	private String medicalHistory;
 	private String treatment;
+	private List<Sponsor> sponsor; 
 	
 	
 	public Reports(String medicalHistory, String treatment) {
@@ -58,12 +60,20 @@ public class Reports implements Serializable{
 	}
 
 
+	public List<Sponsor> getSponsor() {
+		return sponsor;
+	}
+
+
+	public void setSponsor(List<Sponsor> sponsor) {
+		this.sponsor = sponsor;
+	}
+
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(medicalHistory, report_id, treatment);
+		return Objects.hash(medicalHistory, report_id, sponsor, treatment);
 	}
-
 
 
 	@Override
@@ -76,16 +86,21 @@ public class Reports implements Serializable{
 			return false;
 		Reports other = (Reports) obj;
 		return Objects.equals(medicalHistory, other.medicalHistory) && Objects.equals(report_id, other.report_id)
-				&& Objects.equals(treatment, other.treatment);
+				&& Objects.equals(sponsor, other.sponsor) && Objects.equals(treatment, other.treatment);
 	}
-
 
 
 	@Override
 	public String toString() {
 		return "Reports [report_id=" + report_id + ", medicalHistory=" + medicalHistory + ", treatment=" + treatment
-				+ "]";
+				+ ", sponsor=" + sponsor + "]";
 	}
+
+
+	
+	
+
+	
 	
 	
 

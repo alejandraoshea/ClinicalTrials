@@ -1,6 +1,7 @@
 package clinicaltrialsPOJO;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class Sponsor implements Serializable{
@@ -14,6 +15,8 @@ public class Sponsor implements Serializable{
 	private String email;
 	private Integer phone;
 	private Integer cardNumber;
+	private List<Trial> trials; 
+	private List<Reports> reports; 
 	
 	
 	public Sponsor(Integer sponsor_id, String name, String email, Integer phone, Integer cardNumber) {
@@ -75,10 +78,33 @@ public class Sponsor implements Serializable{
 		this.cardNumber = cardNumber;
 	}
 
+	
+	public List<Trial> getTrials() {
+		return trials;
+	}
+
+
+	public void setTrials(List<Trial> trials) {
+		this.trials = trials;
+	}
+
+
+	public List<Reports> getReports() {
+		return reports;
+	}
+
+
+	public void setReports(List<Reports> reports) {
+		this.reports = reports;
+	}
+	
+	
+
+
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cardNumber, email, name, phone, sponsor_id);
+		return Objects.hash(cardNumber, email, name, phone, reports, sponsor_id, trials);
 	}
 
 
@@ -93,15 +119,20 @@ public class Sponsor implements Serializable{
 		Sponsor other = (Sponsor) obj;
 		return Objects.equals(cardNumber, other.cardNumber) && Objects.equals(email, other.email)
 				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone)
-				&& Objects.equals(sponsor_id, other.sponsor_id);
+				&& Objects.equals(reports, other.reports) && Objects.equals(sponsor_id, other.sponsor_id)
+				&& Objects.equals(trials, other.trials);
 	}
 
 
 	@Override
 	public String toString() {
 		return "Sponsor [sponsor_id=" + sponsor_id + ", name=" + name + ", email=" + email + ", phone=" + phone
-				+ ", cardNumber=" + cardNumber + "]";
+				+ ", cardNumber=" + cardNumber + ", trials=" + trials + ", reports=" + reports + "]";
 	}
+
+
+	
+	
 	
 
 	

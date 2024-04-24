@@ -1,6 +1,7 @@
 package clinicaltrialsPOJO;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class Administrator implements Serializable{
@@ -13,6 +14,9 @@ public class Administrator implements Serializable{
 	private String name; 
 	private String email;
 	private Integer phone;
+	private List<TrialsApplication> trialsApplications;
+	private List<Trial> trials;
+	
 	
 	
 	public Administrator(Integer admin_id, String name, String email, Integer phone) {
@@ -56,11 +60,28 @@ public class Administrator implements Serializable{
 	}
 	
 	
+	
+	public List<TrialsApplication> getTrialsApplications() {
+		return trialsApplications;
+	}
+
+	public void setTrialsApplications(List<TrialsApplication> trialsApplications) {
+		this.trialsApplications = trialsApplications;
+	}
+
+	public List<Trial> getTrials() {
+		return trials;
+	}
+
+	public void setTrials(List<Trial> trials) {
+		this.trials = trials;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(admin_id, email, name, phone);
+		return Objects.hash(admin_id, email, name, phone, trials, trialsApplications);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -71,14 +92,17 @@ public class Administrator implements Serializable{
 			return false;
 		Administrator other = (Administrator) obj;
 		return Objects.equals(admin_id, other.admin_id) && Objects.equals(email, other.email)
-				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone);
+				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone)
+				&& Objects.equals(trials, other.trials) && Objects.equals(trialsApplications, other.trialsApplications);
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "Administrator [admin_id=" + admin_id + ", name=" + name + ", email=" + email + ", phone=" + phone + "]";
+		return "Administrator [admin_id=" + admin_id + ", name=" + name + ", email=" + email + ", phone=" + phone
+				+ ", trialsApplications=" + trialsApplications + ", trials=" + trials + "]";
 	}
+
+	
 	
 	
 	
