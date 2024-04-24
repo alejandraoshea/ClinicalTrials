@@ -60,6 +60,15 @@ public class Reports implements Serializable{
 	}
 
 
+	public List<Sponsor> getSponsor() {
+		return sponsor;
+	}
+
+
+	public void setSponsor(List<Sponsor> sponsor) {
+		this.sponsor = sponsor;
+	}
+
 
 	@Override
 	public int hashCode() {
