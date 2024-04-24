@@ -26,8 +26,6 @@ public class Patient implements Serializable{
 	
 	
 	
-	
-	
 	public Patient(Integer patient_id, String name, String email, Integer phone, Date dateOfBirth, String bloodType,
 			String disease, boolean cured) {
 		super();
@@ -117,12 +115,41 @@ public class Patient implements Serializable{
 		this.photo = photo;
 	}
 
-
-
 	
+	public Blob getPhoto() {
+		return photo;
+	}
+
+
+	public void setPhoto(Blob photo) {
+		this.photo = photo;
+	}
+
+
+	public List<TrialsApplication> getTrialsApplication() {
+		return trialsApplication;
+	}
+
+
+	public void setTrialsApplication(List<TrialsApplication> trialsApplication) {
+		this.trialsApplication = trialsApplication;
+	}
+
+
+	public List<Reports> getReports() {
+		return reports;
+	}
+
+
+	public void setReports(List<Reports> reports) {
+		this.reports = reports;
+	}
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(bloodType, cured, dateOfBirth, disease, email, photo, name, patient_id, phone);
+		return Objects.hash(bloodType, cured, dateOfBirth, disease, email, name, patient_id, phone, photo, reports,
+				trialsApplication);
 	}
 
 
@@ -137,9 +164,10 @@ public class Patient implements Serializable{
 		Patient other = (Patient) obj;
 		return Objects.equals(bloodType, other.bloodType) && cured == other.cured
 				&& Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(disease, other.disease)
-				&& Objects.equals(email, other.email) && Objects.equals(photo, other.photo)
-				&& Objects.equals(name, other.name) && Objects.equals(patient_id, other.patient_id)
-				&& Objects.equals(phone, other.phone);
+				&& Objects.equals(email, other.email) && Objects.equals(name, other.name)
+				&& Objects.equals(patient_id, other.patient_id) && Objects.equals(phone, other.phone)
+				&& Objects.equals(photo, other.photo) && Objects.equals(reports, other.reports)
+				&& Objects.equals(trialsApplication, other.trialsApplication);
 	}
 
 
@@ -147,8 +175,12 @@ public class Patient implements Serializable{
 	public String toString() {
 		return "Patient [patient_id=" + patient_id + ", name=" + name + ", email=" + email + ", phone=" + phone
 				+ ", dateOfBirth=" + dateOfBirth + ", bloodType=" + bloodType + ", disease=" + disease + ", cured="
-				+ cured + "]";
-	} 
+				+ cured + ", photo=" + photo + ", trialsApplication=" + trialsApplication + ", reports=" + reports
+				+ "]";
+	}
+
+
+	
 	
 
 }

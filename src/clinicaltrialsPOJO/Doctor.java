@@ -80,9 +80,40 @@ public class Doctor implements Serializable{
 	}
 
 
+	
+	public List<Reports> getReports() {
+		return reports;
+	}
+
+
+	public void setReports(List<Reports> reports) {
+		this.reports = reports;
+	}
+
+
+	public List<Patient> getPatients() {
+		return patients;
+	}
+
+
+	public void setPatients(List<Patient> patients) {
+		this.patients = patients;
+	}
+
+
+	public List<InvestigationalProduct> getInvestigationalProducts() {
+		return investigationalProducts;
+	}
+
+
+	public void setInvestigationalProducts(List<InvestigationalProduct> investigationalProducts) {
+		this.investigationalProducts = investigationalProducts;
+	}
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(doctor_id, email, name, phone, specialization);
+		return Objects.hash(doctor_id, email, investigationalProducts, name, patients, phone, reports, specialization);
 	}
 
 
@@ -96,7 +127,9 @@ public class Doctor implements Serializable{
 			return false;
 		Doctor other = (Doctor) obj;
 		return Objects.equals(doctor_id, other.doctor_id) && Objects.equals(email, other.email)
-				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone)
+				&& Objects.equals(investigationalProducts, other.investigationalProducts)
+				&& Objects.equals(name, other.name) && Objects.equals(patients, other.patients)
+				&& Objects.equals(phone, other.phone) && Objects.equals(reports, other.reports)
 				&& Objects.equals(specialization, other.specialization);
 	}
 
@@ -104,8 +137,11 @@ public class Doctor implements Serializable{
 	@Override
 	public String toString() {
 		return "Doctor [doctor_id=" + doctor_id + ", name=" + name + ", email=" + email + ", phone=" + phone
-				+ ", specialization=" + specialization + "]";
+				+ ", specialization=" + specialization + ", reports=" + reports + ", patients=" + patients
+				+ ", investigationalProducts=" + investigationalProducts + "]";
 	}
+
+
 	
 	
 	
