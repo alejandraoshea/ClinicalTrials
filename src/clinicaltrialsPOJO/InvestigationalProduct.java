@@ -94,6 +94,14 @@ public class InvestigationalProduct implements Serializable{
 				&& Objects.equals(type, other.type);
 	}
 
+
+
+	@Override
+	public String toString() {
+		return "InvestigationalProduct [invProduct_id=" + invProduct_id + ", amount=" + amount + ", description="
+				+ description + ", type=" + type + ", trial=" + trial + "]";
+	}
+
 	
 	
 	
