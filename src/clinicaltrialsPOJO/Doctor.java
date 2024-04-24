@@ -1,6 +1,7 @@
 package clinicaltrialsPOJO;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class Doctor implements Serializable{
@@ -14,6 +15,9 @@ public class Doctor implements Serializable{
 	private String email;
 	private Integer phone;
 	private String specialization;
+	private List<Reports> reports; 
+	private List<Patient> patients;
+	private List<InvestigationalProduct> investigationalProducts;
 	
 	
 	public Doctor(Integer doctor_id, String name, String email, Integer phone, String specialization) {
