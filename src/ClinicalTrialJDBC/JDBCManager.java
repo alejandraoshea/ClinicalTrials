@@ -2,6 +2,7 @@ package ClinicalTrialJDBC;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class JDBCManager {
 private Connection c = null;
@@ -18,4 +19,13 @@ private Connection c = null;
 			System.out.print("Libraries not loaded");
 		}
 
+		private void createTables() {
+			try {
+				Statement stmt = c.createStatement();
+			}catch() {
+				
+			}
+		}
+		
+				
 }
