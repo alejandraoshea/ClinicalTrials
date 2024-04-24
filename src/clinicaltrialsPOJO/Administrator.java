@@ -1,12 +1,20 @@
 package clinicaltrialsPOJO;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Administrator {
+public class Administrator implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5699187109494451255L;
+	
 	private Integer admin_id;
 	private String name; 
 	private String email;
 	private Integer phone;
+	
+	
 	public Administrator(Integer admin_id, String name, String email, Integer phone) {
 		super();
 		this.admin_id = admin_id;
@@ -14,34 +22,45 @@ public class Administrator {
 		this.email = email;
 		this.phone = phone;
 	}
+	
 	public Integer getAdmin_id() {
 		return admin_id;
 	}
+	
 	public void setAdmin_id(Integer admin_id) {
 		this.admin_id = admin_id;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	public Integer getPhone() {
 		return phone;
 	}
+	
 	public void setPhone(Integer phone) {
 		this.phone = phone;
 	}
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(admin_id, email, name, phone);
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -54,6 +73,8 @@ public class Administrator {
 		return Objects.equals(admin_id, other.admin_id) && Objects.equals(email, other.email)
 				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone);
 	}
+	
+	
 	@Override
 	public String toString() {
 		return "Administrator [admin_id=" + admin_id + ", name=" + name + ", email=" + email + ", phone=" + phone + "]";

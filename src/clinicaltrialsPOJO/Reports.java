@@ -1,8 +1,15 @@
 package clinicaltrialsPOJO;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Reports {
+public class Reports implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 55142867368991496L;
+	
+	private Integer report_id; 
 	private String medicalHistory;
 	private String treatment;
 	
@@ -12,7 +19,24 @@ public class Reports {
 		this.medicalHistory = medicalHistory;
 		this.treatment = treatment;
 	}
+	
+	
+	public Reports(Integer report_id, String medicalHistory, String treatment) {
+		super();
+		this.report_id = report_id;
+		this.medicalHistory = medicalHistory;
+		this.treatment = treatment;
+	}
 
+
+
+	public Integer getReport_id() {
+		return report_id;
+	}
+
+	public void setReport_id(Integer report_id) {
+		this.report_id = report_id;
+	}
 
 	public String getMedicalHistory() {
 		return medicalHistory;
@@ -34,10 +58,12 @@ public class Reports {
 	}
 
 
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(medicalHistory, treatment);
+		return Objects.hash(medicalHistory, report_id, treatment);
 	}
+
 
 
 	@Override
@@ -49,17 +75,17 @@ public class Reports {
 		if (getClass() != obj.getClass())
 			return false;
 		Reports other = (Reports) obj;
-		return Objects.equals(medicalHistory, other.medicalHistory) && Objects.equals(treatment, other.treatment);
+		return Objects.equals(medicalHistory, other.medicalHistory) && Objects.equals(report_id, other.report_id)
+				&& Objects.equals(treatment, other.treatment);
 	}
+
 
 
 	@Override
 	public String toString() {
-		return "Reports [medicalHistory=" + medicalHistory + ", treatment=" + treatment + "]";
+		return "Reports [report_id=" + report_id + ", medicalHistory=" + medicalHistory + ", treatment=" + treatment
+				+ "]";
 	}
-	
-	
-	
 	
 	
 
