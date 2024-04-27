@@ -17,4 +17,5 @@ public interface AdministratorManager {
 	
 	//public void getTrialByID o getListOfTrials
 	
+	
 }
