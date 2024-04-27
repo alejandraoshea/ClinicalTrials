@@ -1,6 +1,5 @@
 package clinicaltrialsPOJO;
 
-public class Role {
-	
+public class Role { 
 
 }
