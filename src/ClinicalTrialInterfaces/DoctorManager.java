@@ -15,5 +15,4 @@ public interface DoctorManager {
 	
 	//public void getDoctorByID
 	
-	
 }
