@@ -2,6 +2,7 @@ package UI;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import ClinicalTrialInterfaces.AdministratorManager;
 import ClinicalTrialInterfaces.DoctorManager;
@@ -15,6 +16,8 @@ import ClinicalTrialJDBC.JDBCDoctorManager;
 import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCSponsorManager;
 import ClinicalTrialJDBC.JDBCEngineerManager;
+
+import clinicaltrialsPOJO.*;
 
 
 public class Menu {
@@ -41,13 +44,18 @@ public class Menu {
 			int choice;
 			do {
 				System.out.println("Choose an option");
+				System.out.println("1. Add a new doctor.");
+				System.out.println("2. Print all the doctors in DB.");
 				System.out.println("0. Exit.");
 				
 				choice = Integer.parseInt(reader.readLine());
 								
 				switch(choice){
 				case 1: 
+					createDoctor();
 					break;
+				case 2:
+					getAllDoctors();
 					
 				case 0:
 					jdbcmanager.disconnect();
@@ -59,4 +67,29 @@ public class Menu {
 			e.printStackTrace();}
 	}
 
+	
+	private static void createDoctor() throws Exception{
+		System.out.println("Type the name of the doctor");
+		String name = reader.readLine();
+		System.out.println("Type the email of the doctor");
+		String email = reader.readLine();
+		System.out.println("Type the phone of the doctor");
+		Integer phone = Integer.parseInt(reader.readLine());
+		System.out.println("Type the specialization of the doctor");
+		String specialization = reader.readLine();
+		System.out.println("Type the number of the license of the doctor");
+		Integer license = Integer.parseInt(reader.readLine());
+		
+		Doctor doctor = new Doctor(name, email, phone, specialization, license);
+		doctormanager.createDoctor(doctor);
+	}
+	
+	
+	private static void getAllDoctors() throws Exception{
+		List<Doctor> doctors = null;
+		doctors = doctormanager.getListOfDoctors();
+		
+		System.out.println(doctors);
+		
+	}
 }

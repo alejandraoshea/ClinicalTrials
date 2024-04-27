@@ -15,19 +15,32 @@ public class Doctor implements Serializable{
 	private String email;
 	private Integer phone;
 	private String specialization;
+	private Integer license; 
 	private List<Reports> reports; 
 	private List<Patient> patients;
 	private List<InvestigationalProduct> investigationalProducts;
 	
 	
-	public Doctor(Integer doctor_id, String name, String email, Integer phone, String specialization) {
+	public Doctor(Integer doctor_id, String name, String email, Integer phone, String specialization, Integer license) {
 		super();
 		this.doctor_id = doctor_id;
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
 		this.specialization = specialization;
+		this.license = license;
 	}
+
+	
+	public Doctor(String name, String email, Integer phone, String specialization, Integer license) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+		this.specialization = specialization;
+		this.license = license;
+	}
+
 
 
 	public Integer getDoctor_id() {
@@ -79,8 +92,21 @@ public class Doctor implements Serializable{
 		this.specialization = specialization;
 	}
 
+	
 
 	
+	public Integer getLicense() {
+		return license;
+	}
+
+
+
+	public void setLicense(Integer license) {
+		this.license = license;
+	}
+
+
+
 	public List<Reports> getReports() {
 		return reports;
 	}
@@ -111,10 +137,13 @@ public class Doctor implements Serializable{
 	}
 
 
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(doctor_id, email, investigationalProducts, name, patients, phone, reports, specialization);
+		return Objects.hash(doctor_id, email, investigationalProducts, license, name, patients, phone, reports,
+				specialization);
 	}
+
 
 
 	@Override
@@ -128,21 +157,19 @@ public class Doctor implements Serializable{
 		Doctor other = (Doctor) obj;
 		return Objects.equals(doctor_id, other.doctor_id) && Objects.equals(email, other.email)
 				&& Objects.equals(investigationalProducts, other.investigationalProducts)
-				&& Objects.equals(name, other.name) && Objects.equals(patients, other.patients)
-				&& Objects.equals(phone, other.phone) && Objects.equals(reports, other.reports)
-				&& Objects.equals(specialization, other.specialization);
+				&& Objects.equals(license, other.license) && Objects.equals(name, other.name)
+				&& Objects.equals(patients, other.patients) && Objects.equals(phone, other.phone)
+				&& Objects.equals(reports, other.reports) && Objects.equals(specialization, other.specialization);
 	}
+
 
 
 	@Override
 	public String toString() {
 		return "Doctor [doctor_id=" + doctor_id + ", name=" + name + ", email=" + email + ", phone=" + phone
-				+ ", specialization=" + specialization + ", reports=" + reports + ", patients=" + patients
-				+ ", investigationalProducts=" + investigationalProducts + "]";
+				+ ", specialization=" + specialization + ", license=" + license + ", reports=" + reports + ", patients="
+				+ patients + ", investigationalProducts=" + investigationalProducts + "]";
 	}
-
-
-	
 	
 	
 	

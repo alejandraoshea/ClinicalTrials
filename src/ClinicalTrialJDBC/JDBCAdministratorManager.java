@@ -1,5 +1,7 @@
 package ClinicalTrialJDBC;
 
+import java.util.List;
+
 import ClinicalTrialInterfaces.AdministratorManager;
 import ClinicalTrialJDBC.JDBCManager;
 import clinicaltrialsPOJO.Administrator;
@@ -41,6 +43,12 @@ private JDBCManager manager;
 	public void assignPatientToTrial(Integer patient_id, Integer trial_id) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Administrator> getListOfAdmins() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

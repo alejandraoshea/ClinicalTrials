@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 public class JDBCManager {
 private Connection c = null;
+
 public JDBCManager() {
 
 	/*try {
@@ -21,6 +22,7 @@ public JDBCManager() {
 	}
 }
 */
+	
 	private void createTables() {
 		/*try {
 			
@@ -43,5 +45,5 @@ public JDBCManager() {
 			e.printStackTrace();
 		}		
 	}
-
 }
+
