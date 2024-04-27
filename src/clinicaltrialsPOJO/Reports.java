@@ -96,12 +96,4 @@ public class Reports implements Serializable{
 				+ ", sponsor=" + sponsor + "]";
 	}
 
-
-	
-	
-
-	
-	
-	
-
 }
