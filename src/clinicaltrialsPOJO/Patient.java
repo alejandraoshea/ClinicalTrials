@@ -178,9 +178,6 @@ public class Patient implements Serializable{
 				+ cured + ", photo=" + photo + ", trialsApplication=" + trialsApplication + ", reports=" + reports
 				+ "]";
 	}
-
-
-	
 	
 
 }

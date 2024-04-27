@@ -50,5 +50,4 @@ private JDBCManager manager;
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 }

@@ -14,5 +14,5 @@ public interface DoctorManager {
 	public void assignInvProdToPatient(Integer investigationalProduct_id, Integer patient_id);
 	
 	//public void getDoctorByID
-	
+
 }

@@ -97,6 +97,5 @@ public class TrialsApplication implements Serializable{
 				+ dateApplication + ", dateResolution=" + dateResolution + ", approved=" + approved + "]";
 	}
 
-	
 
 }

@@ -50,5 +50,4 @@ public class JDBCSponsorManager implements SponsorManager{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

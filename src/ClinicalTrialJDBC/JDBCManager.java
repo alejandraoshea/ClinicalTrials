@@ -45,5 +45,6 @@ public JDBCManager() {
 			e.printStackTrace();
 		}		
 	}
+	
 }
 

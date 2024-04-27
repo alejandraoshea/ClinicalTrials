@@ -94,4 +94,5 @@ public class JDBCDoctorManager implements DoctorManager{
 		}
 		return doctors;
 	}
+	
 }

@@ -13,5 +13,4 @@ public interface PatientManager {
 	
 	public void getStateRequest(Integer patient_id);
 	
-
 }

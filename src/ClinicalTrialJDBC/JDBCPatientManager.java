@@ -37,6 +37,5 @@ public class JDBCPatientManager implements PatientManager{
 		// TODO Auto-generated method stub
 		
 	}
-	
 
 }

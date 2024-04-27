@@ -172,5 +172,4 @@ public class Doctor implements Serializable{
 	}
 	
 	
-	
 }

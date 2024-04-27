@@ -12,4 +12,5 @@ public interface EngineerManager {
 	public void updateInvPr(Integer investigationalProduct_id);
 	public List<InvestigationalProduct> getInvPr(Integer investigationalProduct_id);
 
+	
 }

@@ -95,5 +95,6 @@ public class Reports implements Serializable{
 		return "Reports [report_id=" + report_id + ", medicalHistory=" + medicalHistory + ", treatment=" + treatment
 				+ ", sponsor=" + sponsor + "]";
 	}
+	
 
 }

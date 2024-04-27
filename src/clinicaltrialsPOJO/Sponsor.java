@@ -130,10 +130,5 @@ public class Sponsor implements Serializable{
 				+ ", cardNumber=" + cardNumber + ", trials=" + trials + ", reports=" + reports + "]";
 	}
 
-
-	
-	
-	
-
 	
 }

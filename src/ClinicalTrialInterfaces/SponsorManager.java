@@ -16,4 +16,5 @@ public interface SponsorManager {
 	public List<Sponsor> getListOfSponsor();
 	public List<Trial> getListOfTrials();
 	
+	
 }
