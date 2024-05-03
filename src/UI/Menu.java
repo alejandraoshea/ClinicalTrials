@@ -15,7 +15,6 @@ import ClinicalTrialJDBC.JDBCAdministratorManager;
 import ClinicalTrialJDBC.JDBCDoctorManager;
 import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCSponsorManager;
-import VetClinicPOJOs.Pet;
 import ClinicalTrialJDBC.JDBCEngineerManager;
 
 import clinicaltrialsPOJO.*;
@@ -57,6 +56,7 @@ public class Menu {
 					break;
 				case 2:
 					getAllDoctors();
+					break;
 					
 				case 0:
 					jdbcmanager.disconnect();
@@ -81,7 +81,7 @@ public class Menu {
 		System.out.println("Type the number of the license of the doctor");
 		Integer license = Integer.parseInt(reader.readLine());
 		
-		Doctor doctor = new Doctor(name, email, phone, specialization, license);
+		Doctor doctor = new Doctor(name, phone, email, specialization, license);
 		doctormanager.createDoctor(doctor);
 	}
 	
@@ -90,8 +90,7 @@ public class Menu {
 		List<Doctor> doctors = null;
 		doctors = doctormanager.getListOfDoctors();
 		
-		System.out.println(doctors);
-		
+		System.out.println(doctors);	
 	}
 
 

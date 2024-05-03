@@ -32,11 +32,11 @@ public class Doctor implements Serializable{
 	}
 
 	
-	public Doctor(String name, String email, Integer phone, String specialization, Integer license) {
+	public Doctor(String name, Integer phone, String email, String specialization, Integer license) {
 		super();
 		this.name = name;
-		this.email = email;
 		this.phone = phone;
+		this.email = email;
 		this.specialization = specialization;
 		this.license = license;
 	}
