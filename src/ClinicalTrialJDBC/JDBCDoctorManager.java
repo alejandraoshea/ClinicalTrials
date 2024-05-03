@@ -22,15 +22,14 @@ public class JDBCDoctorManager implements DoctorManager{
 		// TODO Auto-generated method stub
 		try {
 			String sql= "INSERT INTO doctor (name,"
-					+ "phone, email, specialization, license)"
-					+ "VALUES (?,?,?,?,?)";
+					+ "phone, email, specialization)"
+					+ "VALUES (?,?,?,?)";
 			
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, doctor.getName());
 			prep.setInt(2, doctor.getPhone());
 			prep.setString(3, doctor.getEmail());
 			prep.setString(4, doctor.getSpecialization());
-			prep.setInt(4, doctor.getLicense());
 			
 			prep.executeUpdate();				
 		}catch(Exception e){
@@ -80,9 +79,7 @@ public class JDBCDoctorManager implements DoctorManager{
 				String email = rs.getString("email");
 				Integer phone = rs.getInt("phone");
 				String specialization = rs.getString("specialization");
-				Integer license = rs.getInt("license");
-				
-				Doctor doctor = new Doctor (id, name, email, phone, specialization, license);
+				Doctor doctor = new Doctor (id, name, email, phone, specialization);
 				doctors.add(doctor);
 			}
 			

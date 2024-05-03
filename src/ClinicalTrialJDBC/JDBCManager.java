@@ -40,8 +40,7 @@ public JDBCManager() {
 			sql = "CREATE TABLE doctor  ("
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "name TEXT NOT NULL, phone INTEGER NOT NULL UNIQUE"
-					+ "email TEXT NOT NULL, specialization TEXT CHECK(specialization IN ('neurosurgeon', 'investigation')),"
-					+ "license INTEGER NOT NULL UNIQUE);";
+					+ "email TEXT NOT NULL, specialization TEXT CHECK(specialization IN ('neurosurgeon', 'investigation')));";
 			stmt.executeUpdate(sql);
 			
 			sql = "CREATE TABLE patient("

@@ -149,7 +149,7 @@ public class Doctor implements Serializable{
 	public String toString() {
 		return "Doctor [doctor_id=" + doctor_id + ", name=" + name + ", email=" + email + ", phone=" + phone
 				+ ", specialization=" + specialization + ", reports=" + reports + ", patients=" + patients
-				+ ", investigationalProducts=" + investigationalProducts + "]";
+				+ ", investigationalProducts=" + investigationalProducts + "]\n";
 	}
 
 
