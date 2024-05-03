@@ -15,6 +15,7 @@ import ClinicalTrialJDBC.JDBCAdministratorManager;
 import ClinicalTrialJDBC.JDBCDoctorManager;
 import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCSponsorManager;
+import VetClinicPOJOs.Pet;
 import ClinicalTrialJDBC.JDBCEngineerManager;
 
 import clinicaltrialsPOJO.*;
@@ -92,5 +93,6 @@ public class Menu {
 		System.out.println(doctors);
 		
 	}
-	
+
+
 }
