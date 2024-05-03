@@ -46,7 +46,7 @@ public class Menu {
 				System.out.println("Choose an option");
 				System.out.println("1. Add a new doctor.");
 				System.out.println("2. Print all the doctors in DB.");
-				System.out.println("0. Exit.");
+				System.out.println("0. Exit.\n");
 				
 				choice = Integer.parseInt(reader.readLine());
 								
@@ -70,13 +70,13 @@ public class Menu {
 
 	
 	private static void createDoctor() throws Exception{
-		System.out.println("Type the name of the doctor");
+		System.out.println("Type the name of the doctor\n");
 		String name = reader.readLine();
-		System.out.println("Type the email of the doctor");
+		System.out.println("Type the email of the doctor\n");
 		String email = reader.readLine();
-		System.out.println("Type the phone of the doctor");
+		System.out.println("Type the phone of the doctor\n");
 		Integer phone = Integer.parseInt(reader.readLine());
-		System.out.println("Type the specialization of the doctor");
+		System.out.println("Type the specialization of the doctor\n");
 		String specialization = reader.readLine();
 		
 		Doctor doctor = new Doctor(name, phone, email, specialization);
