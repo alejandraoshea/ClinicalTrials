@@ -78,10 +78,8 @@ public class Menu {
 		Integer phone = Integer.parseInt(reader.readLine());
 		System.out.println("Type the specialization of the doctor");
 		String specialization = reader.readLine();
-		System.out.println("Type the number of the license of the doctor");
-		Integer license = Integer.parseInt(reader.readLine());
 		
-		Doctor doctor = new Doctor(name, phone, email, specialization, license);
+		Doctor doctor = new Doctor(name, phone, email, specialization);
 		doctormanager.createDoctor(doctor);
 	}
 	
