@@ -96,6 +96,4 @@ public class Engineer implements Serializable{
 				+ ", investigationalProduct=" + investigationalProduct + "]";
 	}
 		
-	
-	
 }

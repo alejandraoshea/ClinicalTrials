@@ -102,7 +102,4 @@ public class InvestigationalProduct implements Serializable{
 				+ description + ", type=" + type + ", trial=" + trial + "]";
 	}
 
-	
-	
-	
 }
