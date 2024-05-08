@@ -29,6 +29,16 @@ public class Doctor implements Serializable{
 		this.specialization = specialization;
 	}
 
+	
+	public Doctor(String name, Integer phone, String email, String specialization) {
+		super();
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+		this.specialization = specialization;
+	}
+
+
 
 	public Integer getDoctor_id() {
 		return doctor_id;
@@ -80,7 +90,6 @@ public class Doctor implements Serializable{
 	}
 
 
-	
 	public List<Reports> getReports() {
 		return reports;
 	}
@@ -111,6 +120,8 @@ public class Doctor implements Serializable{
 	}
 
 
+
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(doctor_id, email, investigationalProducts, name, patients, phone, reports, specialization);
@@ -138,12 +149,9 @@ public class Doctor implements Serializable{
 	public String toString() {
 		return "Doctor [doctor_id=" + doctor_id + ", name=" + name + ", email=" + email + ", phone=" + phone
 				+ ", specialization=" + specialization + ", reports=" + reports + ", patients=" + patients
-				+ ", investigationalProducts=" + investigationalProducts + "]";
+				+ ", investigationalProducts=" + investigationalProducts + "]\n";
 	}
 
 
-	
-	
-	
 	
 }

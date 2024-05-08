@@ -142,8 +142,10 @@ public class Patient implements Serializable{
 	public String toString() {
 		return "Patient [patient_id=" + patient_id + ", name=" + name + ", email=" + email + ", phone=" + phone
 				+ ", dateOfBirth=" + dateOfBirth + ", bloodType=" + bloodType + ", disease=" + disease + ", cured="
-				+ cured + "]";
-	} 
+				+ cured + ", photo=" + photo + "]";
+	}
+
+
 	
 
 }

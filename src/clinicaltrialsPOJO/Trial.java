@@ -114,7 +114,4 @@ public class Trial implements Serializable{
 		return "Trial [trial_id=" + trial_id + ", totalAmountInvested=" + totalAmountInvested + "]";
 	}
 
-
-	
-
 }
