@@ -165,7 +165,9 @@ private static void updatePassword() throws Exception {
 			case 4:
 				System.out.println("Introduce the new specialty: \n");
 				String newSpeciality = reader.readLine();
-				updateSpeciality(doctor_id, newSpeciality);
+				System.out.println("Introduce the doctor id: \n");
+				Integer doctor_id2 = Integer.parseInt(reader.readLine());
+				updateSpeciality(doctor_id2, newSpeciality);
 				break;
 			
 			case 5:
@@ -243,7 +245,8 @@ private static void updatePassword() throws Exception {
 	}
 	
 	public static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
-		
+		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
+		List<Patient>
 	}
 	
 	

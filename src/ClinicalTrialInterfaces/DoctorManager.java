@@ -12,7 +12,7 @@ public interface DoctorManager {
 	public void updateSpeciality(Integer doctor_id, String newSpeciality);
 	public void assignReportToPatient(Integer report_id, Integer patient_id);
 	public void assignInvProdToPatient(Integer investigationalProduct_id, Integer patient_id);
-	
-	//public void getDoctorByID
+	public Doctor searchDoctorById(Integer doctor_id);
+
 
 }
