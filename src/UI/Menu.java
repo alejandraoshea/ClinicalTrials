@@ -2,6 +2,7 @@ package UI;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.security.MessageDigest;
 import java.util.List;
 
 import ClinicalTrialInterfaces.AdministratorManager;
@@ -15,7 +16,12 @@ import ClinicalTrialJDBC.JDBCAdministratorManager;
 import ClinicalTrialJDBC.JDBCDoctorManager;
 import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCSponsorManager;
+import ClinicalTrialJPA.JPAUserManager;
+import VetClinicPOJOs.Role;
+import VetClinicPOJOs.User;
 import ClinicalTrialJDBC.JDBCEngineerManager;
+import ClinicalTrialInterfaces.UserManager;
+
 
 import clinicaltrialsPOJO.*;
 
@@ -28,6 +34,8 @@ public class Menu {
 	private static PatientManager patientmanager;
 	private static SponsorManager sponsormanager;
 	private static EngineerManager engineermanager;
+	private static UserManager usermanager;
+	
 	
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
 
@@ -39,24 +47,30 @@ public class Menu {
 		patientmanager = new JDBCPatientManager(jdbcmanager);
 		sponsormanager = new JDBCSponsorManager(jdbcmanager);
 		engineermanager = new JDBCEngineerManager(jdbcmanager);
+		usermanager = new JPAUserManager();
 		
 		try {
 			int choice;
 			do {
-				System.out.println("Choose an option");
-				System.out.println("1. Add a new doctor.");
-				System.out.println("2. Print all the doctors in DB.");
-				System.out.println("0. Exit.\n");
 				
+
+				System.out.println("Choose an option");
+				System.out.println("1. Login User");
+				System.out.println("2. Sign-up new user");
+				System.out.println("0. Exit.");
+								
 				choice = Integer.parseInt(reader.readLine());
 								
-				switch(choice){
+				switch(choice)
+				{
 				case 1: 
-					createDoctor();
-					break;
+					login();					
 				case 2:
-					getAllDoctors();
-					break;
+					System.out.println("Add info of new user.");
+					signUpUser();
+				case 3: 
+					System.out.println("Udpate the password of an exissting user.");
+					updatePassword();
 					
 				case 0:
 					jdbcmanager.disconnect();
@@ -67,8 +81,92 @@ public class Menu {
 		}catch(Exception e){
 			e.printStackTrace();}
 	}
+	
+	
+private static void updatePassword() throws Exception {
+		
+		System.out.println("Email: ");
+		String email = reader.readLine();
+				
+		System.out.println("Enter current Password");
+		String passwd = reader.readLine();
+		
+		System.out.println("Enter new Password");
+		String new_passwd = reader.readLine();
+				
+		User u = usermanager.checkPassword(email, passwd);
+				
+		if(u!=null){
+			System.out.println("Login of owner successful!");
+			usermanager.changePassword(u, new_passwd);
+		}
+				
+	}
 
 	
+
+private static void doctorMenu(String email) {
+	// TODO Auto-generated method stub
+	try {
+		int choice;
+		do {
+			System.out.println("Choose an option");
+			System.out.println("1. Add a new doctor.");
+			System.out.println("2. Print all the doctors in DB.");
+			System.out.println("0. Return.\n");
+			
+			
+			choice = Integer.parseInt(reader.readLine());
+							
+			switch(choice){
+			case 1: 
+				createDoctor();
+				break;
+			case 2:
+				getAllDoctors();
+				break;
+				
+			case 0:
+				System.out.println("Back to main menu");
+				
+			}
+			
+		}while(choice!=0);
+		
+		
+	}catch(Exception e)
+	{e.printStackTrace();}
+}
+
+
+	private static void signUpUser() {
+	// TODO Auto-generated method stub
+	try {
+		System.out.println("Introduce email: \n");
+		String email = reader.readLine();
+		System.out.println("Introduce the password: \n");
+		String password = reader.readLine();
+		
+		MessageDigest md= MessageDigest.getInstance("MD5");
+		md.update(password.getBytes());
+		byte[] pass = md.digest();
+		
+		System.out.println("Introduce the role of the user. 1: Administrator, 2: Doctor, 3. Patient, 4. Sponsor, 5. Engineer ");
+		Integer rol = Integer.parseInt(reader.readLine());
+		Role r = usermanager.getRole(rol);
+		
+		User u = new User(email, pass, r);
+		
+		usermanager.newUser(u);
+	
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+		}
+}
+
+
 	private static void createDoctor() throws Exception{
 		System.out.println("Type the name of the doctor\n");
 		String name = reader.readLine();
