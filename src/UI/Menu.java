@@ -17,6 +17,7 @@ import ClinicalTrialJDBC.JDBCDoctorManager;
 import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCSponsorManager;
 import ClinicalTrialJPA.JPAUserManager;
+import VetClinicPOJOs.Owner;
 import ClinicalTrialJDBC.JDBCEngineerManager;
 import ClinicalTrialInterfaces.UserManager;
 
@@ -50,8 +51,6 @@ public class Menu {
 		try {
 			int choice;
 			do {
-				
-
 				System.out.println("Choose an option");
 				System.out.println("1. Login User");
 				System.out.println("2. Sign-up new user");
@@ -59,8 +58,7 @@ public class Menu {
 								
 				choice = Integer.parseInt(reader.readLine());
 								
-				switch(choice)
-				{
+				switch(choice){
 				case 1: 
 					login();					
 				case 2:
@@ -140,6 +138,10 @@ private static void updatePassword() throws Exception {
 			System.out.println("Choose an option");
 			System.out.println("1. Add a new doctor.");
 			System.out.println("2. Print all the doctors in DB.");
+			System.out.println("3. Assign Doctor to a Patient.");
+			System.out.println("4. Update Speciality of a doctor.");
+			System.out.println("5. Assign report to a Patient.");
+			System.out.println("6. Assign Investigational product to a patient.");
 			System.out.println("0. Return.\n");	
 			
 			choice = Integer.parseInt(reader.readLine());
@@ -151,14 +153,43 @@ private static void updatePassword() throws Exception {
 			case 2:
 				getAllDoctors();
 				break;
+			
+			case 3:
+				System.out.println("Introduce the patient id: \n");
+				Integer patient_id = Integer.parseInt(reader.readLine());
+				System.out.println("Introduce the doctor id: \n");
+				Integer doctor_id = Integer.parseInt(reader.readLine());
+				assignDoctorToPatient(patient_id, doctor_id);
+				break;
+			
+			case 4:
+				System.out.println("Introduce the new specialty: \n");
+				String newSpeciality = reader.readLine();
+				updateSpeciality(doctor_id, newSpeciality);
+				break;
+			
+			case 5:
+				System.out.println("Introduce the report id: \n");
+				Integer report_id = Integer.parseInt(reader.readLine());
+				System.out.println("Introduce the patient id: \n");
+				Integer patient_id2 = Integer.parseInt(reader.readLine());
+				assignReportToPatient(report_id, patient_id2);
+				break;
+			
+			case 6:
+				System.out.println("Introduce the investigational product id: \n");
+				Integer investigationalProduct_id = Integer.parseInt(reader.readLine());
+				System.out.println("Introduce the patient id: \n");
+				Integer patient_id3 = Integer.parseInt(reader.readLine());
+				assignInvProdToPatient(investigationalProduct_id, patient_id3);
 				
+			
 			case 0:
 				System.out.println("Back to main menu");
 				
 			}
 			
 		}while(choice!=0);
-		
 		
 	}catch(Exception e){
 		e.printStackTrace();}
@@ -182,7 +213,6 @@ private static void updatePassword() throws Exception {
 		Role r = usermanager.getRole(rol);
 		
 		User u = new User(email, pass, r);
-		
 		usermanager.newUser(u);
 	
 	}catch(Exception e){
@@ -209,9 +239,26 @@ private static void updatePassword() throws Exception {
 	private static void getAllDoctors() throws Exception{
 		List<Doctor> doctors = null;
 		doctors = doctormanager.getListOfDoctors();
-		
 		System.out.println(doctors);	
 	}
+	
+	public static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
+		
+	}
+	
+	
+	public static void updateSpeciality(Integer doctor_id, String newSpeciality) {
+		
+	}
+	
+	public static void assignReportToPatient(Integer report_id, Integer patient_id) {
+		
+	}
 
+	
+	public static void assignInvProdToPatient(Integer investigationalProduct_id, Integer patient_id) {
+		
+		
+	}
 
 }
