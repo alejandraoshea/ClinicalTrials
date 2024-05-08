@@ -13,8 +13,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
-
-import VetClinicPOJOs.Role;
+import clinicaltrialsPOJO.Role;
 
 
 @Entity
