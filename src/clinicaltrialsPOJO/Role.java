@@ -14,9 +14,7 @@ import clinicaltrialsPOJO.Role;
 import clinicaltrialsPOJO.User;
 
 public class Role implements Serializable{ 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 2418507893073062837L;
 	
 	@Id
