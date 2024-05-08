@@ -37,6 +37,24 @@ public class Patient implements Serializable{
 	}
 	
 	
+	
+	
+	public Patient(String name, String email, Integer phone, Date dateOfBirth, String bloodType, String disease,
+			boolean cured, Blob photo) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+		this.dateOfBirth = dateOfBirth;
+		this.bloodType = bloodType;
+		this.disease = disease;
+		this.cured = cured;
+		this.photo = photo;
+	}
+
+
+
+
 	public Integer getPatient_id() {
 		return patient_id;
 	}
