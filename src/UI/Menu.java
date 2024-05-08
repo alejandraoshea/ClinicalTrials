@@ -246,7 +246,7 @@ private static void updatePassword() throws Exception {
 	
 	public static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
-		List<Patient>
+		Patient patient = patientmanager.s
 	}
 	
 	
