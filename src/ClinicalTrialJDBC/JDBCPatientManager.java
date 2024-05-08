@@ -1,8 +1,11 @@
 package ClinicalTrialJDBC;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 
 import ClinicalTrialInterfaces.PatientManager;
+import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.Patient;
 
 public class JDBCPatientManager implements PatientManager{
@@ -36,6 +39,32 @@ public class JDBCPatientManager implements PatientManager{
 	public void getStateRequest(Integer patient_id) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public Patient searchPatientById(Integer id) {
+		// TODO Auto-generated method stub
+		Patient patient = null;
+		
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM doctor WHERE id=" + id;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			Integer patient_id = rs.getInt("id");
+			String name = rs.getString("name");
+			String email = rs.getString("email");
+			Integer phone = rs.getInt("phone");
+			
+		    patient = new Patient (patient_id, name, email, phone);
+		    
+		    rs.close();
+		    stmt.close();
+		    
+		}catch(Exception e) {e.printStackTrace();}
+		return patient;
 	}
 
 }

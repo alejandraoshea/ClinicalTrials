@@ -17,8 +17,8 @@ import ClinicalTrialJDBC.JDBCDoctorManager;
 import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCSponsorManager;
 import ClinicalTrialJPA.JPAUserManager;
-import VetClinicPOJOs.Owner;
 import ClinicalTrialJDBC.JDBCEngineerManager;
+import clinicaltrialsPOJO.Reports;
 import ClinicalTrialInterfaces.UserManager;
 
 
@@ -173,9 +173,11 @@ private static void updatePassword() throws Exception {
 			case 5:
 				System.out.println("Introduce the report id: \n");
 				Integer report_id = Integer.parseInt(reader.readLine());
+				System.out.println("Introduce the doctor id: \n");
+				Integer doctor_id3 = Integer.parseInt(reader.readLine());
 				System.out.println("Introduce the patient id: \n");
 				Integer patient_id2 = Integer.parseInt(reader.readLine());
-				assignReportToPatient(report_id, patient_id2);
+				assignReportToPatient(report_id, doctor_id3, patient_id2);
 				break;
 			
 			case 6:
@@ -246,21 +248,29 @@ private static void updatePassword() throws Exception {
 	
 	public static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
-		List<Patient>
+		Patient patient = patientmanager.searchPatientById(patient_id);
+		
+		doctor.getPatients().add(patient);
 	}
 	
 	
 	public static void updateSpeciality(Integer doctor_id, String newSpeciality) {
-		
+		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
+		doctor.setSpecialization(newSpeciality);
 	}
 	
-	public static void assignReportToPatient(Integer report_id, Integer patient_id) {
-		
+	
+	public static void assignReportToPatient(Integer doctor_id, Integer report_id, Integer patient_id) {
+		Patient patient = patientmanager.searchPatientById(patient_id);
+		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
+		Reports report = new Reports(report_id);
+		doctor.getReports().add(report);
+		//verify
 	}
 
 	
 	public static void assignInvProdToPatient(Integer investigationalProduct_id, Integer patient_id) {
-		
+		Patient patient = patientmanager.searchPatientById(patient_id);
 		
 	}
 
