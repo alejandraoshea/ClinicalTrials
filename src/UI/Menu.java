@@ -17,8 +17,6 @@ import ClinicalTrialJDBC.JDBCDoctorManager;
 import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCSponsorManager;
 import ClinicalTrialJPA.JPAUserManager;
-import VetClinicPOJOs.Role;
-import VetClinicPOJOs.User;
 import ClinicalTrialJDBC.JDBCEngineerManager;
 import ClinicalTrialInterfaces.UserManager;
 
