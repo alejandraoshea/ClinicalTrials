@@ -101,10 +101,6 @@ public class Administrator implements Serializable{
 		return "Administrator [admin_id=" + admin_id + ", name=" + name + ", email=" + email + ", phone=" + phone
 				+ ", trialsApplications=" + trialsApplications + ", trials=" + trials + "]";
 	}
-
-	
-	
-	
 	
 
 }
