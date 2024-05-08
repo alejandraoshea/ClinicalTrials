@@ -81,6 +81,35 @@ public class Menu {
 	}
 	
 	
+	private static void login() throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("Email: \n");
+		String email = reader.readLine();
+		
+		System.out.println("Password: \n");
+		String passwd = reader.readLine();
+		
+		User u = usermanager.checkPassword(email, passwd);
+		
+		if(u!=null & u.getRole().getName().equals("admin")){
+			System.out.println("Login of administrator successful!");
+			adminMenu(email);
+		}else if(u!=null & u.getRole().getName().equals("doctor")){
+			System.out.println("Login of doctor successful!");
+			doctorMenu(email);
+		}else if(u!=null & u.getRole().getName().equals("patient")){
+			System.out.println("Login of patient successful!");
+			patientMenu(email);
+		}else if(u!=null & u.getRole().getName().equals("sponsor")){
+			System.out.println("Login of sponsor successful!");
+			sponsorMenu(email);
+		}else if(u!=null & u.getRole().getName().equals("engineer")){
+			System.out.println("Login of engineer successful!");
+			engineerMenu(email);
+		}
+		
+	}
+	
 private static void updatePassword() throws Exception {
 		
 		System.out.println("Email: ");
@@ -103,7 +132,7 @@ private static void updatePassword() throws Exception {
 
 	
 
-private static void doctorMenu(String email) {
+	private static void doctorMenu(String email) {
 	// TODO Auto-generated method stub
 	try {
 		int choice;
@@ -111,8 +140,7 @@ private static void doctorMenu(String email) {
 			System.out.println("Choose an option");
 			System.out.println("1. Add a new doctor.");
 			System.out.println("2. Print all the doctors in DB.");
-			System.out.println("0. Return.\n");
-			
+			System.out.println("0. Return.\n");	
 			
 			choice = Integer.parseInt(reader.readLine());
 							
