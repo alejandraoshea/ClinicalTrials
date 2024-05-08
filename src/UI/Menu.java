@@ -17,7 +17,6 @@ import ClinicalTrialJDBC.JDBCDoctorManager;
 import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCSponsorManager;
 import ClinicalTrialJPA.JPAUserManager;
-import VetClinicPOJOs.Owner;
 import ClinicalTrialJDBC.JDBCEngineerManager;
 import ClinicalTrialInterfaces.UserManager;
 
@@ -246,7 +245,9 @@ private static void updatePassword() throws Exception {
 	
 	public static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
-		Patient patient = patientmanager.s
+		Patient patient = patientmanager.searchPatientById(patient_id);
+		
+		doctor.getPatients().add(patient);
 	}
 	
 	
