@@ -134,8 +134,8 @@ private static void doctorMenu(String email) {
 		}while(choice!=0);
 		
 		
-	}catch(Exception e)
-	{e.printStackTrace();}
+	}catch(Exception e){
+		e.printStackTrace();}
 }
 
 
@@ -159,9 +159,7 @@ private static void doctorMenu(String email) {
 		
 		usermanager.newUser(u);
 	
-	}
-	catch(Exception e)
-	{
+	}catch(Exception e){
 		e.printStackTrace();
 		}
 }
