@@ -131,7 +131,8 @@ public class JPAUserManager implements UserManager{
 	@Override
 	public void changePassword(User u, String new_passwd) {
 		// TODO Auto-generated method stub
-		
+		Query q = em.createNativeQuery("UPDATE users SET password = ? WHERE email  = ?" + u.getEmail(), User.class);
+		u = (User) q.getSingleResult();
 	}
 
 

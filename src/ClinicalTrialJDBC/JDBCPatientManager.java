@@ -1,5 +1,6 @@
 package ClinicalTrialJDBC;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
@@ -18,7 +19,7 @@ public class JDBCPatientManager implements PatientManager{
 
 	
 	@Override
-	public void addPatient(Patient patient) {
+	public void createPatient(Patient patient) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -31,10 +32,20 @@ public class JDBCPatientManager implements PatientManager{
 
 	@Override
 	public void deletePatientbyId(Integer patient_id) {
-		// TODO Auto-generated method stub
-		
+		try {
+			String sql = "DELETE FROM patient WHERE id=?";
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			
+			prep.setInt(1, patient_id);
+			
+			prep.executeUpdate();			
+				
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
+	
 	@Override
 	public void getStateRequest(Integer patient_id) {
 		// TODO Auto-generated method stub
@@ -49,7 +60,7 @@ public class JDBCPatientManager implements PatientManager{
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM doctor WHERE id=" + id;
+			String sql = "SELECT * FROM patient WHERE id=" + id;
 		
 			ResultSet rs = stmt.executeQuery(sql);
 			
@@ -66,5 +77,8 @@ public class JDBCPatientManager implements PatientManager{
 		}catch(Exception e) {e.printStackTrace();}
 		return patient;
 	}
+	
+	
+	
 
 }

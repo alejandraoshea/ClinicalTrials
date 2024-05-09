@@ -64,6 +64,18 @@ public class Patient implements Serializable{
 
 
 
+	public Patient(String name, String email, Integer phone, Date dateOfBirth, String bloodType, String disease,
+			boolean cured) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+		this.dateOfBirth = dateOfBirth;
+		this.bloodType = bloodType;
+		this.disease = disease;
+		this.cured = cured;
+	}
+	
 
 	public Integer getPatient_id() {
 		return patient_id;
@@ -172,3 +184,5 @@ public class Patient implements Serializable{
 				+ ", dateOfBirth=" + dateOfBirth + ", bloodType=" + bloodType + ", disease=" + disease + ", cured="
 				+ cured + ", photo=" + photo + "]";
 	}
+
+}

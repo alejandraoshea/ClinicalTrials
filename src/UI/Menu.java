@@ -80,6 +80,7 @@ public class Menu {
 	}
 	
 	
+	
 	private static void login() throws Exception {
 		// TODO Auto-generated method stub
 		System.out.println("Email: \n");
@@ -92,22 +93,23 @@ public class Menu {
 		
 		if(u!=null & u.getRole().getName().equals("admin")){
 			System.out.println("Login of administrator successful!");
-			//adminMenu(email);
+			adminMenu(email);
 		}else if(u!=null & u.getRole().getName().equals("doctor")){
 			System.out.println("Login of doctor successful!");
 			doctorMenu(email);
 		}else if(u!=null & u.getRole().getName().equals("patient")){
 			System.out.println("Login of patient successful!");
-			//patientMenu(email);
+			patientMenu(email);
 		}else if(u!=null & u.getRole().getName().equals("sponsor")){
 			System.out.println("Login of sponsor successful!");
-			//sponsorMenu(email);
+			sponsorMenu(email);
 		}else if(u!=null & u.getRole().getName().equals("engineer")){
 			System.out.println("Login of engineer successful!");
-			//engineerMenu(email);
+			engineerMenu(email);
 		}
 		
 	}
+	
 	
 private static void updatePassword() throws Exception {
 		
@@ -129,6 +131,44 @@ private static void updatePassword() throws Exception {
 				
 	}
 
+
+
+private static void signUpUser() {
+	// TODO Auto-generated method stub
+	try {
+		System.out.println("Introduce email: \n");
+		String email = reader.readLine();
+		System.out.println("Introduce the password: \n");
+		String password = reader.readLine();
+		
+		MessageDigest md= MessageDigest.getInstance("MD5");
+		md.update(password.getBytes());
+		byte[] pass = md.digest();
+		
+		System.out.println("Introduce the role of the user. 1: Administrator, 2: Doctor, 3. Patient, 4. Sponsor, 5. Engineer ");
+		Integer rol = Integer.parseInt(reader.readLine());
+		Role r = usermanager.getRole(rol);
+		
+		User u = new User(email, pass, r);
+		usermanager.newUser(u);
+	
+	}catch(Exception e){
+		e.printStackTrace();
+		}
+}
+
+
+
+	//admin menu:
+	private static void adminMenu(String email) {
+		//menu
+	}
+	
+	//admin methods:
+	
+	
+	
+	
 	
 
 	private static void doctorMenu(String email) {
@@ -201,29 +241,6 @@ private static void updatePassword() throws Exception {
 }
 
 
-	private static void signUpUser() {
-	// TODO Auto-generated method stub
-	try {
-		System.out.println("Introduce email: \n");
-		String email = reader.readLine();
-		System.out.println("Introduce the password: \n");
-		String password = reader.readLine();
-		
-		MessageDigest md= MessageDigest.getInstance("MD5");
-		md.update(password.getBytes());
-		byte[] pass = md.digest();
-		
-		System.out.println("Introduce the role of the user. 1: Administrator, 2: Doctor, 3. Patient, 4. Sponsor, 5. Engineer ");
-		Integer rol = Integer.parseInt(reader.readLine());
-		Role r = usermanager.getRole(rol);
-		
-		User u = new User(email, pass, r);
-		usermanager.newUser(u);
-	
-	}catch(Exception e){
-		e.printStackTrace();
-		}
-}
 
 
 	private static void createDoctor() throws Exception{
@@ -262,11 +279,14 @@ private static void updatePassword() throws Exception {
 		String disease = reader.readLine();
 		System.out.println("Type if it's cured or not");
 		Boolean cured = Boolean.valueOf(reader.readLine());
-}
+		Patient patient = new Patient(name, email, phone, dateOfBirth, bloodType, disease, cured);
+		patientmanager.createPatient(patient);
+	}
+	
+	
 	public static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 		Patient patient = patientmanager.searchPatientById(patient_id);
-		
 		doctor.getPatients().add(patient);
 	}
 	
@@ -284,8 +304,10 @@ private static void updatePassword() throws Exception {
 		doctor.getReports().add(report);
 		//verify
 	}
+	
+	
 	public static void assignReportToPatient(Integer report_id, Integer patient_id) {
-
+		
 	}
 
 	
@@ -294,4 +316,45 @@ private static void updatePassword() throws Exception {
 		
 	}
 
+	
+	
+	
+	
+	//patient menu:
+		private static void patientMenu(String email) {
+			//menu
+		}
+		
+		//patient methods:
+		
+		
+		
+		
+		//sponsor menu:
+		private static void sponsorMenu(String email) {
+			//menu
+		}
+		
+		//sponsor methods:
+		
+		
+		
+		
+		//engineer menu:
+		private static void engineerMenu(String email) {
+			//menu
+		}
+		
+		//engineer methods:
+		
+		
+		
+		
+		
+		
+
+
+	
+	
+	
 }
