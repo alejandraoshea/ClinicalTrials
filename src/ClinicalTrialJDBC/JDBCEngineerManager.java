@@ -30,7 +30,7 @@ public class JDBCEngineerManager implements EngineerManager{
 	}
 
 	@Override
-	public void updateInvPr(Integer investigationalProduct_id) {
+	public void updateInvPr(Integer investigationalProduct_id, String newDescription) {
 		// TODO Auto-generated method stub
 		
 	}

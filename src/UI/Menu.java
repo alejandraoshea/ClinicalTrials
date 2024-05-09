@@ -362,7 +362,6 @@ private static void signUpUser() {
 					System.out.println("0. Return.\n");	
 					
 					choice = Integer.parseInt(reader.readLine());
-					Integer trial_id;
 					Integer invProduct_id;
 					
 					switch(choice){
@@ -376,27 +375,21 @@ private static void signUpUser() {
 					case 3:
 						System.out.println("Introduce the investigational product id: \n");
 						invProduct_id = Integer.parseInt(reader.readLine());
-						System.out.println("Introduce the trial id: \n");
-						trial_id = Integer.parseInt(reader.readLine());
-						createInvPr(invProduct_id, trial_id);
+						createInvPr(invProduct_id);
 						break;
 					
 					case 4:
 						System.out.println("Introduce the investigational product id: \n");
 						invProduct_id = Integer.parseInt(reader.readLine());
-						System.out.println("Introduce the trial id: \n");
-						trial_id = Integer.parseInt(reader.readLine());
 						System.out.println("Introduce the new description: \n");
 						String newDescription = reader.readLine();
-						updateInvPr(invProduct_id, trial_id, newDescription);
+						updateInvPr(invProduct_id, newDescription);
 						break;
 					
 					case 5:
 						System.out.println("Introduce the investigational product id: \n");
 						invProduct_id = Integer.parseInt(reader.readLine());
-						System.out.println("Introduce the trial id: \n");
-						trial_id = Integer.parseInt(reader.readLine());
-						getInvPr(invProduct_id, trial_id);
+						getInvPr(invProduct_id);
 						break;
 					
 					case 0:
@@ -433,18 +426,18 @@ private static void signUpUser() {
 		}
 		
 		
-		private static void createInvPr(Integer investigationalProduct_id, Integer trial_id) throws Exception{
+		private static void createInvPr(Integer investigationalProduct_id) throws Exception{
 			
 		}
 		
 		
-	    public static void updateInvPr(Integer investigationalProduct_id, Integer trial_id, String newDescription) {
+	    public static void updateInvPr(Integer investigationalProduct_id, String newDescription) {
 	   
 		
 		}
 	    
 	    
-	    private static void getInvPr(Integer investigationalProduct_id, Integer trial_id) throws Exception {
+	    private static void getInvPr(Integer investigationalProduct_id) throws Exception {
 			
 		}
 	
