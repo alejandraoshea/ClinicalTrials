@@ -386,13 +386,11 @@ private static void signUpUser() {
 						break;
 					
 					case 5:
-						System.out.println("Introduce the report id: \n");
-						Integer report_id = Integer.parseInt(reader.readLine());
-						System.out.println("Introduce the doctor id: \n");
-						doctor_id = Integer.parseInt(reader.readLine());
-						System.out.println("Introduce the patient id: \n");
-						patient_id = Integer.parseInt(reader.readLine());
-						assignReportToPatient(report_id, doctor_id, patient_id);
+						System.out.println("Introduce the investigational product id: \n");
+						invProduct_id = Integer.parseInt(reader.readLine());
+						System.out.println("Introduce the trial id: \n");
+						trial_id = Integer.parseInt(reader.readLine());
+						getInvPr(invProduct_id, trial_id);
 						break;
 					
 					case 0:
@@ -434,7 +432,7 @@ private static void signUpUser() {
 		}
 		
 		
-	    public static void updateInvPr(Integer investigationalProduct_id, Integer trial_id) {
+	    public static void updateInvPr(Integer investigationalProduct_id, Integer trial_id, String newDescription) {
 	   
 		
 		}
