@@ -28,6 +28,19 @@ public class Sponsor implements Serializable{
 		this.cardNumber = cardNumber;
 	}
 
+	
+	
+
+	public Sponsor(String name, String email, Integer phone, Integer cardNumber) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+		this.cardNumber = cardNumber;
+	}
+
+
+
 
 	public Integer getSponsor_id() {
 		return sponsor_id;

@@ -341,9 +341,95 @@ private static void signUpUser() {
 		//sponsor menu:
 		private static void sponsorMenu(String email) {
 			//menu
+			try {
+				int choice;
+				do {
+					System.out.println("Choose an option");
+					System.out.println("1. Add a new sponsor.");
+					System.out.println("2. Print all the trials");
+					System.out.println("3. Print all the sponsors.");
+					System.out.println("4. Update an investment.");
+					System.out.println("5. Print all the reports of a trial.");
+					System.out.println("6. Assign a sponsor to a trial.");
+					System.out.println("0. Return.\n");	
+						
+					choice = Integer.parseInt(reader.readLine());
+						
+					switch(choice){
+					case 1: 
+						createSponsor();
+						break;
+					case 2:
+						getListOfTrials();
+						break;
+					
+					case 3:
+						getListOfSponsor();
+						break;
+						
+					case 4:
+						//update
+						//updateInvestment(Integer trial_id, Integer sponsor_id)
+						break;
+						
+					case 5:
+						//print reports
+						//List<Reports> getReportsOfAPatient(Integer patient_id)
+						break;
+						
+					case 6:
+						//assign sponsor to a trial
+					
+					case 0:
+						System.out.println("Back to main menu");
+							
+					}
+				}while(choice!=0);
+				}catch(Exception e){
+					e.printStackTrace();}
 		}
+			
 		
 		//sponsor methods:
+		private static void createSponsor() throws Exception {
+			System.out.println("Type the name of the sponsor\n");
+			String name = reader.readLine();
+			System.out.println("Type the email of the sponsor\n");
+			String email = reader.readLine();
+			System.out.println("Type the phone of the sponsor\n");
+			Integer phone = Integer.parseInt(reader.readLine());			
+			System.out.println("Type the card number");
+			Integer cardnumber = Integer.parseInt(reader.readLine());
+			
+			Sponsor sponsor = new Sponsor(name, email, phone, cardnumber);
+			sponsormanager.createSponsor(sponsor);
+		}
+		
+		
+		private static void getListOfTrials() throws Exception{
+			//add
+		}
+		
+		
+		private static void getListOfSponsor() throws Exception{
+			//add
+		}
+		
+		public void updateInvestment(Integer trial_id, Integer sponsor_id) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		public void assignSponsorToTrial(Integer trial_id, Integer sponsor_id) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		public List<Reports> getReportsOfAPatient(Integer patient_id) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
 		
 		
 		
