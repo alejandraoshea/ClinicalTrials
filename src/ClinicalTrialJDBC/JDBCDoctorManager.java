@@ -45,10 +45,21 @@ public class JDBCDoctorManager implements DoctorManager{
 	}
 
 	@Override
-	public void updateSpeciality(Integer doctor_id, String newSpeciality) {
+	public void updateSpeciality(Integer doctor_id, String newSpecialization) {
 		// TODO Auto-generated method stub
+		try {
+			String sql = "UPDATE doctor SET specialization= ? WHERE id= ?;";
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			
+			prep.setString(1, newSpecialization);
+			prep.setInt(2, doctor_id);
+			prep.executeQuery();
+		}catch(Exception e){
+			e.printStackTrace();	
+		}
 		
 	}
+	
 
 	@Override
 	public void assignReportToPatient(Integer report_id, Integer patient_id) {

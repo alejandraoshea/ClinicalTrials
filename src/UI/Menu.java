@@ -20,6 +20,8 @@ import ClinicalTrialJDBC.JDBCSponsorManager;
 import ClinicalTrialJPA.JPAUserManager;
 import ClinicalTrialJDBC.JDBCEngineerManager;
 import clinicaltrialsPOJO.Reports;
+import clinicaltrialsPOJO.User;
+import clinicaltrialsPOJO.Role;
 import ClinicalTrialInterfaces.UserManager;
 
 
@@ -66,17 +68,18 @@ public class Menu {
 					System.out.println("Add info of new user.");
 					signUpUser();
 				case 3: 
-					System.out.println("Udpate the password of an exissting user.");
+					System.out.println("Udpate the password of an existing user.");
 					updatePassword();
 					
 				case 0:
+					System.out.println("Exiting application.");
 					jdbcmanager.disconnect();
-					System.exit(0);
 				}
-			}while(true);
+			}while(choice!=0);
 					
 		}catch(Exception e){
-			e.printStackTrace();}
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -91,20 +94,25 @@ public class Menu {
 		
 		User u = usermanager.checkPassword(email, passwd);
 		
-		if(u!=null & u.getRole().getName().equals("admin")){
+		if(u!=null & u.getRole().getName().equals("administrator")){
 			System.out.println("Login of administrator successful!");
+			//call for admin menu
 			adminMenu(email);
 		}else if(u!=null & u.getRole().getName().equals("doctor")){
 			System.out.println("Login of doctor successful!");
+			//call for doctor menu
 			doctorMenu(email);
 		}else if(u!=null & u.getRole().getName().equals("patient")){
 			System.out.println("Login of patient successful!");
+			//call for patient menu
 			patientMenu(email);
 		}else if(u!=null & u.getRole().getName().equals("sponsor")){
 			System.out.println("Login of sponsor successful!");
+			//call for sponsor menu
 			sponsorMenu(email);
 		}else if(u!=null & u.getRole().getName().equals("engineer")){
 			System.out.println("Login of engineer successful!");
+			//call for engineer menu
 			engineerMenu(email);
 		}
 		
@@ -125,7 +133,7 @@ private static void updatePassword() throws Exception {
 		User u = usermanager.checkPassword(email, passwd);
 				
 		if(u!=null){
-			System.out.println("Login of owner successful!");
+			System.out.println("Login of user successful!");
 			usermanager.changePassword(u, new_passwd);
 		}
 				
@@ -239,7 +247,8 @@ private static void signUpUser() {
 		}while(choice!=0);
 		
 	}catch(Exception e){
-		e.printStackTrace();}
+		e.printStackTrace();
+	}
 }
 
 

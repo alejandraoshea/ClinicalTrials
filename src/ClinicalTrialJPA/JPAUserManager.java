@@ -39,13 +39,13 @@ public class JPAUserManager implements UserManager{
 			
 			q.setParameter(2, pw);
 			
-		}catch(Exception e)
-		{e.printStackTrace();}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 			
 		
 		try {
-			u = (User) q.getSingleResult();
-			
+			u = (User) q.getSingleResult();			
 		}catch(NoResultException e) {}
 		
 		return u;
@@ -55,21 +55,20 @@ public class JPAUserManager implements UserManager{
 	public void connect() {
 		// TODO Auto-generated method stub
 		
-		em = Persistence.createEntityManagerFactory("clinicaltrial-provider").createEntityManager();
+		em = Persistence.createEntityManagerFactory("clinicaltrials-provider").createEntityManager();
 	
 		em.getTransaction().begin();
 		em.createNativeQuery("PRAGMA foreign_keys = ON").executeUpdate();
 		em.getTransaction().commit();
 		
-		if(this.getRoles().isEmpty())
-		{
-			Role admin = new Role("administrator");
+		if(this.getRoles().isEmpty()){
+			Role administrator = new Role("administrator");
 			Role doctor = new Role("doctor");
 			Role patient = new Role("patient");
 			Role sponsor = new Role("sponsor");
 			Role engineer = new Role("engineer");
 			
-			this.newRole(admin);
+			this.newRole(administrator);
 			this.newRole(doctor);
 			this.newRole(patient);
 			this.newRole(sponsor);
@@ -131,7 +130,7 @@ public class JPAUserManager implements UserManager{
 	@Override
 	public void changePassword(User u, String new_passwd) {
 		// TODO Auto-generated method stub
-		Query q = em.createNativeQuery("UPDATE users SET password = ? WHERE email  = ?" + u.getEmail(), User.class);
+		Query q = em.createNativeQuery("UPDATE users SET password = ? WHERE email=" + u.getEmail(), User.class);
 		u = (User) q.getSingleResult();
 	}
 
