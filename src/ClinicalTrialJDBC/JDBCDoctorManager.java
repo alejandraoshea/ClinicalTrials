@@ -8,6 +8,8 @@ import java.util.List;
 
 import ClinicalTrialInterfaces.DoctorManager;
 import clinicaltrialsPOJO.Doctor;
+import clinicaltrialsPOJO.InvestigationalProduct;
+import clinicaltrialsPOJO.Reports;
 
 public class JDBCDoctorManager implements DoctorManager{
 	private JDBCManager manager;
@@ -60,18 +62,86 @@ public class JDBCDoctorManager implements DoctorManager{
 		
 	}
 	
+	
+
+	@Override
+	public void createReport(Reports report) {
+		// TODO Auto-generated method stub
+		try {
+			String sql= "INSERT INTO report (medicalHistory,"
+					+ "VALUES (?)";
+			
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			prep.setString(1, report.getMedicalHistory());
+			
+			prep.executeUpdate();				
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
 
 	@Override
 	public void assignReportToPatient(Integer report_id, Integer patient_id) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
-	public void assignInvProdToPatient(Integer investigationalProduct_id, Integer patient_id) {
-		// TODO Auto-generated method stub
+	public List<InvestigationalProduct> getlistInvProd() {
+		List<InvestigationalProduct> invProducts= new ArrayList<InvestigationalProduct>();
 		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM investigationalProduct";
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				Integer id = rs.getInt("id");
+				String description = rs.getString("description");
+				String type = rs.getString("type");
+				Integer amountMoney = rs.getInt("amountMoney");
+				InvestigationalProduct invProduct = new InvestigationalProduct(id, amountMoney, description, type);
+				invProducts.add(invProduct);
+			}
+			
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return invProducts;
 	}
+
+	
+	@Override
+	public InvestigationalProduct getInvProductById(Integer investigationalProduct_id, Integer doctor_id){
+		// TODO Auto-generated method stub
+		InvestigationalProduct invP = null;
+		
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM investigationalProduct WHERE id=" + investigationalProduct_id;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			Integer invPr_id = rs.getInt("id");
+			String description = rs.getString("description");
+			String type = rs.getString("type");
+			Integer amountMoney = rs.getInt("amountMoney");
+			
+		    invP = new InvestigationalProduct(invPr_id, amountMoney, description, type);
+		    
+		    rs.close();
+		    stmt.close();
+		    
+		}catch(Exception e) {e.printStackTrace();}
+		return invP;
+	}
+
 
 
 	@Override
@@ -129,5 +199,6 @@ public class JDBCDoctorManager implements DoctorManager{
 		}catch(Exception e) {e.printStackTrace();}
 		return doctor;
 	}
+
 	
 }

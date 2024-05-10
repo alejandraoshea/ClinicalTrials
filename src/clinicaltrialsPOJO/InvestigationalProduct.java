@@ -28,6 +28,23 @@ public class InvestigationalProduct implements Serializable{
 
 	
 	
+	public InvestigationalProduct(Integer invProduct_id, Integer amount, String description, String type) {
+		super();
+		this.invProduct_id = invProduct_id;
+		this.amount = amount;
+		this.description = description;
+		this.type = type;
+	}
+
+
+
+
+	public InvestigationalProduct(Integer invProduct_id) {
+		super();
+		this.invProduct_id = invProduct_id;
+	}
+	
+	
 	public Integer getInvProduct_id() {
 		return invProduct_id;
 	}

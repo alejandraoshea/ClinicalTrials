@@ -54,22 +54,25 @@ public class Menu {
 		try {
 			int choice;
 			do {
-				System.out.println("Choose an option");
-				System.out.println("1. Login User");
-				System.out.println("2. Sign-up new user");
-				System.out.println("0. Exit.");
+				System.out.println("Choose an option\n");
+				System.out.println("1. Login User\n");
+				System.out.println("2. Sign-up new user\n");
+				System.out.println("0. Exit.\n");
 								
 				choice = Integer.parseInt(reader.readLine());
 								
 				switch(choice){
 				case 1: 
-					login();					
+					login();	
+					break;
 				case 2:
-					System.out.println("Add info of new user.");
+					System.out.println("Add info of new user\n.");
 					signUpUser();
+					break;
 				case 3: 
-					System.out.println("Udpate the password of an existing user.");
+					System.out.println("Udpate the password of an existing user.\n");
 					updatePassword();
+					break;
 					
 				case 0:
 					System.out.println("Exiting application.");
@@ -189,8 +192,11 @@ private static void signUpUser() {
 			System.out.println("2. Print all the doctors in DB.");
 			System.out.println("3. Assign Doctor to a Patient.");
 			System.out.println("4. Update Speciality of a doctor.");
-			System.out.println("5. Assign report to a Patient.");
-			System.out.println("6. Assign Investigational product to a patient.");
+			System.out.println("5. Create a report.");
+			System.out.println("6. Assign report to a Patient.");
+			System.out.println("7. Print all the reports of a Patient.");
+			System.out.println("8. Print all the investigational products in DB.");
+			System.out.println("9. Modify treatment of a patient.");
 			System.out.println("0. Return.\n");	
 			
 			choice = Integer.parseInt(reader.readLine());
@@ -222,6 +228,14 @@ private static void signUpUser() {
 				break;
 			
 			case 5:
+				System.out.println("Introduce the medical History: \n");
+				String medicalHistory = reader.readLine();
+				System.out.println("Introduce the treatment: \n");
+				String treatment = reader.readLine();
+				createReport(medicalHistory, treatment);
+				break;
+				
+			case 6:
 				System.out.println("Introduce the report id: \n");
 				Integer report_id = Integer.parseInt(reader.readLine());
 				System.out.println("Introduce the doctor id: \n");
@@ -231,14 +245,20 @@ private static void signUpUser() {
 				assignReportToPatient(report_id, doctor_id, patient_id);
 				break;
 			
-			case 6:
-				System.out.println("Introduce the investigational product id: \n");
-				Integer investigationalProduct_id = Integer.parseInt(reader.readLine());
+			case 7:
 				System.out.println("Introduce the patient id: \n");
 				patient_id = Integer.parseInt(reader.readLine());
-				assignInvProdToPatient(investigationalProduct_id, patient_id);
+				//get all reports of patient
+				break;
 				
-			
+			case 8:
+				getAllInvProd();
+				break;
+				
+			case 9:
+				//modify treatment
+				break;
+				
 			case 0:
 				System.out.println("Back to main menu");
 				
@@ -276,6 +296,13 @@ private static void signUpUser() {
 	}
 	
 	
+	public static void createReport(String medicalHistory, String treatment) {
+		Reports report = new Reports(medicalHistory, treatment);
+		doctormanager.createReport(report);
+		
+	}
+	
+	
 	public static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 		Patient patient = patientmanager.searchPatientById(patient_id);
@@ -294,20 +321,25 @@ private static void signUpUser() {
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 		Reports report = new Reports(report_id);
 		doctor.getReports().add(report);
-		//verify
+		patient.getReports().add(report);
 	}
 	
-	
-	public static void assignReportToPatient(Integer report_id, Integer patient_id) {
-		
-	}
 
-	
-	public static void assignInvProdToPatient(Integer investigationalProduct_id, Integer patient_id) {
-		Patient patient = patientmanager.searchPatientById(patient_id);
-		
+	public static void getAllInvProd() throws Exception{
+		List<InvestigationalProduct> invProducts = null;
+		invProducts = doctormanager.getlistInvProd();
+		System.out.println(invProducts);
 	}
-
+	
+	
+	/*public static InvestigationalProduct getInvProductById(Integer investigationalProduct_id, Integer doctor_id) {
+		InvestigationalProduct invPr = new InvestigationalProduct(investigationalProduct_id);
+		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
+		doctor.getInvestigationalProducts().add(invPr);
+		return invPr;
+		
+	}*/
+	
 	
 	
 	
@@ -425,7 +457,7 @@ private static void signUpUser() {
 			
 		}
 		
-		public List<Reports> getReportsOfAPatient(Integer patient_id) {
+		public List<Reports> getListReportsOfPatient(Integer patient_id) {
 			// TODO Auto-generated method stub
 			return null;
 		}

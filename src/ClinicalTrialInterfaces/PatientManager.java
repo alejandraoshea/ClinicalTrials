@@ -4,6 +4,7 @@ import java.util.List;
 
 import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.Patient;
+import clinicaltrialsPOJO.Reports;
 
 
 public interface PatientManager {
@@ -14,5 +15,6 @@ public interface PatientManager {
 	
 	public void getStateRequest(Integer patient_id);
 	public Patient searchPatientById(Integer patient_id);
+	public List<Reports> getListReportsOfPatient(Patient patient_id);
 	
 }

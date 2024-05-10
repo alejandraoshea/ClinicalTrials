@@ -1,12 +1,17 @@
 package ClinicalTrialJDBC;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import ClinicalTrialInterfaces.PatientManager;
+import VetClinicPOJOs.Owner;
+import VetClinicPOJOs.Pet;
 import clinicaltrialsPOJO.Doctor;
+import clinicaltrialsPOJO.Reports;
 import clinicaltrialsPOJO.Patient;
 
 public class JDBCPatientManager implements PatientManager{
@@ -76,6 +81,37 @@ public class JDBCPatientManager implements PatientManager{
 		    
 		}catch(Exception e) {e.printStackTrace();}
 		return patient;
+	}
+
+
+	@Override
+	public List<Reports> getListReportsOfPatient(Patient patient) {
+		// TODO Auto-generated method stub
+		List<Reports> reports= new ArrayList<Reports>();
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM report WHERE patient_id=" + patient_id;
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				Integer id = rs.getInt("id");
+				String medicalHistory = rs.getString("medialHistory");
+				String treatment = rs.getString("treatment");
+				Integer patient_id = patient.getPatient_id();
+				
+				Reports report = new Reports(id, medicalHistory, treatment);
+				patient.getReports().add(report);
+			}
+			
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return reports;
 	}
 	
 	
