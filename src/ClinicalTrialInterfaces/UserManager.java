@@ -11,8 +11,9 @@ public interface UserManager {
 	public void newRole(Role r);
 	public void newUser(User u);
 	public List<Role> getRoles();
-	public Role getRole(Integer id);
+	public Role getRole(Integer id); //search
 	public User getUser(String email);
 	public User checkPassword(String email, String pass);
 	public void changePassword(User u, String new_passwd);
+	public void deleteUser(String email);
 }

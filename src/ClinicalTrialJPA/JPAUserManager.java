@@ -1,6 +1,7 @@
 package ClinicalTrialJPA;
 
 import java.security.MessageDigest;
+import java.sql.PreparedStatement;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -132,6 +133,15 @@ public class JPAUserManager implements UserManager{
 		// TODO Auto-generated method stub
 		Query q = em.createNativeQuery("UPDATE users SET password = ? WHERE email=" + u.getEmail(), User.class);
 		u = (User) q.getSingleResult();
+	}
+
+
+	@Override
+	public void deleteUser(String email) {
+		// TODO Auto-generated method stub
+		Query q = em.createNativeQuery("DELETE FROM users where email="+email, User.class);
+		User u = (User) q.getSingleResult();
+		
 	}
 
 
