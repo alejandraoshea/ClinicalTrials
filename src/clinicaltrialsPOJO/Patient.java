@@ -79,6 +79,15 @@ public class Patient implements Serializable{
 	}
 	
 
+	public Patient(Integer patient_id) {
+		super();
+		this.patient_id = patient_id;
+	}
+
+
+
+
+
 	public Integer getPatient_id() {
 		return patient_id;
 	}

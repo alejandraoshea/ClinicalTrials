@@ -15,6 +15,7 @@ public interface SponsorManager {
 	public List<Reports> getReportsOfAPatient(Integer patient_id);
 	public List<Sponsor> getListOfSponsor();
 	public List<Trial> getListOfTrials();
+	public Sponsor searchSponsorById(Integer sponsor_id);
 	
 	
 }

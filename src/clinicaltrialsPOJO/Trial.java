@@ -25,6 +25,11 @@ public class Trial implements Serializable{
 		this.trial_id = trial_id;
 		this.totalAmountInvested = totalAmountInvested;
 	}
+	
+	public Trial(Integer trial_id) {
+		super();
+		this.trial_id = trial_id;
+	}
 
 
 	public Integer getTrial_id() {

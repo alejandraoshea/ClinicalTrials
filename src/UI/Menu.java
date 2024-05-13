@@ -101,7 +101,6 @@ public class Menu {
 		}else if(u!=null & u.getRole().getName().equals("doctor")){
 			System.out.println("Login of doctor successful!");
 			//call for doctor menu
-			//create doctor 
 			doctorMenu(email);
 		}else if(u!=null & u.getRole().getName().equals("patient")){
 			System.out.println("Login of patient successful!");
@@ -169,43 +168,104 @@ private static void signUpUser() {
 
 
 	//admin menu:
-	private static void adminMenu(String email) {
-		//menu
-		try {
-			int choice;
-			do {
-				System.out.println("Choose an option");
-				System.out.println("1. Add a new administrator.");
-				System.out.println("2. Add a new trial.");
-				System.out.println("3. Print all the administrators in DB.");
-				System.out.println("4. Print the amount of money invested in a trial.");
-				System.out.println("5. Update the resolution state of a patient (of a clinical trial).");
-				//when we update the resolution state, we also update the dateapproved of the patient
-				System.out.println("6. Assign patient to a clinical trial.");
-				System.out.println("7. Print all the reports of a Patient.");
-				System.out.println("8. Choose an investigational products.");
-				//System.out.println("9. Modify treatment of a patient.");
-				System.out.println("0. Return.\n");	
-				
-				choice = Integer.parseInt(reader.readLine());
-				
-				switch(choice){
-				case 1: 
-					break;
-				case 0:
-					System.out.println("Back to main menu");
-					
-				}
-				
-			}while(choice!=0);
-			
-		}catch(Exception e){
-			e.printStackTrace();
+private static void adminMenu(String email) {
+
+try{
+      int choice; 
+   do {
+	   System.out.println("dcsw");
+         System.out.println("Choose an option");
+         System.out.println("1. Add a new Clinical Trial"); 
+         System.out.println("2. Add a new administrator"); 
+         System.out.println("3. Print all the administrators in DB");
+         System.out.println("4. Show the amount invested in a Clinical Trial"); 
+         System.out.println("5. Update Acceptance Patient");
+         System.out.println("6. Assign Patient to Trial"); 
+         System.out.println("0. Return.\n"); 
+         
+   choice = Integer.parseInt(reader.readLine()); 
+   Integer trial_id; 
+   Integer admin_id; 
+   Integer patient_id; 
+
+  
+   // Integer trialsApplication_id;
+   switch(choice) {
+   		case 1: 
+   			createTrial();
+   			break; 
+		case 2: 
+			createAdmin(); 
+			break; 
+		case 3: 
+			getListOfAdmins(); 
+			break; 
+		case 4: 
+			getAmountInvested(); 
+			break; 
+		case 5: 
+			System.out.println("Introduce the patient id : \n"); 
+			patient_id = Integer.parseInt(reader.readLine()); 
+			updateAcceptancePatient(patient_id); 
+			break; 
+		case 6: 
+			System.out.println("Introduce the patient id: \n"); 
+			patient_id = Integer.parseInt(reader.readLine()); 
+			System.out.println("Introduce the trial id: \n"); 
+			trial_id = Integer.parseInt(reader.readLine()); 
+			assignPatientToTrial(patient_id, trial_id); 
+			break; 
+		case 0: 
+			System.out.println("Back to main menu"); 
+			}
+   } while (choice!=0); 
+   
+}catch(Exception e) {
+	e.printStackTrace(); 
+	}
+
+}
+// private static void createTrial() throws Exception{
+// System.out.println("Type the amount invested\n"); 
+// Integer amountInvested = Integer.parseInt(reader.readLine());
+// Administrator admin = new Administrator(name, email, phone); 
+// administratormanager.createAdmin(admin); 
+// }
+
+	private static void createAdmin() throws Exception{
+		System.out.println("Type the name of the admistrator\n"); 
+		String name = reader.readLine(); 
+		System.out.println("Type the email of the admistrator\n");
+		String email = reader.readLine();
+		System.out.println("Type the phone of the admistrator\n");
+		Integer phone = Integer.parseInt(reader.readLine());
+		Administrator admin = new Administrator(name, email, phone); 
+		administratormanager.createAdmin(admin); 
+}
+	
+	private static void getListOfAdmins() throws Exception{
+		List<Administrator> admins = null; 
+		admins = administratormanager.getListOfAdmins(); 
+		System.out.println(admins); 
 		}
+	
+	private static void updateAcceptancePatient(Integer patient_id) {
+		
 	}
 	
-	//admin methods:
-	
+	/*	public static void assignReportToPatient(Integer doctor_id, Integer report_id, Integer patient_id) {
+	Patient patient = patientmanager.searchPatientById(patient_id);
+	Doctor doctor = doctormanager.searchDoctorById(doctor_id);
+	Reports report = new Reports(report_id);
+	doctor.getReports().add(report);
+	patient.getReports().add(report);
+}*/	
+	private static void assignPatientToTrial(Integer patient_id, Integer trial_id){
+		Patient patient = new Patient(patient_id); 
+		Trial trial = adminmanager.getTrialByID(trial_id);
+		trial.getPatients().ad
+		}
+	}
 	
 	
 	
@@ -229,7 +289,9 @@ private static void signUpUser() {
 			System.out.println("0. Return.\n");	
 			
 			choice = Integer.parseInt(reader.readLine());
-
+			Integer doctor_id;
+			Integer patient_id;
+			
 			switch(choice){
 			case 1: 
 				createDoctor();
@@ -239,31 +301,52 @@ private static void signUpUser() {
 				break;
 			
 			case 3:
-				assignDoctorToPatient();
+				System.out.println("Introduce the patient id: \n");
+				patient_id = Integer.parseInt(reader.readLine());
+				System.out.println("Introduce the doctor id: \n");
+				doctor_id = Integer.parseInt(reader.readLine());
+				assignDoctorToPatient(patient_id, doctor_id);
 				break;
 			
 			case 4:
-				updateSpeciality();
+				System.out.println("Introduce the new specialty: \n");
+				String newSpeciality = reader.readLine();
+				System.out.println("Introduce the doctor id: \n");
+				doctor_id = Integer.parseInt(reader.readLine());
+				updateSpeciality(doctor_id, newSpeciality);
 				break;
 			
 			case 5:
-				createReport();
+				System.out.println("Introduce the medical History: \n");
+				String medicalHistory = reader.readLine();
+				System.out.println("Introduce the treatment: \n");
+				String treatment = reader.readLine();
+				createReport(medicalHistory, treatment);
 				break;
 				
 			case 6:
-				assignReportToPatient();
+				System.out.println("Introduce the report id: \n");
+				Integer report_id = Integer.parseInt(reader.readLine());
+				System.out.println("Introduce the doctor id: \n");
+				doctor_id = Integer.parseInt(reader.readLine());
+				System.out.println("Introduce the patient id: \n");
+				patient_id = Integer.parseInt(reader.readLine());
+				assignReportToPatient(report_id, doctor_id, patient_id);
 				break;
 			
 			case 7:
 				System.out.println("Introduce the patient id: \n");
-				//patient_id = Integer.parseInt(reader.readLine());
+				patient_id = Integer.parseInt(reader.readLine());
 				//get all reports of patient
 				break;
 				
 			case 8:
 				getAllInvProd();
-				InvestigationalProduct invP = chooseInvProductById();
-				invP.toString();
+				System.out.println("Introduce the doctor id: \n");
+				doctor_id = Integer.parseInt(reader.readLine());
+				System.out.println("Introduce the investigational product id: \n");
+				Integer invPr_id = Integer.parseInt(reader.readLine());
+				InvestigationalProduct invP = chooseInvProductById(invPr_id, doctor_id);
 				break;
 				
 			case 0:
@@ -303,48 +386,27 @@ private static void signUpUser() {
 	}
 	
 	
-	public static void createReport() throws Exception {
-		System.out.println("Introduce the medical History: \n");
-		String medicalHistory = reader.readLine();
-		System.out.println("Introduce the treatment: \n");
-		String treatment = reader.readLine();
+	public static void createReport(String medicalHistory, String treatment) {
 		Reports report = new Reports(medicalHistory, treatment);
 		doctormanager.createReport(report);
 		
 	}
 	
 	
-	public static void assignDoctorToPatient() throws Exception{
-		System.out.println("Introduce the patient id: \n");
-		Integer patient_id = Integer.parseInt(reader.readLine());
-		System.out.println("Introduce the doctor id: \n");
-		Integer doctor_id = Integer.parseInt(reader.readLine());
-		
+	public static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 		Patient patient = patientmanager.searchPatientById(patient_id);
 		doctor.getPatients().add(patient);
 	}
 	
 	
-	public static void updateSpeciality() throws Exception{
-		System.out.println("Introduce the new specialty: \n");
-		String newSpeciality = reader.readLine();
-		System.out.println("Introduce the doctor id: \n");
-		Integer doctor_id = Integer.parseInt(reader.readLine());
-		
+	public static void updateSpeciality(Integer doctor_id, String newSpeciality) {
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 		doctor.setSpecialization(newSpeciality);
 	}
 	
 	
-	public static void assignReportToPatient() throws Exception{
-		System.out.println("Introduce the report id: \n");
-		Integer report_id = Integer.parseInt(reader.readLine());
-		System.out.println("Introduce the doctor id: \n");
-		Integer doctor_id = Integer.parseInt(reader.readLine());
-		System.out.println("Introduce the patient id: \n");
-		Integer patient_id = Integer.parseInt(reader.readLine());
-		
+	public static void assignReportToPatient(Integer doctor_id, Integer report_id, Integer patient_id) {
 		Patient patient = patientmanager.searchPatientById(patient_id);
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 		Reports report = new Reports(report_id);
@@ -360,12 +422,8 @@ private static void signUpUser() {
 	}
 	
 	
-	public static InvestigationalProduct chooseInvProductById() throws Exception{
-		System.out.println("Introduce the doctor id: \n");
-		Integer doctor_id = Integer.parseInt(reader.readLine());
-		System.out.println("Introduce the investigational product id: \n");
-		Integer invPr_id = Integer.parseInt(reader.readLine());
-		InvestigationalProduct invPr = new InvestigationalProduct(invPr_id);
+	public static InvestigationalProduct chooseInvProductById(Integer investigationalProduct_id, Integer doctor_id) {
+		InvestigationalProduct invPr = new InvestigationalProduct(investigationalProduct_id);
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 		doctor.getInvestigationalProducts().add(invPr);
 		return invPr;
@@ -378,57 +436,8 @@ private static void signUpUser() {
 	
 	//patient menu:
 		private static void patientMenu(String email) {
-			try {
-				int choice;
-				
-				do {
-					System.out.println("Choose an option");
-					System.out.println("1. Add a new patient.");
-					System.out.println("2. Print all the patients of a clinical trial.");
-					System.out.println("3. Delete a patient.");
-					System.out.println("4. Print state of request of a patient.");
-					System.out.println("5. Print all the reports of a patient.");
-					System.out.println("0. Return.\n");	
-					
-					choice = Integer.parseInt(reader.readLine());
-					Integer trial_id;
-					
-					switch(choice){
-					case 1: 
-						createPatient();
-						break;
-					case 2:
-						//print all patients
-						System.out.println("Introduce the trial id: \n");
-						trial_id = Integer.parseInt(reader.readLine());
-						getAllPatientsOfTrial(trial_id);
-						break;
-					
-					case 3:
-						//delete
-						break;
-					
-					case 4:
-						//print state of request
-						break;
-					
-					case 5:
-						//print all reports
-						break;
-					
-					case 0:
-						System.out.println("Back to main menu");
-						
-					}
-					
-				}while(choice!=0);
-				
-			}catch(Exception e){
-				e.printStackTrace();}
+			//menu
 		}
-
-
-		
 		
 		//patient methods:
 		private static void createPatient() throws Exception {
@@ -449,30 +458,6 @@ private static void signUpUser() {
 			Patient patient = new Patient(name, email, phone, dateOfBirth, bloodType, disease, cured);
 			patientmanager.createPatient(patient);
 		}
-		
-		
-		public static void getAllPatientsOfTrial(Integer trial_id){
-			List<Patient> patients = null;
-			patients = patientmanager.getPatientsOfTrial(trial_id);
-			System.out.println(patients);		
-		}
-		
-		
-		public static void deletePatientbyId(Integer patient_id) {
-			
-		}
-		
-		public static void getStateRequest(Integer patient_id) {
-			//
-		}
-		
-		
-		public static List<Reports> getListReportsOfPatient(Patient patient_id){
-			//search patient by id
-			return null;
-			
-		}
-		
 		
 		
 		//sponsor menu:
@@ -544,22 +529,28 @@ private static void signUpUser() {
 		
 		
 		private static void getListOfTrials() throws Exception{
-			//add
+			List<Trial> trials = null;
+			trials= sponsormanager.getListOfTrials();
+			System.out.println(trials);
 		}
 		
 		
 		private static void getListOfSponsor() throws Exception{
-			//add
+			List<Sponsor> sponsor = null;
+			sponsor = sponsormanager.getListOfSponsor();
+			System.out.println(sponsor);
 		}
 		
 		public void updateInvestment(Integer trial_id, Integer sponsor_id) {
-			// TODO Auto-generated method stub
+			//Sponsor sponsor = sponsormanager
 			
 		}
 		
+		
 		public void assignSponsorToTrial(Integer trial_id, Integer sponsor_id) {
-			// TODO Auto-generated method stub
-			
+			Sponsor sponsor = sponsormanager.searchSponsorById(sponsor_id);
+			Trial trial = new Trial(trial_id);
+			trial.getSponsor().add(sponsor);			
 		}
 		
 		public List<Reports> getListReportsOfPatient(Integer patient_id) {
