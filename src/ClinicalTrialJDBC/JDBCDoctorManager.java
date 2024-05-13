@@ -117,7 +117,7 @@ public class JDBCDoctorManager implements DoctorManager{
 
 	
 	@Override
-	public InvestigationalProduct getInvProductById(Integer investigationalProduct_id, Integer doctor_id){
+	public InvestigationalProduct chooseInvProductById(Integer investigationalProduct_id, Integer doctor_id){
 		// TODO Auto-generated method stub
 		InvestigationalProduct invP = null;
 		

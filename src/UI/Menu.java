@@ -19,9 +19,6 @@ import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCSponsorManager;
 import ClinicalTrialJPA.JPAUserManager;
 import ClinicalTrialJDBC.JDBCEngineerManager;
-import clinicaltrialsPOJO.Reports;
-import clinicaltrialsPOJO.User;
-import clinicaltrialsPOJO.Role;
 import ClinicalTrialInterfaces.UserManager;
 
 
@@ -173,6 +170,37 @@ private static void signUpUser() {
 	//admin menu:
 	private static void adminMenu(String email) {
 		//menu
+		try {
+			int choice;
+			do {
+				System.out.println("Choose an option");
+				System.out.println("1. Add a new administrator.");
+				System.out.println("2. Add a new trial.");
+				System.out.println("3. Print all the administrators in DB.");
+				System.out.println("4. Print the amount of money invested in a trial.");
+				System.out.println("5. Update the resolution state of a patient (of a clinical trial).");
+				//when we update the resolution state, we also update the dateapproved of the patient
+				System.out.println("6. Assign patient to a clinical trial.");
+				System.out.println("7. Print all the reports of a Patient.");
+				System.out.println("8. Choose an investigational products.");
+				//System.out.println("9. Modify treatment of a patient.");
+				System.out.println("0. Return.\n");	
+				
+				choice = Integer.parseInt(reader.readLine());
+				
+				switch(choice){
+				case 1: 
+					break;
+				case 0:
+					System.out.println("Back to main menu");
+					
+				}
+				
+			}while(choice!=0);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	//admin methods:
@@ -195,8 +223,8 @@ private static void signUpUser() {
 			System.out.println("5. Create a report.");
 			System.out.println("6. Assign report to a Patient.");
 			System.out.println("7. Print all the reports of a Patient.");
-			System.out.println("8. Print all the investigational products in DB.");
-			System.out.println("9. Modify treatment of a patient.");
+			System.out.println("8. Choose an investigational products.");
+			//System.out.println("9. Modify treatment of a patient.");
 			System.out.println("0. Return.\n");	
 			
 			choice = Integer.parseInt(reader.readLine());
@@ -253,10 +281,11 @@ private static void signUpUser() {
 				
 			case 8:
 				getAllInvProd();
-				break;
-				
-			case 9:
-				//modify treatment
+				System.out.println("Introduce the doctor id: \n");
+				doctor_id = Integer.parseInt(reader.readLine());
+				System.out.println("Introduce the investigational product id: \n");
+				Integer invPr_id = Integer.parseInt(reader.readLine());
+				InvestigationalProduct invP = chooseInvProductById(invPr_id, doctor_id);
 				break;
 				
 			case 0:
@@ -332,13 +361,13 @@ private static void signUpUser() {
 	}
 	
 	
-	/*public static InvestigationalProduct getInvProductById(Integer investigationalProduct_id, Integer doctor_id) {
+	public static InvestigationalProduct chooseInvProductById(Integer investigationalProduct_id, Integer doctor_id) {
 		InvestigationalProduct invPr = new InvestigationalProduct(investigationalProduct_id);
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 		doctor.getInvestigationalProducts().add(invPr);
 		return invPr;
 		
-	}*/
+	}
 	
 	
 	

@@ -15,7 +15,7 @@ public interface DoctorManager {
 	public void createReport(Reports report);
 	public void assignReportToPatient(Integer report_id, Integer patient_id);
 	public List<InvestigationalProduct> getlistInvProd(); 
-	public InvestigationalProduct getInvProductById(Integer investigationalProduct_id,Integer doctor_id);
+	public InvestigationalProduct chooseInvProductById(Integer investigationalProduct_id,Integer doctor_id);
 	public Doctor searchDoctorById(Integer doctor_id);
 
 
