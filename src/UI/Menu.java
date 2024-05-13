@@ -263,6 +263,7 @@ private static void signUpUser() {
 			case 8:
 				getAllInvProd();
 				InvestigationalProduct invP = chooseInvProductById();
+				invP.toString();
 				break;
 				
 			case 0:
