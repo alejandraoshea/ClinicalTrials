@@ -43,9 +43,21 @@ public class JDBCDoctorManager implements DoctorManager{
 	@Override
 	public void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
 		// TODO Auto-generated method stub
-		
+		try {
+			String sql = "UPDATE patient SET doctor_id = ? WHERE id = ?;";
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			
+			prep.setInt(1, doctor_id);
+			prep.setInt(2, patient_id);
+			prep.executeUpdate();
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
+	
 	@Override
 	public void updateSpeciality(Integer doctor_id, String newSpecialization) {
 		// TODO Auto-generated method stub
@@ -68,11 +80,12 @@ public class JDBCDoctorManager implements DoctorManager{
 	public void createReport(Reports report) {
 		// TODO Auto-generated method stub
 		try {
-			String sql= "INSERT INTO report (medicalHistory,"
-					+ "VALUES (?)";
+			String sql= "INSERT INTO report (medicalHistory,treatment)"
+					+ "VALUES (?,?);";
 			
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, report.getMedicalHistory());
+			prep.setString(1, report.getTreatment());
 			
 			prep.executeUpdate();				
 		}catch(Exception e){
@@ -85,6 +98,18 @@ public class JDBCDoctorManager implements DoctorManager{
 	@Override
 	public void assignReportToPatient(Integer report_id, Integer patient_id) {
 		// TODO Auto-generated method stub
+		try {
+			String sql = "UPDATE report SET patient_id = ? WHERE id = ?;";
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			
+			prep.setInt(1, patient_id);
+			prep.setInt(2, report_id);
+			prep.executeUpdate();
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 		
 	}
 	
