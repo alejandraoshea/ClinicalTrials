@@ -32,8 +32,33 @@ public class JDBCPatientManager implements PatientManager{
 	@Override
 	public List<Patient> getPatientsOfTrial(Integer trial_id) {
 		// TODO Auto-generated method stub
-		return null;
+		List<Patient> patients = new ArrayList<>();
+		
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM patient WHERE trial_id=" + trial_id;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				Integer patient_id = rs.getInt("id");
+				String name = rs.getString("name");
+				String email = rs.getString("email");
+				Integer phone = rs.getInt("phone");
+			
+				Patient patient = new Patient (patient_id, name, email, phone);
+				patients.add(patient);
+			}
+		  rs.close();
+		  stmt.close();
+		    
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return patients;
 	}
+	
 
 	@Override
 	public void deletePatientbyId(Integer patient_id) {
@@ -84,10 +109,14 @@ public class JDBCPatientManager implements PatientManager{
 	}
 
 
+	
+	
+	
 	@Override
 	public List<Reports> getListReportsOfPatient(Patient patient) {
 		// TODO Auto-generated method stub
 		List<Reports> reports= new ArrayList<Reports>();
+		Integer patient_id = patient.getPatient_id();
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
@@ -98,7 +127,6 @@ public class JDBCPatientManager implements PatientManager{
 				Integer id = rs.getInt("id");
 				String medicalHistory = rs.getString("medialHistory");
 				String treatment = rs.getString("treatment");
-				Integer patient_id = patient.getPatient_id();
 				
 				Reports report = new Reports(id, medicalHistory, treatment);
 				patient.getReports().add(report);

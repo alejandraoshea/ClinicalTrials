@@ -190,6 +190,7 @@ private static void signUpUser() {
 				
 				switch(choice){
 				case 1: 
+					//
 					break;
 				case 0:
 					System.out.println("Back to main menu");
@@ -375,8 +376,57 @@ private static void signUpUser() {
 	
 	//patient menu:
 		private static void patientMenu(String email) {
-			//menu
+			try {
+				int choice;
+				
+				do {
+					System.out.println("Choose an option");
+					System.out.println("1. Add a new patient.");
+					System.out.println("2. Print all the patients of a clinical trial.");
+					System.out.println("3. Delete a patient.");
+					System.out.println("4. Print state of request of a patient.");
+					System.out.println("5. Print all the reports of a patient.");
+					System.out.println("0. Return.\n");	
+					
+					choice = Integer.parseInt(reader.readLine());
+					Integer trial_id;
+					
+					switch(choice){
+					case 1: 
+						createPatient();
+						break;
+					case 2:
+						//print all patients
+						System.out.println("Introduce the trial id: \n");
+						trial_id = Integer.parseInt(reader.readLine());
+						getAllPatientsOfTrial(trial_id);
+						break;
+					
+					case 3:
+						//delete
+						break;
+					
+					case 4:
+						//print state of request
+						break;
+					
+					case 5:
+						//print all reports
+						break;
+					
+					case 0:
+						System.out.println("Back to main menu");
+						
+					}
+					
+				}while(choice!=0);
+				
+			}catch(Exception e){
+				e.printStackTrace();}
 		}
+
+
+		
 		
 		//patient methods:
 		private static void createPatient() throws Exception {
@@ -397,6 +447,30 @@ private static void signUpUser() {
 			Patient patient = new Patient(name, email, phone, dateOfBirth, bloodType, disease, cured);
 			patientmanager.createPatient(patient);
 		}
+		
+		
+		public static void getAllPatientsOfTrial(Integer trial_id){
+			List<Patient> patients = null;
+			patients = patientmanager.getPatientsOfTrial(trial_id);
+			System.out.println(patients);		
+		}
+		
+		
+		public static void deletePatientbyId(Integer patient_id) {
+			
+		}
+		
+		public static void getStateRequest(Integer patient_id) {
+			//
+		}
+		
+		
+		public static List<Reports> getListReportsOfPatient(Patient patient_id){
+			//search patient by id
+			return null;
+			
+		}
+		
 		
 		
 		//sponsor menu:
