@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ClinicalTrialInterfaces.PatientManager;
-import VetClinicPOJOs.Owner;
-import VetClinicPOJOs.Pet;
 import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.Reports;
 import clinicaltrialsPOJO.Patient;
