@@ -88,7 +88,8 @@ public JDBCManager() {
 			sql = "CREATE TABLE report("
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "medicalHistory TEXT NOT NULL, "
-					+ "doctor_id REFERENCES doctor(id), patient_id REFERENCES patient(id));";
+					+ "doctor_id REFERENCES doctor(id), patient_id REFERENCES patient(id),"
+					+ "treatment TEXT NOT NULL);";
 			stmt.executeUpdate(sql);
 			
 			

@@ -1,8 +1,12 @@
 package ClinicalTrialJDBC;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import ClinicalTrialInterfaces.EngineerManager;
+import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.Engineer;
 import clinicaltrialsPOJO.InvestigationalProduct;
 
@@ -26,7 +30,7 @@ public class JDBCEngineerManager implements EngineerManager{
 	}
 
 	@Override
-	public void updateInvPr(Integer investigationalProduct_id) {
+	public void updateInvPr(Integer investigationalProduct_id, String newDescription) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -39,7 +43,28 @@ public class JDBCEngineerManager implements EngineerManager{
 
 	@Override
 	public List<Engineer> getListOfEnginners() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Engineer> engineers= new ArrayList<Engineer>();
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM engineer";
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				Integer id = rs.getInt("id");
+				String name = rs.getString("name");
+				String email = rs.getString("email");
+				Integer phone = rs.getInt("phone");
+				Engineer engineer = new Engineer(id, name, email, phone);
+				engineers.add(engineer);
+			}
+			
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return engineers;
 	}
 }

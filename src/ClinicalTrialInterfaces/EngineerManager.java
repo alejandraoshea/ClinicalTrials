@@ -9,7 +9,7 @@ public interface EngineerManager {
 	public void createEngineer(Engineer engineer);
 	public void createInvPr(Integer investigationalProduct_id);
 	public List<Engineer> getListOfEnginners();
-	public void updateInvPr(Integer investigationalProduct_id);
+	public void updateInvPr(Integer investigationalProduct_id, String newDescription);
 	public List<InvestigationalProduct> getInvPr(Integer investigationalProduct_id);
 
 	

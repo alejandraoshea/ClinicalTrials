@@ -31,6 +31,11 @@ public class Reports implements Serializable{
 	}
 
 
+	public Reports(Integer report_id) {
+		super();
+		this.report_id = report_id;
+	}
+
 
 	public Integer getReport_id() {
 		return report_id;
