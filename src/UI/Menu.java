@@ -250,16 +250,11 @@ try{
 		}
 	
 	private static void updateAcceptancePatient(Integer patient_id) {
-		
+		Patient patient = patientmanager.searchPatientById(patient_id); 
+		patient.getStateRequest(patient_id);
 	}
 	
-	/*	public static void assignReportToPatient(Integer doctor_id, Integer report_id, Integer patient_id) {
-	Patient patient = patientmanager.searchPatientById(patient_id);
-	Doctor doctor = doctormanager.searchDoctorById(doctor_id);
-	Reports report = new Reports(report_id);
-	doctor.getReports().add(report);
-	patient.getReports().add(report);
-}*/	
+	
 	private static void assignPatientToTrial(Integer patient_id, Integer trial_id){
 		Patient patient = new Patient(patient_id); 
 		Trial trial = adminmanager.getTrialByID(trial_id);
