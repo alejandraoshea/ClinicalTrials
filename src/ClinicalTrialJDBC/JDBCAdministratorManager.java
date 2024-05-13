@@ -90,17 +90,44 @@ private JDBCManager manager;
 		
 	}
 
+	
 	@Override
 	public void updateAcceptancePatient(Integer patient_id) {
-		// TODO Auto-generated method stub
+		try {
+			String sql = "UPDATE trialApplication SET approved = ? WHERE patient_id =?;";
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			
+			prep.setBoolean(1, true);
+			prep.setInt(2, patient_id);
+			prep.executeUpdate();
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		
 	}
 
 	@Override
 	public void assignPatientToTrial(Integer patient_id, Integer trial_id) {
 		// TODO Auto-generated method stub
-		
+		try {
+			String sql = "UPDATE patient SET trial_id = ? WHERE id = ?;";
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			
+			prep.setInt(1, trial_id);
+			prep.setInt(2, patient_id);
+			prep.executeUpdate();
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
+	
+	
+	
 
 	@Override
 	public List<Administrator> getListOfAdmins() {

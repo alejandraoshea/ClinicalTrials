@@ -185,7 +185,6 @@ private static void signUpUser() {
          
 				choice = Integer.parseInt(reader.readLine()); 
 				 
-   // Integer trialsApplication_id;
 				switch(choice) {
 				case 1: 
 					createTrial();
@@ -200,16 +199,10 @@ private static void signUpUser() {
 					getAmountInvested(); 
 					break; 
 				case 5: 
-					System.out.println("Introduce the patient id : \n"); 
-					patient_id = Integer.parseInt(reader.readLine()); 
-					updateAcceptancePatient(patient_id); 
+					updateAcceptancePatient(); 
 					break; 
 				case 6: 
-					System.out.println("Introduce the patient id: \n"); 
-					patient_id = Integer.parseInt(reader.readLine()); 
-					System.out.println("Introduce the trial id: \n"); 
-					trial_id = Integer.parseInt(reader.readLine()); 
-					assignPatientToTrial(patient_id, trial_id); 
+					assignPatientToTrial(); 
 					break; 
 				case 0: 
 					System.out.println("Back to main menu"); 
@@ -264,23 +257,27 @@ private static void signUpUser() {
 	
 	
 	
-	private static void updateAcceptancePatient(Integer patient_id) {
-		
+	private static void updateAcceptancePatient()  throws Exception{
+		System.out.println("Introduce the patient id : \n"); 
+		Integer patient_id = Integer.parseInt(reader.readLine());
+		Patient patient = patientmanager.searchPatientById(patient_id);
+		adminmanager.updateAcceptancePatient(patient_id);
 	}
 	
-	/*	public static void assignReportToPatient(Integer doctor_id, Integer report_id, Integer patient_id) {
-	Patient patient = patientmanager.searchPatientById(patient_id);
-	Doctor doctor = doctormanager.searchDoctorById(doctor_id);
-	Reports report = new Reports(report_id);
-	doctor.getReports().add(report);
-	patient.getReports().add(report);
-}*/	
-	private static void assignPatientToTrial(Integer patient_id, Integer trial_id){
-		Patient patient = new Patient(patient_id); 
+
+	private static void assignPatientToTrial() throws Exception{
+		System.out.println("Introduce the patient id: \n"); 
+		Integer patient_id = Integer.parseInt(reader.readLine()); 
+		System.out.println("Introduce the trial id: \n"); 
+		Integer trial_id = Integer.parseInt(reader.readLine()); 
+		Patient patient = patientmanager.searchPatientById(patient_id);
 		Trial trial = adminmanager.getTrialByID(trial_id);
-		trial.getPatients().ad
-		}
+		trial.getPatients().add(patient);		
 	}
+	
+	
+	
+	
 	
 	
 	
@@ -376,7 +373,7 @@ private static void signUpUser() {
 	}
 	
 	
-	public static void createReport() {
+	public static void createReport() throws Exception{
 		System.out.println("Introduce the medical History: \n");
 		String medicalHistory = reader.readLine();
 		System.out.println("Introduce the treatment: \n");
@@ -386,7 +383,7 @@ private static void signUpUser() {
 	}
 	
 	
-	public static void getAllReportsPatient() {
+	public static void getAllReportsPatient() throws Exception{
 		List<Reports> reports = null;
 		System.out.println("Introduce the patient id: \n");
 		Integer patient_id = Integer.parseInt(reader.readLine());
@@ -396,7 +393,7 @@ private static void signUpUser() {
 	}
 	
 	
-	public static void assignDoctorToPatient() {
+	public static void assignDoctorToPatient() throws Exception{
 		System.out.println("Introduce the patient id: \n");
 		Integer patient_id = Integer.parseInt(reader.readLine());
 		System.out.println("Introduce the doctor id: \n");
@@ -407,7 +404,7 @@ private static void signUpUser() {
 	}
 	
 	
-	public static void updateSpeciality() {
+	public static void updateSpeciality() throws Exception{
 		System.out.println("Introduce the new specialty: \n");
 		String newSpeciality = reader.readLine();
 		System.out.println("Introduce the doctor id: \n");
@@ -417,7 +414,7 @@ private static void signUpUser() {
 	}
 	
 	
-	public static void assignReportToPatient() {
+	public static void assignReportToPatient() throws Exception{
 		System.out.println("Introduce the report id: \n");
 		Integer report_id = Integer.parseInt(reader.readLine());
 		System.out.println("Introduce the doctor id: \n");
@@ -439,7 +436,7 @@ private static void signUpUser() {
 	}
 	
 	
-	public static InvestigationalProduct chooseInvProductById() {
+	public static InvestigationalProduct chooseInvProductById() throws Exception{
 		System.out.println("Introduce the doctor id: \n");
 		Integer doctor_id = Integer.parseInt(reader.readLine());
 		System.out.println("Introduce the investigational product id: \n");
@@ -660,7 +657,7 @@ private static void signUpUser() {
 		}
 		
 		
-	    public static void updateInvPr() {
+	    public static void updateInvPr() throws Exception{
 			System.out.println("Introduce the investigational product id: \n");
 			Integer invProduct_id = Integer.parseInt(reader.readLine());
 			System.out.println("Introduce the new description: \n");

@@ -13,7 +13,7 @@ public class Trial implements Serializable{
 	private Integer trial_id;
 	private String requirements;
 	private Integer totalAmountInvested;
-	private List<Trial> patients;
+	private List<Patient> patients;
 	private List<TrialsApplication> trialsApplications; 
 	private List<InvestigationalProduct> investigationalProduct;
 	private List<Sponsor> sponsor;
@@ -93,12 +93,12 @@ public class Trial implements Serializable{
 
 
 
-	public List<Trial> getPatients() {
+	public List<Patient> getPatients() {
 		return patients;
 	}
 
 
-	public void setPatients(List<Trial> patients) {
+	public void setPatients(List<Patient> patients) {
 		this.patients = patients;
 	}
 
