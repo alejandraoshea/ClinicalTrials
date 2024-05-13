@@ -488,9 +488,9 @@ private static void signUpUser() {
 					System.out.println("1. Add a new sponsor.");
 					System.out.println("2. Print all the trials");
 					System.out.println("3. Print all the sponsors.");
-					System.out.println("4. Update an investment.");
-					System.out.println("5. Print all the reports of a trial.");
-					System.out.println("6. Assign a sponsor to a trial.");
+					System.out.println("4. Create an investment.");
+					System.out.println("5. Update an investment.");
+					System.out.println("6. Print all the reports of a trial.");
 					System.out.println("0. Return.\n");	
 						
 					choice = Integer.parseInt(reader.readLine());
@@ -508,17 +508,17 @@ private static void signUpUser() {
 						break;
 						
 					case 4:
-						//update
-						//updateInvestment(Integer trial_id, Integer sponsor_id)
+						createInvestment();
 						break;
 						
 					case 5:
-						//print reports
-						//List<Reports> getReportsOfAPatient(Integer patient_id)
+						updateInvestment();
 						break;
 						
 					case 6:
-						//assign sponsor to a trial
+						getListReportsOfPatient();
+						break;
+						
 					
 					case 0:
 						System.out.println("Back to main menu");
@@ -546,11 +546,13 @@ private static void signUpUser() {
 		}
 		
 		
+		
 		private static void getListOfTrials() throws Exception{
 			List<Trial> trials = null;
 			trials= sponsormanager.getListOfTrials();
 			System.out.println(trials);
 		}
+		
 		
 		
 		private static void getListOfSponsor() throws Exception{
@@ -559,21 +561,53 @@ private static void signUpUser() {
 			System.out.println(sponsor);
 		}
 		
-		public void updateInvestment(Integer trial_id, Integer sponsor_id) {
-			//Sponsor sponsor = sponsormanager
+		
+		public static void createInvestment() throws Exception{
+			System.out.println("Type the id of the trial\n");
+			Integer trial_id = Integer.parseInt(reader.readLine());
+			System.out.println("Type the id of the sponsor\n");
+			Integer sponsor_id = Integer.parseInt(reader.readLine());
+			System.out.println("Type the amount of money invested\n");
+			Integer moneyInv = Integer.parseInt(reader.readLine());
 			
+			Trial trial = adminmanager.getTrialByID(trial_id);
+			Integer amount = trial.getTotalAmountInvested();
+			trial.setTotalAmountInvested(amount+moneyInv);
+			sponsormanager.createInvestment(trial_id, sponsor_id, moneyInv);
 		}
 		
 		
-		public void assignSponsorToTrial(Integer trial_id, Integer sponsor_id) {
+		public static void updateInvestment() throws Exception{
+			System.out.println("Type the id of the trial\n");
+			Integer trial_id = Integer.parseInt(reader.readLine());
+			System.out.println("Type the id of the sponsor\n");
+			Integer sponsor_id = Integer.parseInt(reader.readLine());
+			System.out.println("Type the amount of money invested\n");
+			Integer moneyInv = Integer.parseInt(reader.readLine());
+			
+			Trial trial = adminmanager.getTrialByID(trial_id);
+			Integer amount = trial.getTotalAmountInvested();
+			trial.setTotalAmountInvested(amount+moneyInv);
+			sponsormanager.updateInvestment(trial_id, sponsor_id, moneyInv);
+		}
+		
+		
+		public static void assignSponsorToTrial(Integer trial_id, Integer sponsor_id)throws Exception {
 			Sponsor sponsor = sponsormanager.searchSponsorById(sponsor_id);
 			Trial trial = new Trial(trial_id);
 			trial.getSponsor().add(sponsor);			
 		}
 		
-		public List<Reports> getListReportsOfPatient(Integer patient_id) {
+		
+		
+		public static void getListReportsOfPatient() throws Exception {
 			// TODO Auto-generated method stub
-			return null;
+			System.out.println("Type the id of the patient\n");
+			Integer patient_id = Integer.parseInt(reader.readLine());
+			
+			List<Reports> reports = null;
+			reports = sponsormanager.getReportsOfAPatient(patient_id);
+			System.out.println(reports);
 		}
 		
 		
