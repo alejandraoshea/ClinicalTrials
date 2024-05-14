@@ -572,7 +572,7 @@ private static void signUpUser() {
 			Patient patient = new Patient(name, email, phone, dateOfBirth, bloodType, disease, cured);
 			//correct
 			patientmanager.createPatient(patient);
-		//co
+		   ///testubngsg
 		}
 		
 		
