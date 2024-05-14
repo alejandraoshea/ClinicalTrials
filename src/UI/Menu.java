@@ -40,6 +40,7 @@ public class Menu {
 
 	public static void main(String[] args) {
 	
+		// test
 		jdbcmanager = new JDBCManager();
 		adminmanager = new JDBCAdministratorManager(jdbcmanager); 
 		doctormanager = new JDBCDoctorManager(jdbcmanager);
