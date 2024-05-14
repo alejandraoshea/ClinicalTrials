@@ -106,7 +106,11 @@ public class JDBCEngineerManager implements EngineerManager{
 
 	
 	
+<<<<<<< HEAD
 	@Override
+=======
+	@Override
+>>>>>>> branch 'master' of https://github.com/alejandraoshea/ClinicalTrials.git
 	public List<Engineer> getListOfEnginners() {
 		List<Engineer> engineers= new ArrayList<Engineer>();
 		
