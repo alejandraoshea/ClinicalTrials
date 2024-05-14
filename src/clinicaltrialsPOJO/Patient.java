@@ -172,3 +172,5 @@ public class Patient implements Serializable{
 				+ ", dateOfBirth=" + dateOfBirth + ", bloodType=" + bloodType + ", disease=" + disease + ", cured="
 				+ cured + ", photo=" + photo + "]";
 	}
+	
+}

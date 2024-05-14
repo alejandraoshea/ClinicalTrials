@@ -7,6 +7,7 @@ import clinicaltrialsPOJO.Engineer;
 import clinicaltrialsPOJO.InvestigationalProduct;
 
 public class JDBCEngineerManager implements EngineerManager{
+	
 	private JDBCManager manager;
 	
 	public JDBCEngineerManager (JDBCManager m) {
@@ -38,8 +39,12 @@ public class JDBCEngineerManager implements EngineerManager{
 	}
 
 	@Override
-	public List<Engineer> getListOfEnginners() {
+	public List<Engineer> getListOfEngineers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	
+	
 }
