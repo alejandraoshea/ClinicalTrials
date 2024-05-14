@@ -3,6 +3,7 @@ package UI;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
+import java.sql.Date;
 import java.util.List;
 
 import ClinicalTrialInterfaces.AdministratorManager;
@@ -246,6 +247,24 @@ private static void updatePassword() throws Exception {
 		System.out.println(doctors);	
 	}
 	
+
+	private static void createPatient() throws Exception {
+		System.out.println("Type the name of the patient\n");
+		String name = reader.readLine();
+		System.out.println("Type the email of the patient\n");
+		String email = reader.readLine();
+		System.out.println("Type the phone of the doctor\n");
+		Integer phone = Integer.parseInt(reader.readLine());
+		System.out.println("Type the date of birth");
+		Date dateOfBirth = Date.valueOf(reader.readLine());
+		System.out.println("Type the blood type of the patient");
+		String bloodType = reader.readLine();
+		System.out.println("Type the type of disease of the patient");
+		String disease = reader.readLine();
+		System.out.println("Type if it's cured or not");
+		Boolean cured = Boolean.valueOf(reader.readLine());
+	}
+		
 	public static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 		Patient patient = patientmanager.searchPatientById(patient_id);
