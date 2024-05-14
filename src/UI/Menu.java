@@ -553,7 +553,8 @@ try{
 		}
 		
 		public List<Reports> getListReportsOfPatient(Integer patient_id) {
-			// TODO Auto-generated method stub
+			List<Reports> reports = sponsormanager.getReportsOfAPatient(patient_id);
+			system.out.println(reports);
 			return null;
 		}
 		
