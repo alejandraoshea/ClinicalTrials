@@ -591,7 +591,9 @@ private static void signUpUser() {
 			System.out.println("Type if it's cured or not");
 			Boolean cured = Boolean.valueOf(reader.readLine());
 			Patient patient = new Patient(name, email, phone, dateOfBirth, bloodType, disease, cured);
+			//correct
 			patientmanager.createPatient(patient);
+		//co
 		}
 		
 		
