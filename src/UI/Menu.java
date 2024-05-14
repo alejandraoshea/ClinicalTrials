@@ -244,12 +244,12 @@ try{
 		System.out.println("Type the phone of the admistrator\n");
 		Integer phone = Integer.parseInt(reader.readLine());
 		Administrator admin = new Administrator(name, email, phone); 
-		administratormanager.createAdmin(admin); 
+		adminmanager.createAdmin(admin); 
 }
 	
 	private static void getListOfAdmins() throws Exception{
 		List<Administrator> admins = null; 
-		admins = administratormanager.getListOfAdmins(); 
+		admins = adminmanager.getListOfAdmins(); 
 		System.out.println(admins); 
 		}
 	
