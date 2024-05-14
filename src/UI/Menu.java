@@ -40,6 +40,7 @@ public class Menu {
 
 	public static void main(String[] args) {
 	
+		// test
 		jdbcmanager = new JDBCManager();
 		adminmanager = new JDBCAdministratorManager(jdbcmanager); 
 		doctormanager = new JDBCDoctorManager(jdbcmanager);
@@ -592,7 +593,7 @@ private static void signUpUser() {
 			Boolean cured = Boolean.valueOf(reader.readLine());
 			Patient patient = new Patient(name, email, phone, dateOfBirth, bloodType, disease, cured);
 			patientmanager.createPatient(patient);
-		   }
+		}
 		
 		
 	
