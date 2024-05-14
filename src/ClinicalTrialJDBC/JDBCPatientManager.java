@@ -9,6 +9,7 @@ import java.util.List;
 
 import ClinicalTrialInterfaces.PatientManager;
 import clinicaltrialsPOJO.Doctor;
+import clinicaltrialsPOJO.InvestigationalProduct;
 import clinicaltrialsPOJO.Reports;
 import clinicaltrialsPOJO.Patient;
 
@@ -27,58 +28,30 @@ public class JDBCPatientManager implements PatientManager{
 		
 	}
 
+
+	
 	@Override
-	public List<Patient> getPatientsOfTrial(Integer trial_id) {
+	public boolean getStateRequest(Integer patient_id) {
 		// TODO Auto-generated method stub
-		List<Patient> patients = new ArrayList<>();
-		
-		
+		boolean stateRequest = false;
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM patient WHERE trial_id=" + trial_id;
-		
+			String sql = "SELECT approved FROM trialApplication WHERE patient_id=" + patient_id;
 			ResultSet rs = stmt.executeQuery(sql);
 			
-			while(rs.next()) {
-				Integer patient_id = rs.getInt("id");
-				String name = rs.getString("name");
-				String email = rs.getString("email");
-				Integer phone = rs.getInt("phone");
-			
-				Patient patient = new Patient (patient_id, name, email, phone);
-				patients.add(patient);
+			while(rs.next()){
+				stateRequest = rs.getBoolean("approved");
 			}
-		  rs.close();
-		  stmt.close();
-		    
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return patients;
-	}
-	
-
-	@Override
-	public void deletePatientbyId(Integer patient_id) {
-		try {
-			String sql = "DELETE FROM patient WHERE id=?";
-			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			
-			prep.setInt(1, patient_id);
+			rs.close();
+			stmt.close();
 			
-			prep.executeUpdate();			
-				
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		return stateRequest;
 	}
-
 	
-	@Override
-	public void getStateRequest(Integer patient_id) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public Patient searchPatientById(Integer id) {
@@ -138,6 +111,26 @@ public class JDBCPatientManager implements PatientManager{
 		}
 		
 		return reports;
+	}
+
+
+	
+	@Override
+	public void applyToClinicalTrial(Integer trial_id, Patient patient) {
+		// TODO Auto-generated method stub
+		try {
+			String sql= "INSERT INTO trialApplication (patient_id, trial_id, dateRequest)"
+					+ "VALUES (?,?,GETDATE());";
+			
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			prep.setInt(1, patient.getPatient_id());
+			prep.setInt(2, trial_id);
+
+			prep.executeUpdate();				
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
