@@ -12,6 +12,7 @@ import clinicaltrialsPOJO.Engineer;
 import clinicaltrialsPOJO.InvestigationalProduct;
 
 public class JDBCEngineerManager implements EngineerManager{
+	
 	private JDBCManager manager;
 	
 	public JDBCEngineerManager (JDBCManager m) {
@@ -131,5 +132,4 @@ public class JDBCEngineerManager implements EngineerManager{
 		}
 		return engineers;
 	}
-
 }
