@@ -27,6 +27,17 @@ public class Engineer implements Serializable{
 	}
 	
 	
+	
+	public Engineer(String name, String email, Integer phone) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+	}
+
+
+
+
 	public Integer getEngineer_id() {
 		return engineer_id;
 	}

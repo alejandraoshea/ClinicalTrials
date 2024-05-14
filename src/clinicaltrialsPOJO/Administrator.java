@@ -27,6 +27,21 @@ public class Administrator implements Serializable{
 		this.phone = phone;
 	}
 	
+	
+	
+	
+	
+	public Administrator(String name, String email, Integer phone) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+	}
+
+
+
+
+
 	public Integer getAdmin_id() {
 		return admin_id;
 	}

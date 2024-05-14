@@ -11,8 +11,9 @@ public class Trial implements Serializable{
 	private static final long serialVersionUID = -7385326989948946572L;
 	
 	private Integer trial_id;
+	private String requirements;
 	private Integer totalAmountInvested;
-	private List<Trial> patients;
+	private List<Patient> patients;
 	private List<TrialsApplication> trialsApplications; 
 	private List<InvestigationalProduct> investigationalProduct;
 	private List<Sponsor> sponsor;
@@ -24,6 +25,34 @@ public class Trial implements Serializable{
 		super();
 		this.trial_id = trial_id;
 		this.totalAmountInvested = totalAmountInvested;
+	}
+	
+	
+	
+	
+	public Trial(String requirements, Integer totalAmountInvested) {
+		super();
+		this.requirements = requirements;
+		this.totalAmountInvested = totalAmountInvested;
+	}
+
+
+	
+
+
+	public Trial(Integer trial_id, String requirements, Integer totalAmountInvested) {
+		super();
+		this.trial_id = trial_id;
+		this.requirements = requirements;
+		this.totalAmountInvested = totalAmountInvested;
+	}
+
+
+
+
+	public Trial(Integer trial_id) {
+		super();
+		this.trial_id = trial_id;
 	}
 
 
@@ -47,13 +76,29 @@ public class Trial implements Serializable{
 	}
 
 
+	
+	
 
-	public List<Trial> getPatients() {
+	public String getRequirements() {
+		return requirements;
+	}
+
+
+
+
+	public void setRequirements(String requirements) {
+		this.requirements = requirements;
+	}
+
+
+
+
+	public List<Patient> getPatients() {
 		return patients;
 	}
 
 
-	public void setPatients(List<Trial> patients) {
+	public void setPatients(List<Patient> patients) {
 		this.patients = patients;
 	}
 
@@ -86,13 +131,17 @@ public class Trial implements Serializable{
 	public void setSponsor(List<Sponsor> sponsor) {
 		this.sponsor = sponsor;
 	}
-	
-	
-	
+
+
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(totalAmountInvested, trial_id);
+		return Objects.hash(investigationalProduct, patients, requirements, sponsor, totalAmountInvested, trial_id,
+				trialsApplications);
 	}
+
+
 
 
 	@Override
@@ -104,14 +153,29 @@ public class Trial implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Trial other = (Trial) obj;
-		return Objects.equals(totalAmountInvested, other.totalAmountInvested)
-				&& Objects.equals(trial_id, other.trial_id);
+		return Objects.equals(investigationalProduct, other.investigationalProduct)
+				&& Objects.equals(patients, other.patients) && Objects.equals(requirements, other.requirements)
+				&& Objects.equals(sponsor, other.sponsor)
+				&& Objects.equals(totalAmountInvested, other.totalAmountInvested)
+				&& Objects.equals(trial_id, other.trial_id)
+				&& Objects.equals(trialsApplications, other.trialsApplications);
 	}
+
+
 
 
 	@Override
 	public String toString() {
-		return "Trial [trial_id=" + trial_id + ", totalAmountInvested=" + totalAmountInvested + "]";
+		return "Trial [trial_id=" + trial_id + ", requirements=" + requirements + ", totalAmountInvested="
+				+ totalAmountInvested + ", patients=" + patients + ", trialsApplications=" + trialsApplications
+				+ ", investigationalProduct=" + investigationalProduct + ", sponsor=" + sponsor + "]";
 	}
-
+	
+	
+	
+	
+	
+	
+	
+	
 }

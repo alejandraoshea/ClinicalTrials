@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.Date;
 import java.util.Objects;
+import java.util.List;
 
 public class Patient implements Serializable{
 	/**
@@ -20,6 +21,7 @@ public class Patient implements Serializable{
 	private String disease;
 	private boolean cured;
 	private Blob photo;
+	private List<Reports> reports;
 	
 	
 	
@@ -61,6 +63,41 @@ public class Patient implements Serializable{
 		this.email = email;
 		this.phone = phone;
 	}
+
+
+
+	public Patient(String name, String email, Integer phone, Date dateOfBirth, String bloodType, String disease,
+			boolean cured) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+		this.dateOfBirth = dateOfBirth;
+		this.bloodType = bloodType;
+		this.disease = disease;
+		this.cured = cured;
+	}
+	
+	
+	
+	
+
+	public Patient(String name, String email, Integer phone, Date dateOfBirth) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+		this.dateOfBirth = dateOfBirth;
+	}
+
+
+
+
+	public Patient(Integer patient_id) {
+		super();
+		this.patient_id = patient_id;
+	}
+
 
 
 
@@ -142,11 +179,27 @@ public class Patient implements Serializable{
 
 
 
-	
+
+	public List<Reports> getReports() {
+		return reports;
+	}
+
+
+
+
+	public void setReports(List<Reports> reports) {
+		this.reports = reports;
+	}
+
+
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(bloodType, cured, dateOfBirth, disease, email, photo, name, patient_id, phone);
+		return Objects.hash(bloodType, cured, dateOfBirth, disease, email, name, patient_id, phone, photo, reports);
 	}
+
+
 
 
 	@Override
@@ -160,10 +213,12 @@ public class Patient implements Serializable{
 		Patient other = (Patient) obj;
 		return Objects.equals(bloodType, other.bloodType) && cured == other.cured
 				&& Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(disease, other.disease)
-				&& Objects.equals(email, other.email) && Objects.equals(photo, other.photo)
-				&& Objects.equals(name, other.name) && Objects.equals(patient_id, other.patient_id)
-				&& Objects.equals(phone, other.phone);
+				&& Objects.equals(email, other.email) && Objects.equals(name, other.name)
+				&& Objects.equals(patient_id, other.patient_id) && Objects.equals(phone, other.phone)
+				&& Objects.equals(photo, other.photo) && Objects.equals(reports, other.reports);
 	}
+
+
 
 
 	@Override
@@ -172,3 +227,4 @@ public class Patient implements Serializable{
 				+ ", dateOfBirth=" + dateOfBirth + ", bloodType=" + bloodType + ", disease=" + disease + ", cured="
 				+ cured + ", photo=" + photo + "]";
 	}
+}
