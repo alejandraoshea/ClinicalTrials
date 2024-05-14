@@ -594,6 +594,7 @@ private static void signUpUser() {
 			//correct
 			patientmanager.createPatient(patient);
 		   ///testubngsg
+			///tesitngs
 		}
 		
 		
