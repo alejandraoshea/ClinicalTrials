@@ -11,6 +11,7 @@ import ClinicalTrialJDBC.JDBCManager;
 import clinicaltrialsPOJO.Administrator;
 import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.InvestigationalProduct;
+import clinicaltrialsPOJO.Patient;
 import clinicaltrialsPOJO.Trial;
 
 public class JDBCAdministratorManager implements AdministratorManager{
@@ -182,4 +183,82 @@ private JDBCManager manager;
 		}catch(Exception e) {e.printStackTrace();}
 		return trial;
 	}
+
+	@Override
+	public void deletePatientbyId(Integer patient_id) {
+		// TODO Auto-generated method stub
+		try {
+			String sql = "DELETE FROM patient WHERE id=?";
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			
+			prep.setInt(1, patient_id);
+			
+			prep.executeUpdate();			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+		
+
+	@Override
+	public List<Trial> getListOfTrials() {
+		// TODO Auto-generated method stub
+		List<Trial> trials= new ArrayList<Trial>();
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM trial";
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				Integer id = rs.getInt("id");
+				String requirements = rs.getString("requirements");
+				Integer amountMoney = rs.getInt("amountMoneyInvestedTotal");
+				Trial trial = new Trial(id, requirements, amountMoney);
+				trials.add(trial);
+			}
+			
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return trials;
+	}
+	
+	
+	@Override
+	public List<Patient> getPatientsOfTrial(Integer trial_id) {
+		// TODO Auto-generated method stub
+		List<Patient> patients = new ArrayList<>();
+		
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM patient WHERE trial_id=" + trial_id;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				Integer patient_id = rs.getInt("id");
+				String name = rs.getString("name");
+				String email = rs.getString("email");
+				Integer phone = rs.getInt("phone");
+			
+				Patient patient = new Patient (patient_id, name, email, phone);
+				patients.add(patient);
+			}
+		  rs.close();
+		  stmt.close();
+		    
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return patients;
+	}
+	
+	
 }

@@ -78,6 +78,20 @@ public class Patient implements Serializable{
 		this.cured = cured;
 	}
 	
+	
+	
+	
+
+	public Patient(String name, String email, Integer phone, Date dateOfBirth) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+		this.dateOfBirth = dateOfBirth;
+	}
+
+
+
 
 	public Patient(Integer patient_id) {
 		super();

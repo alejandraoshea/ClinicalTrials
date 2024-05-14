@@ -4,6 +4,7 @@ import java.util.List;
 
 import clinicaltrialsPOJO.Administrator;
 import clinicaltrialsPOJO.Doctor;
+import clinicaltrialsPOJO.Patient;
 import clinicaltrialsPOJO.Trial;
 
 
@@ -15,6 +16,9 @@ public interface AdministratorManager {
 	public void updateAcceptancePatient(Integer patient_id);	
 	public void assignPatientToTrial(Integer patient_id, Integer trial_id);
 	public Trial getTrialByID(Integer trial_id);
+	public void deletePatientbyId(Integer patient_id); 
+	public List<Trial> getListOfTrials();
+	public List<Patient> getPatientsOfTrial(Integer trial_id);
 	
-	//public void getTrialByID o getListOfTrials
+
 }
