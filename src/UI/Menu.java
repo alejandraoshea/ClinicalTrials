@@ -445,6 +445,8 @@ private static void signUpUser() {
 		String disease = reader.readLine();
 		System.out.println("Type if it's cured or not");
 		Boolean cured = Boolean.valueOf(reader.readLine());
+		Patient patient = new Patient(name, email, phone, dateOfBirth, bloodType, disease, cured);
+		patientmanager.createPatient(patient);
 	}
 		
 	public static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
