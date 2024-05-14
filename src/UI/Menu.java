@@ -185,7 +185,6 @@ private static void signUpUser() {
 		try{
 			int choice; 
 			do {
-				System.out.println("dcsw");
 				System.out.println("Choose an option");
 				System.out.println("1. Add a new Clinical Trial"); 
 				System.out.println("2. Add a new administrator"); 
@@ -315,26 +314,14 @@ private static void signUpUser() {
 	
 	
 	private static void getAllPatientsCT() throws Exception {
-		System.out.println("Type the name of the patient\n");
-		String name = reader.readLine();
-		System.out.println("Type the phone of the doctor\n");
-		Integer phone = Integer.parseInt(reader.readLine());
-		System.out.println("Type the date of birth");
-		Date dateOfBirth = Date.valueOf(reader.readLine());
-		System.out.println("Type the blood type of the patient");
-		String bloodType = reader.readLine();
-		System.out.println("Type the type of disease of the patient");
-		String disease = reader.readLine();
-		System.out.println("Type if it's cured or not");
-		Boolean cured = Boolean.valueOf(reader.readLine());
-		
-		Patient patient = new Patient(name, email, phone, dateOfBirth, bloodType, disease, cured);
-		
-		patientmanager.createPatient(patient);
+		System.out.println("Type the id of the clinical trial\n");
+		Integer trial_id = Integer.parseInt(reader.readLine());
+		List<Patient> patientsTrial = null;
+		patientsTrial = adminmanager.getPatientsOfTrial(trial_id);
+		System.out.println(patientsTrial);
 	}
 	
-	
-	
+
 	
 	
 
@@ -863,7 +850,12 @@ private static void signUpUser() {
 		private static void createInvPr() throws Exception{
 			System.out.println("Introduce the investigational product id: \n");
 			Integer invProduct_id = Integer.parseInt(reader.readLine());
-			engineermanager.createInvPr(invProduct_id);
+			System.out.println("Introduce the type: \n");
+			String type = reader.readLine();
+			System.out.println("Introduce a description of the product: \n");
+			String description = reader.readLine();
+			InvestigationalProduct invPr = new InvestigationalProduct(invProduct_id, description, type);
+			engineermanager.createInvPr(invPr);
 			
 		}
 		
