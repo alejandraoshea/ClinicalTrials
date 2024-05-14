@@ -878,5 +878,4 @@ private static void signUpUser() {
 		}
 	
 	
-	
 }
