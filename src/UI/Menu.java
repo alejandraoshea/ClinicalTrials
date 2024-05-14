@@ -263,7 +263,7 @@ try{
 	private static void assignPatientToTrial(Integer patient_id, Integer trial_id){
 		Patient patient = new Patient(patient_id); 
 		Trial trial = adminmanager.getTrialByID(trial_id);
-		trial.getPatients().ad
+		//trial.getPatients()
 		}
 	}
 	
