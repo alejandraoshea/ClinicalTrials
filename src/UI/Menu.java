@@ -234,7 +234,6 @@ private static void signUpUser() {
 
 }
 
-
 	private static void createTrial() throws Exception{
 		System.out.println("Type the requirements of the trial\n"); 
 		String requirements = reader.readLine(); 
@@ -266,15 +265,17 @@ private static void signUpUser() {
 		adminmanager.createAdmin(admin); 
 	}
 	
-	
-	
 	private static void getListOfAdmins() throws Exception{
 		List<Administrator> admins = null; 
 		admins = adminmanager.getListOfAdmins(); 
 		System.out.println(admins); 
+
+		}
+	
+	private static void updateAcceptancePatient(Integer patient_id) {
+		Patient patient = patientmanager.searchPatientById(patient_id); 
+		patient.getStateRequest(patient_id);
 	}
-	
-	
 	
 	private static Integer getAmountInvested() throws Exception{
 		System.out.println("Type the id of the trial\n");
@@ -303,7 +304,6 @@ private static void signUpUser() {
 		Trial trial = adminmanager.getTrialByID(trial_id);
 		trial.getPatients().add(patient);		
 	}
-	
 	
 	private static void deletePatientFromTrial() throws Exception{
 		System.out.println("Introduce the patient id: \n"); 
@@ -448,13 +448,13 @@ private static void signUpUser() {
 		reports.toString();
 	}
 	
-	
+
 	public static void assignDoctorToPatient() throws Exception{
 		System.out.println("Introduce the patient id: \n");
 		Integer patient_id = Integer.parseInt(reader.readLine());
 		System.out.println("Introduce the doctor id: \n");
 		Integer doctor_id = Integer.parseInt(reader.readLine());
-		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
+    	Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 		Patient patient = patientmanager.searchPatientById(patient_id);
 		doctor.getPatients().add(patient);
 	}
@@ -748,9 +748,7 @@ private static void signUpUser() {
 			Trial trial = new Trial(trial_id);
 			trial.getSponsor().add(sponsor);			
 		}
-		
-		
-		
+
 		public static void getListReportsOfPatient() throws Exception {
 			// TODO Auto-generated method stub
 			System.out.println("Type the id of the patient\n");
@@ -760,10 +758,6 @@ private static void signUpUser() {
 			reports = sponsormanager.getReportsOfAPatient(patient_id);
 			System.out.println(reports);
 		}
-		
-		
-		
-		
 		
 		//engineer menu:
 		private static void engineerMenu(String email) {
