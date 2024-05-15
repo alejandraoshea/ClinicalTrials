@@ -275,7 +275,7 @@ private static void signUpUser() {
 	
 	private static void updateAcceptancePatient(Integer patient_id) {
 		Patient patient = patientmanager.searchPatientById(patient_id); 
-		patient.getStateRequest(patient_id);
+		patientmanager.getStateRequest(patient_id);
 	}
 	
 	private static Integer getAmountInvested() throws Exception{

@@ -120,7 +120,7 @@ public class JDBCPatientManager implements PatientManager{
 		// TODO Auto-generated method stub
 		try {
 			String sql= "INSERT INTO trialApplication (patient_id, trial_id, dateRequest)"
-					+ "VALUES (?,?,GETDATE());";
+					+ "VALUES (?,?,CURRENT_TIMESTAMP);";
 			
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setInt(1, patient.getPatient_id());
