@@ -489,8 +489,7 @@ private static void signUpUser() {
 		String newSpeciality = reader.readLine();
 		System.out.println("Introduce the doctor id: \n");
 		Integer doctor_id = Integer.parseInt(reader.readLine());
-		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
-		doctor.setSpecialization(newSpeciality);
+		doctormanager.updateSpeciality(doctor_id, newSpeciality);
 	}
 	
 	
