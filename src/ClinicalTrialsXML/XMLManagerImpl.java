@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import ClinicalTrialInterfaces.AdministratorManager;
 import ClinicalTrialInterfaces.DoctorManager;
@@ -15,8 +16,11 @@ import ClinicalTrialJDBC.JDBCManager;
 import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCDoctorManager;
 import ClinicalTrialJDBC.JDBCAdministratorManager;
+import clinicaltrialsPOJO.Administrator;
 import clinicaltrialsPOJO.Doctor;
+import clinicaltrialsPOJO.Engineer;
 import clinicaltrialsPOJO.Patient;
+import clinicaltrialsPOJO.Sponsor;
 
 
 public class XMLManagerImpl implements XMLManager{
@@ -54,8 +58,28 @@ public class XMLManagerImpl implements XMLManager{
 
 	
 	@Override
-	public void xml2Doctor(File xml) {
+	public Doctor xml2Doctor(File xml) {
 		// TODO Auto-generated method stub
+		Doctor doctor = null;
+		manager = new JDBCManager();
+		doctormanager = new JDBCDoctorManager(manager);
+		
+		//read doctor from xml file
+		try {
+		JAXBContext jaxbContext = JAXBContext.newInstance(Doctor.class);
+		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+		
+		doctor = (Doctor) unmarshaller.unmarshal(xml);
+		
+		doctormanager.createDoctor(doctor);
+		//we will add it to the database
+	
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return doctor; 
 		
 	}
 
@@ -66,8 +90,9 @@ public class XMLManagerImpl implements XMLManager{
 	}
 
 	@Override
-	public void xml2Admin(File xml) {
+	public Administrator xml2Admin(File xml) {
 		// TODO Auto-generated method stub
+		return null;
 		
 	}
 
@@ -78,8 +103,9 @@ public class XMLManagerImpl implements XMLManager{
 	}
 
 	@Override
-	public void xml2Patient(File xml) {
+	public Patient xml2Patient(File xml) {
 		// TODO Auto-generated method stub
+		return null;
 		
 	}
 
@@ -90,8 +116,9 @@ public class XMLManagerImpl implements XMLManager{
 	}
 
 	@Override
-	public void xml2Sponsor(File xml) {
+	public Sponsor xml2Sponsor(File xml) {
 		// TODO Auto-generated method stub
+		return null;
 		
 	}
 
@@ -102,9 +129,9 @@ public class XMLManagerImpl implements XMLManager{
 	}
 
 	@Override
-	public void xml2Engineer(File xml) {
+	public Engineer xml2Engineer(File xml) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

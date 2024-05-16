@@ -1,6 +1,7 @@
 package UI;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.sql.Date;
@@ -355,7 +356,7 @@ private static void signUpUser() {
 			System.out.println("6. Assign report to a Patient.");
 			System.out.println("7. Print all the reports of a Patient.");
 			System.out.println("8. Choose an investigational products.");
-			System.out.println("9. XML.");
+			System.out.println("9. Print me to xml.");
 			System.out.println("0. Return.\n");	
 			
 			choice = Integer.parseInt(reader.readLine());
@@ -396,6 +397,9 @@ private static void signUpUser() {
 				
 			case 9:
 				printMe(id);
+				break;
+			case 10:
+				loadDoctors();
 				break;
 			case 0:
 				System.out.println("Back to main menu");
@@ -551,6 +555,11 @@ private static void signUpUser() {
 	}
 	
 	
+	private static void loadDoctors() {
+		Doctor doctor = null;
+		File file = new File("./xmls/External-Doctor.xml");
+		doctor = xmlmanager.xml2Doctor(file);
+	}
 	
 	
 	
