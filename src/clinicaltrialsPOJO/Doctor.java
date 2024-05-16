@@ -43,6 +43,17 @@ public class Doctor implements Serializable{
 	private List<InvestigationalProduct> investigationalProducts;
 	
 	
+	
+	
+	
+	public Doctor() {
+		super();
+		this.reports = new ArrayList<Reports>();
+		this.patients = new ArrayList<Patient>();
+		this.investigationalProducts = new ArrayList<InvestigationalProduct>();	
+	}
+
+
 	public Doctor(Integer doctor_id, String name, String email, Integer phone, String specialization) {
 		super();
 		this.doctor_id = doctor_id;

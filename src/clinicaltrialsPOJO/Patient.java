@@ -189,6 +189,7 @@ public class Patient implements Serializable{
 	
 	
 	
+	
 	public Blob getphoto() {
 		return photo;
 	}
@@ -197,6 +198,7 @@ public class Patient implements Serializable{
 	public void setphoto(Blob photo) {
 		this.photo = photo;
 	}
+	
 
 
 

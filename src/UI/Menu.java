@@ -55,7 +55,7 @@ public class Menu {
 		try {
 			int choice;
 			do {
-				System.out.println("Choose an option\n");
+				System.out.println("\nChoose an option\n");
 				System.out.println("1. Login User\n");
 				System.out.println("2. Sign-up new user\n");
 				System.out.println("0. Exit.\n");
@@ -126,7 +126,7 @@ public class Menu {
 	
 private static void updatePassword() throws Exception {
 		
-		System.out.println("Email: ");
+		System.out.println("\nEmail: ");
 		String email = reader.readLine();
 				
 		System.out.println("Enter current Password");
@@ -149,7 +149,7 @@ private static void updatePassword() throws Exception {
 private static void signUpUser() {
 	// TODO Auto-generated method stub
 	try {
-		System.out.println("Introduce email: \n");
+		System.out.println("\nIntroduce email: \n");
 		String email = reader.readLine();
 		System.out.println("Introduce the password: \n");
 		String password = reader.readLine();
@@ -190,7 +190,7 @@ private static void signUpUser() {
 		try{
 			int choice; 
 			do {
-				System.out.println("Choose an option");
+				System.out.println("\nChoose an option");
 				System.out.println("1. Add a new Clinical Trial"); 
 				System.out.println("2. Add a new administrator"); 
 				System.out.println("3. Print all the patients in DB");
@@ -346,7 +346,7 @@ private static void signUpUser() {
 	try {
 		int choice;
 		do {
-			System.out.println("Choose an option");
+			System.out.println("\nChoose an option");
 			System.out.println("1. Add a new doctor.");
 			System.out.println("2. Print all the doctors in DB.");
 			System.out.println("3. Assign Doctor to a Patient.");
