@@ -135,14 +135,13 @@ public class JDBCPatientManager implements PatientManager{
 
 	
 	@Override
-	public void applyToClinicalTrial(Integer trial_id, Patient patient) {
+	public void applyToClinicalTrial(Integer doctor_id, Integer trial_id, Integer id) {
 		// TODO Auto-generated method stub
 		try {
 			
-			Integer id = patient.getPatient_id();
 			
-			String sql= "INSERT INTO trialApplication (patient_id, trial_id, dateRequest)"
-					+ "VALUES (?,?,CURRENT_DATE);";
+			String sql= "INSERT INTO trialApplication (doctor_id, patient_id, trial_id, dateRequest)"
+					+ "VALUES (?, ?,?,CURRENT_DATE);";
 			
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setInt(1, id);

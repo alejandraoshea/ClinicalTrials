@@ -585,7 +585,7 @@ private static void signUpUser() {
 					
 					switch(choice){
 					case 1: 
-						applyToCT();
+						applyToCT(id);
 						break;
 					case 2:
 						getStateRequest();
@@ -634,25 +634,14 @@ private static void signUpUser() {
 		
 		
 	
-		private static void applyToCT() throws Exception {
-			System.out.println("Type the id of the patient\n");
-			Integer id = Integer.parseInt(reader.readLine());
-			System.out.println("Type the name of the patient\n");
-			String name = reader.readLine();
-			System.out.println("Type the email of the patient\n");
-			String email = reader.readLine();
-			System.out.println("Type the phone of the doctor\n");
-			Integer phone = Integer.parseInt(reader.readLine());
-			System.out.println("Type the date of birth");
-			Date dateOfBirth = Date.valueOf(reader.readLine());
-
-			Patient patient = new Patient(name, email, phone, dateOfBirth);
-			
+		private static void applyToCT(Integer id) throws Exception {
+			System.out.println("Type the id of the doctor");
+			Integer doctor_id = Integer.parseInt(reader.readLine());
 			
 			System.out.println("Type the id of the clinical trial");
 			Integer trial_id = Integer.parseInt(reader.readLine());
 			
-			patientmanager.applyToClinicalTrial(trial_id, patient);
+			patientmanager.applyToClinicalTrial(doctor_id, trial_id, id);
 			
 		}
 		
