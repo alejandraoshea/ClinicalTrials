@@ -18,10 +18,10 @@ import ClinicalTrialJDBC.JDBCDoctorManager;
 import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCSponsorManager;
 import ClinicalTrialJPA.JPAUserManager;
+import ClinicalTrialsXML.XMLManagerImpl;
 import ClinicalTrialJDBC.JDBCEngineerManager;
 import ClinicalTrialInterfaces.UserManager;
-
-
+import ClinicalTrialInterfaces.XMLManager;
 import clinicaltrialsPOJO.*;
 
 
@@ -34,6 +34,8 @@ public class Menu {
 	private static SponsorManager sponsormanager;
 	private static EngineerManager engineermanager;
 	private static UserManager usermanager;
+	private static XMLManager xmlmanager;
+	
 	
 	
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
@@ -48,6 +50,7 @@ public class Menu {
 		sponsormanager = new JDBCSponsorManager(jdbcmanager);
 		engineermanager = new JDBCEngineerManager(jdbcmanager);
 		usermanager = new JPAUserManager();
+		xmlmanager = new XMLManagerImpl();
 		
 		try {
 			int choice;
@@ -98,23 +101,24 @@ public class Menu {
 		if(u!=null & u.getRole().getName().equals("administrator")){
 			System.out.println("Login of administrator successful!");
 			//call for admin menu
-			adminMenu(email);
+			adminMenu(email, u.getId());
 		}else if(u!=null & u.getRole().getName().equals("doctor")){
 			System.out.println("Login of doctor successful!");
 			//call for doctor menu
-			doctorMenu(email);
+			doctorMenu(email,u.getId());
+			
 		}else if(u!=null & u.getRole().getName().equals("patient")){
 			System.out.println("Login of patient successful!");
 			//call for patient menu
-			patientMenu(email);
+			patientMenu(email,u.getId());
 		}else if(u!=null & u.getRole().getName().equals("sponsor")){
 			System.out.println("Login of sponsor successful!");
 			//call for sponsor menu
-			sponsorMenu(email);
+			sponsorMenu(email,u.getId());
 		}else if(u!=null & u.getRole().getName().equals("engineer")){
 			System.out.println("Login of engineer successful!");
 			//call for engineer menu
-			engineerMenu(email);
+			engineerMenu(email, u.getId());
 		}
 		
 	}
@@ -181,7 +185,7 @@ private static void signUpUser() {
 
 
 	//admin menu:
-	private static void adminMenu(String email) {
+	private static void adminMenu(String email, Integer id) {
 
 		try{
 			int choice; 
@@ -189,12 +193,13 @@ private static void signUpUser() {
 				System.out.println("Choose an option");
 				System.out.println("1. Add a new Clinical Trial"); 
 				System.out.println("2. Add a new administrator"); 
-				System.out.println("3. Print all the administrators in DB");
-				System.out.println("4. Show the amount invested in a Clinical Trial"); 
-				System.out.println("5. Update Acceptance Patient");
-				System.out.println("6. Assign Patient to Trial"); 
-				System.out.println("7. Delete a Patient of a Trial"); 
-				System.out.println("8. Print all the patients of a Clinical Trial");
+				System.out.println("3. Print all the patients in DB");
+				System.out.println("4. Print all the administrators in DB");
+				System.out.println("5. Show the amount invested in a Clinical Trial"); 
+				System.out.println("6. Update Acceptance Patient");
+				System.out.println("7. Assign Patient to Trial"); 
+				System.out.println("8. Delete a Patient of a Trial"); 
+				System.out.println("9. Print all the patients of a Clinical Trial");
 				System.out.println("0. Return.\n"); 
          
 				choice = Integer.parseInt(reader.readLine()); 
@@ -206,22 +211,25 @@ private static void signUpUser() {
 				case 2: 
 					addNewAdmin();
 					break; 
-				case 3: 
+				case 3:
+					getListOfPatients();
+					break;
+				case 4: 
 					getListOfAdmins(); 
 					break; 
-				case 4: 
+				case 5: 
 					getAmountInvested(); 
 					break; 
-				case 5: 
+				case 6: 
 					updateAcceptancePatient(); 
 					break; 
-				case 6: 
+				case 7: 
 					assignPatientToTrial(); 
 					break; 
-				case 7: 
+				case 8: 
 					deletePatientFromTrial(); 
 					break; 
-				case 8: 
+				case 9: 
 					getAllPatientsCT(); 
 					break; 
 				case 0: 
@@ -323,11 +331,17 @@ private static void signUpUser() {
 		System.out.println(patientsTrial);
 	}
 	
+	private static void getListOfPatients() throws Exception {
+		List<Patient> patients = null;
+		patients = adminmanager.getPatients();
+		System.out.println(patients);
+	}
+	
 
 	
 	
 
-	private static void doctorMenu(String email) {
+	private static void doctorMenu(String email, Integer id) {
 	// TODO Auto-generated method stub
 	try {
 		int choice;
@@ -341,7 +355,7 @@ private static void signUpUser() {
 			System.out.println("6. Assign report to a Patient.");
 			System.out.println("7. Print all the reports of a Patient.");
 			System.out.println("8. Choose an investigational products.");
-			//System.out.println("9. Modify treatment of a patient.");
+			System.out.println("9. XML.");
 			System.out.println("0. Return.\n");	
 			
 			choice = Integer.parseInt(reader.readLine());
@@ -380,6 +394,9 @@ private static void signUpUser() {
 				invP.toString();
 				break;
 				
+			case 9:
+				printMe(id);
+				break;
 			case 0:
 				System.out.println("Back to main menu");
 				
@@ -450,11 +467,11 @@ private static void signUpUser() {
 		patientmanager.createPatient(patient);
 	}
 		
-	public static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
+	private static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 	}
 	
-	public static void createReport() throws Exception{
+	private static void createReport() throws Exception{
 		System.out.println("Introduce the medical History: \n");
 		String medicalHistory = reader.readLine();
 		System.out.println("Introduce the treatment: \n");
@@ -464,7 +481,7 @@ private static void signUpUser() {
 	}
 	
 	
-	public static void getAllReportsPatient() throws Exception{
+	private static void getAllReportsPatient() throws Exception{
 		List<Reports> reports = null;
 		System.out.println("Introduce the patient id: \n");
 		Integer patient_id = Integer.parseInt(reader.readLine());
@@ -474,7 +491,7 @@ private static void signUpUser() {
 	}
 	
 
-	public static void assignDoctorToPatient() throws Exception{
+	private static void assignDoctorToPatient() throws Exception{
 		System.out.println("Introduce the patient id: \n");
 		Integer patient_id = Integer.parseInt(reader.readLine());
 		System.out.println("Introduce the doctor id: \n");
@@ -485,7 +502,7 @@ private static void signUpUser() {
 	}
 	
 	
-	public static void updateSpeciality() throws Exception{
+	private static void updateSpeciality() throws Exception{
 		System.out.println("Introduce the new specialty: \n");
 		String newSpeciality = reader.readLine();
 		System.out.println("Introduce the doctor id: \n");
@@ -494,7 +511,7 @@ private static void signUpUser() {
 	}
 	
 	
-	public static void assignReportToPatient() throws Exception{
+	private static void assignReportToPatient() throws Exception{
 		System.out.println("Introduce the report id: \n");
 		Integer report_id = Integer.parseInt(reader.readLine());
 		System.out.println("Introduce the doctor id: \n");
@@ -509,14 +526,14 @@ private static void signUpUser() {
 	}
 	
 
-	public static void getAllInvProd() throws Exception{
+	private static void getAllInvProd() throws Exception{
 		List<InvestigationalProduct> invProducts = null;
 		invProducts = doctormanager.getlistInvProd();
 		System.out.println(invProducts);
 	}
 	
 	
-	public static InvestigationalProduct chooseInvProductById() throws Exception{
+	private static InvestigationalProduct chooseInvProductById() throws Exception{
 		System.out.println("Introduce the doctor id: \n");
 		Integer doctor_id = Integer.parseInt(reader.readLine());
 		System.out.println("Introduce the investigational product id: \n");
@@ -529,11 +546,18 @@ private static void signUpUser() {
 	}
 	
 	
+	private static void printMe(Integer id) {
+		xmlmanager.doctor2xml(id);
+	}
+	
+	
+	
+	
 	
 	
 	
 	//patient menu:
-		private static void patientMenu(String email) {
+		private static void patientMenu(String email, Integer id) {
 			//menu
 			
 			try {
@@ -641,7 +665,7 @@ private static void signUpUser() {
 		
 		
 		//sponsor menu:
-		private static void sponsorMenu(String email) {
+		private static void sponsorMenu(String email, Integer id) {
 			//menu
 			try {
 				int choice;
@@ -737,7 +761,7 @@ private static void signUpUser() {
 		}
 		
 		
-		public static void createInvestment() throws Exception{
+		private static void createInvestment() throws Exception{
 			System.out.println("Type the id of the trial\n");
 			Integer trial_id = Integer.parseInt(reader.readLine());
 			System.out.println("Type the id of the sponsor\n");
@@ -752,7 +776,7 @@ private static void signUpUser() {
 		}
 		
 		
-		public static void updateInvestment() throws Exception{
+		private static void updateInvestment() throws Exception{
 			System.out.println("Type the id of the trial\n");
 			Integer trial_id = Integer.parseInt(reader.readLine());
 			System.out.println("Type the id of the sponsor\n");
@@ -767,13 +791,13 @@ private static void signUpUser() {
 		}
 		
 		
-		public static void assignSponsorToTrial(Integer trial_id, Integer sponsor_id)throws Exception {
+		private static void assignSponsorToTrial(Integer trial_id, Integer sponsor_id)throws Exception {
 			Sponsor sponsor = sponsormanager.searchSponsorById(sponsor_id);
 			Trial trial = new Trial(trial_id);
 			trial.getSponsor().add(sponsor);			
 		}
 
-		public static void getListReportsOfPatient() throws Exception {
+		private static void getListReportsOfPatient() throws Exception {
 			// TODO Auto-generated method stub
 			System.out.println("Type the id of the patient\n");
 			Integer patient_id = Integer.parseInt(reader.readLine());
@@ -784,7 +808,7 @@ private static void signUpUser() {
 		}
 		
 		//engineer menu:
-		private static void engineerMenu(String email) {
+		private static void engineerMenu(String email, Integer id) {
 			try {
 				int choice;
 				do {
@@ -878,7 +902,7 @@ private static void signUpUser() {
 		}
 		
 		
-	    public static void updateInvPr() throws Exception{
+	    private static void updateInvPr() throws Exception{
 			System.out.println("Introduce the investigational product id: \n");
 			Integer invProduct_id = Integer.parseInt(reader.readLine());
 			System.out.println("Introduce the new description: \n");

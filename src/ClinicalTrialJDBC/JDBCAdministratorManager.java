@@ -261,4 +261,35 @@ private JDBCManager manager;
 	}
 	
 	
+	@Override
+	public List<Patient> getPatients() {
+		// TODO Auto-generated method stub
+		List<Patient> patients = new ArrayList<>();
+		
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM patient";
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				Integer patient_id = rs.getInt("id");
+				String name = rs.getString("name");
+				String email = rs.getString("email");
+				Integer phone = rs.getInt("phone");
+			
+				Patient patient = new Patient (patient_id, name, email, phone);
+				patients.add(patient);
+			}
+		  rs.close();
+		  stmt.close();
+		    
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return patients;
+	}
+	
+	
 }

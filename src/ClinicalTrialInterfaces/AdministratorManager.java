@@ -20,5 +20,7 @@ public interface AdministratorManager {
 	public List<Trial> getListOfTrials();
 	public List<Patient> getPatientsOfTrial(Integer trial_id);
 	
+	public List<Patient> getPatients();
+	
 
 }

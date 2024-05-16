@@ -20,35 +20,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "Patient") 
-@XmlType(propOrder = {"disease", "cured", "bloodType", "dateOfBirth", "name", "email", "phone"})   //possible order
+
 public class Patient implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4568065003661484119L;
 	
-	@XmlTransient
 	private Integer patient_id;
-	
-	@XmlAttribute
 	private String email;
-	@XmlElement
 	private String name; 
-	@XmlElement
 	private Integer phone;
-	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date dateOfBirth; 
-	@XmlElement
 	private String bloodType;
-	@XmlElement
 	private String disease;
-	@XmlElement
 	private boolean cured;
-	@XmlTransient
 	private Blob photo;
-	@XmlTransient
 	private List<Reports> reports;
 	
 	

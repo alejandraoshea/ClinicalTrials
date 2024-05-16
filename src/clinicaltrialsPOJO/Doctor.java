@@ -29,7 +29,7 @@ public class Doctor implements Serializable{
 	private Integer doctor_id;
 	@XmlElement
 	private String name;
-	@
+	@XmlAttribute
 	private String email;
 	@XmlElement
 	private Integer phone;
