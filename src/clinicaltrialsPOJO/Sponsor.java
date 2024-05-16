@@ -5,18 +5,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.*;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Sponsor")
+@XmlType(propOrder = {"name", "email", "phone", "cardNumber")
+
 public class Sponsor implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8957665511111229688L;
 	
+	@XmlTransient 
 	private Integer sponsor_id;
-	private String name; 
+	@XmlElement
+	private String name;
+	@XmlElement
 	private String email;
+	@XmlElement
 	private Integer phone;
+	@XmlElement
 	private Integer cardNumber;
+	@XmlElement (name = "Trial")
+	@XmlElementWrapper(name = "Trials")
 	private List<Trial> trials; 
+	@XmlElement (name = "Report")
+	@XmlElementWrapper(name = "Reports")
 	private List<Reports> reports; 
 	
 	
