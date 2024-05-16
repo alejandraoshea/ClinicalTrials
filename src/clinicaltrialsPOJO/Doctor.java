@@ -37,8 +37,7 @@ public class Doctor implements Serializable{
 	private String specialization;
 	@XmlTransient
 	private List<Reports> reports;
-	@XmlElement (name = "Patient")
-	@XmlElementWrapper(name = "Patients")
+	@XmlElement
 	private List<Patient> patients;
 	@XmlElement
 	private List<InvestigationalProduct> investigationalProducts;
