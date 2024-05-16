@@ -43,7 +43,6 @@ public class Menu {
 
 	public static void main(String[] args) {
 	
-		// test
 		jdbcmanager = new JDBCManager();
 		adminmanager = new JDBCAdministratorManager(jdbcmanager); 
 		doctormanager = new JDBCDoctorManager(jdbcmanager);
@@ -357,6 +356,7 @@ private static void signUpUser() {
 			System.out.println("7. Print all the reports of a Patient.");
 			System.out.println("8. Choose an investigational products.");
 			System.out.println("9. Print me to xml.");
+			System.out.println("10. Load doctors from xml File.");
 			System.out.println("0. Return.\n");	
 			
 			choice = Integer.parseInt(reader.readLine());
@@ -396,8 +396,9 @@ private static void signUpUser() {
 				break;
 				
 			case 9:
-				printMe(id);
+				printMeDoctor(id);
 				break;
+				
 			case 10:
 				loadDoctors();
 				break;
@@ -550,7 +551,7 @@ private static void signUpUser() {
 	}
 	
 	
-	private static void printMe(Integer id) {
+	private static void printMeDoctor(Integer id) {
 		xmlmanager.doctor2xml(id);
 	}
 	
@@ -559,6 +560,7 @@ private static void signUpUser() {
 		Doctor doctor = null;
 		File file = new File("./xmls/External-Doctor.xml");
 		doctor = xmlmanager.xml2Doctor(file);
+		System.out.println(doctor);
 	}
 	
 	

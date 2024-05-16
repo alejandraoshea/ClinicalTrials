@@ -36,7 +36,6 @@ public class XMLManagerImpl implements XMLManager{
 		List<Patient> patients = new ArrayList<Patient>();
 		manager = new JDBCManager();
 		doctormanager = new JDBCDoctorManager(manager);
-		patientmanager = new JDBCPatientManager(manager);
 		adminmanager = new JDBCAdministratorManager(manager);
 		
 		try {
