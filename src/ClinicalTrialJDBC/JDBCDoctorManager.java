@@ -67,7 +67,7 @@ public class JDBCDoctorManager implements DoctorManager{
 			
 			prep.setString(1, newSpecialization);
 			prep.setInt(2, doctor_id);
-			prep.executeQuery();
+			prep.executeUpdate();
 		}catch(Exception e){
 			e.printStackTrace();	
 		}

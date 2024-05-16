@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.Date;
 import java.util.Objects;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Patient implements Serializable{
@@ -36,6 +37,7 @@ public class Patient implements Serializable{
 		this.bloodType = bloodType;
 		this.disease = disease;
 		this.cured = cured;
+		this.reports = new ArrayList<Reports>();
 	}
 	
 	
@@ -52,6 +54,7 @@ public class Patient implements Serializable{
 		this.disease = disease;
 		this.cured = cured;
 		this.photo = photo;
+		this.reports = new ArrayList<Reports>();
 	}
 
 
@@ -62,6 +65,7 @@ public class Patient implements Serializable{
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
+		this.reports = new ArrayList<Reports>();
 	}
 
 
@@ -76,6 +80,7 @@ public class Patient implements Serializable{
 		this.bloodType = bloodType;
 		this.disease = disease;
 		this.cured = cured;
+		this.reports = new ArrayList<Reports>();
 	}
 	
 	
@@ -88,6 +93,7 @@ public class Patient implements Serializable{
 		this.email = email;
 		this.phone = phone;
 		this.dateOfBirth = dateOfBirth;
+		this.reports = new ArrayList<Reports>();
 	}
 
 
@@ -96,6 +102,7 @@ public class Patient implements Serializable{
 	public Patient(Integer patient_id) {
 		super();
 		this.patient_id = patient_id;
+		this.reports = new ArrayList<Reports>();
 	}
 
 

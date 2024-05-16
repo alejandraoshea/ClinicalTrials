@@ -3,6 +3,7 @@ package clinicaltrialsPOJO;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.ArrayList;
 
 public class Administrator implements Serializable{
 	/**
@@ -25,6 +26,8 @@ public class Administrator implements Serializable{
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
+		this.trialsApplications = new ArrayList<TrialsApplication>();
+		this.trials = new ArrayList<Trial>();
 	}
 	
 	
@@ -36,6 +39,8 @@ public class Administrator implements Serializable{
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
+		this.trialsApplications = new ArrayList<TrialsApplication>();
+		this.trials = new ArrayList<Trial>();
 	}
 
 

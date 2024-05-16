@@ -1,6 +1,7 @@
 package clinicaltrialsPOJO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,6 +21,7 @@ public class Reports implements Serializable{
 		super();
 		this.medicalHistory = medicalHistory;
 		this.treatment = treatment;
+		this.sponsor = new ArrayList<Sponsor>();
 	}
 	
 	
@@ -28,12 +30,14 @@ public class Reports implements Serializable{
 		this.report_id = report_id;
 		this.medicalHistory = medicalHistory;
 		this.treatment = treatment;
+		this.sponsor = new ArrayList<Sponsor>();
 	}
 
 
 	public Reports(Integer report_id) {
 		super();
 		this.report_id = report_id;
+		this.sponsor = new ArrayList<Sponsor>();
 	}
 
 

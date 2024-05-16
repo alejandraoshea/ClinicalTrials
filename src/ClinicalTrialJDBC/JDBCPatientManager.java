@@ -25,6 +25,25 @@ public class JDBCPatientManager implements PatientManager{
 	@Override
 	public void createPatient(Patient patient) {
 		// TODO Auto-generated method stub
+		try {
+			String sql= "INSERT INTO patient (name,"
+					+ "phone, email, dateOfBirth, cured, bloodType, nameOfDisease)"
+					+ "VALUES (?,?,?,?,?,?,?)";
+			
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			prep.setString(1, patient.getName());
+			prep.setInt(2, patient.getPhone());
+			prep.setString(3, patient.getEmail());
+			prep.setDate(4, patient.getDateOfBirth());
+			prep.setBoolean(5, patient.isCured());
+			prep.setString(6, patient.getBloodType());
+			prep.setString(7, patient.getDisease());
+			
+			prep.executeUpdate();				
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		
 	}
 
@@ -120,7 +139,7 @@ public class JDBCPatientManager implements PatientManager{
 		// TODO Auto-generated method stub
 		try {
 			String sql= "INSERT INTO trialApplication (patient_id, trial_id, dateRequest)"
-					+ "VALUES (?,?,CURRENT_TIMESTAMP);";
+					+ "VALUES (?,?,CURRENT_DATE);";
 			
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setInt(1, patient.getPatient_id());

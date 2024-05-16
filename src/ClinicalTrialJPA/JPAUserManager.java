@@ -139,9 +139,11 @@ public class JPAUserManager implements UserManager{
 	@Override
 	public void deleteUser(String email) {
 		// TODO Auto-generated method stub
-		Query q = em.createNativeQuery("DELETE FROM users where email="+email, User.class);
-		User u = (User) q.getSingleResult();
-		//em.remove(u);?
+		User u = getUser(email);
+		
+		em.getTransaction().begin();
+		em.remove(u);
+		em.getTransaction().commit();
 	}
 
 

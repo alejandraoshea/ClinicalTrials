@@ -303,7 +303,8 @@ private static void signUpUser() {
 		Integer trial_id = Integer.parseInt(reader.readLine()); 
 		Patient patient = patientmanager.searchPatientById(patient_id);
 		Trial trial = adminmanager.getTrialByID(trial_id);
-		trial.getPatients().add(patient);		
+		trial.getPatients().add(patient);	
+		adminmanager.assignPatientToTrial(patient_id, trial_id);
 	}
 	
 	private static void deletePatientFromTrial() throws Exception{

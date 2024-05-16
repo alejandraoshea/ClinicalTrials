@@ -1,6 +1,7 @@
 package clinicaltrialsPOJO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,6 +27,8 @@ public class Sponsor implements Serializable{
 		this.email = email;
 		this.phone = phone;
 		this.cardNumber = cardNumber;
+		this.trials = new ArrayList<Trial>();
+		this.reports = new ArrayList<Reports>();
 	}
 
 	
@@ -37,6 +40,8 @@ public class Sponsor implements Serializable{
 		this.email = email;
 		this.phone = phone;
 		this.cardNumber = cardNumber;
+		this.trials = new ArrayList<Trial>();
+		this.reports = new ArrayList<Reports>();
 	}
 
 
