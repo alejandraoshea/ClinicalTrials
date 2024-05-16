@@ -635,6 +635,8 @@ private static void signUpUser() {
 		
 	
 		private static void applyToCT() throws Exception {
+			System.out.println("Type the id of the patient\n");
+			Integer id = Integer.parseInt(reader.readLine());
 			System.out.println("Type the name of the patient\n");
 			String name = reader.readLine();
 			System.out.println("Type the email of the patient\n");

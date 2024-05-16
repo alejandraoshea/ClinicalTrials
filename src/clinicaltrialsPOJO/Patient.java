@@ -35,11 +35,24 @@ public class Patient implements Serializable{
 	private String bloodType;
 	private String disease;
 	private boolean cured;
-	private Blob photo;
+	private byte[] photo;
 	private List<Reports> reports;
 	
 	
 	
+	
+	public Patient(Integer patient_id, String email, String name, Integer phone, Date dateOfBirth) {
+		super();
+		this.patient_id = patient_id;
+		this.email = email;
+		this.name = name;
+		this.phone = phone;
+		this.dateOfBirth = dateOfBirth;
+	}
+
+
+
+
 	public Patient(Integer patient_id, String name, String email, Integer phone, Date dateOfBirth, String bloodType,
 			String disease, boolean cured) {
 		super();
@@ -58,7 +71,7 @@ public class Patient implements Serializable{
 	
 	
 	public Patient(String name, String email, Integer phone, Date dateOfBirth, String bloodType, String disease,
-			boolean cured, Blob photo) {
+			boolean cured, byte[] photo) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -187,18 +200,20 @@ public class Patient implements Serializable{
 		this.cured = cured;
 	}
 	
-	
-	
-	
-	public Blob getphoto() {
+
+
+
+
+	public byte[] getPhoto() {
 		return photo;
 	}
 
 
-	public void setphoto(Blob photo) {
+
+
+	public void setPhoto(byte[] photo) {
 		this.photo = photo;
 	}
-	
 
 
 
