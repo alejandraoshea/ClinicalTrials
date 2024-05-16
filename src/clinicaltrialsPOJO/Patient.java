@@ -4,24 +4,51 @@ import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.Date;
 import java.util.Objects;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import ClinicalTrialsXMLutils.SQLDateAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Patient") 
+@XmlType(propOrder = {"disease", "cured", "bloodType", "dateOfBirth", "name", "email", "phone"})   //possible order
 public class Patient implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4568065003661484119L;
 	
+	@XmlTransient
 	private Integer patient_id;
-	private String name; 
+	
+	@XmlAttribute
 	private String email;
+	@XmlElement
+	private String name; 
+	@XmlElement
 	private Integer phone;
-	private Date dateOfBirth;
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
+	private Date dateOfBirth; 
+	@XmlElement
 	private String bloodType;
+	@XmlElement
 	private String disease;
+	@XmlElement
 	private boolean cured;
+	@XmlTransient
 	private Blob photo;
+	@XmlTransient
 	private List<Reports> reports;
 	
 	
