@@ -140,19 +140,43 @@ private static void updatePassword() throws Exception {
 				
 	}
 
-
+private static boolean checkPassword (String password) {
+	
+	int cantMayusc = 0; 
+	int cantMinus = 0; 
+	int cantNum = 0; 
+	
+	for (int i = 0; i< password.length(); i++) {
+		if (password.charAt(i) <= 97&&password.charAt(i)>=122) {
+			cantMinus++; 
+		}else if(password.charAt(i)<=65&&password.charAt(i)>=90) {
+			cantMayusc++; 
+		}else 
+			cantNum++;
+	}  
+	if (password.length() >= 8 || cantMinus > 0 || cantMayusc > 0 || cantNum > 0 ) {
+		return true; 
+	}else return false;
+  }
 
 private static void signUpUser() {
 	// TODO Auto-generated method stub
+	
+   
 	try {
+		
 		System.out.println("Introduce email: \n");
 		String email = reader.readLine();
 		System.out.println("Introduce the password: \n");
 		String password = reader.readLine();
 		
-		MessageDigest md= MessageDigest.getInstance("MD5");
-		md.update(password.getBytes());
-		byte[] pass = md.digest();
+	
+	
+		 MessageDigest md= MessageDigest.getInstance("MD5");
+		 md.update(password.getBytes());
+		 byte[] pass = md.digest();
+		 
+	
 		
 		System.out.println("Introduce the role of the user. 1: Administrator, 2: Doctor, 3. Patient, 4. Sponsor, 5. Engineer ");
 		Integer rol = Integer.parseInt(reader.readLine());
@@ -178,6 +202,8 @@ private static void signUpUser() {
 		}
 }
 
+
+  
 
 
 	//admin menu:
