@@ -145,7 +145,7 @@ private static void updatePassword() throws Exception {
  * sout("no valida, intor otra con esto")
  * password=reader.readLine();
  * 
- * private static boolean checkPassword(String password) {
+ * private static boolean checkPasswordStrength(String password) {
     int cantMayusc = 0;
     int cantMinus = 0;
     int cantNum = 0;
