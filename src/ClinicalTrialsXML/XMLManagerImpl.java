@@ -94,14 +94,50 @@ public class XMLManagerImpl implements XMLManager{
 	@Override
 	public void admin2xml(Integer id) {
 		// TODO Auto-generated method stub
+		Administrator admin = null;
+		List<Trial> trials = new ArrayList<Trial>();
+		manager = new JDBCManager();
+		adminmanager = new JDBCAdministratorManager(manager);
+		
+		try {
+			trails = adminmanager.getListOfTrials(id);
+			engineer.getInvestigationalProduct().addAll(invPr);
+			admin = adminmanager.searchAdminById(id);
+			admin.getTrials();
+					
+			JAXBContext jaxbContext = JAXBContext.newInstance(Administrator.class);
+			Marshaller marshaller = jaxbContext.createMarshaller();
+			
+			File file = new File("./xmls/Admin.xml");
+			marshaller.marshal(admin, file);
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 
 	@Override
 	public Administrator xml2Admin(File xml) {
 		// TODO Auto-generated method stub
-		return null;
+		Administrator admin = null;
+		manager = new JDBCManager();
+		adminmanager = new JDBCAdministratorManager(manager);
+
+		try {
+		JAXBContext jaxbContext = JAXBContext.newInstance(Administrator.class);
+		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 		
+		admin = (Administrator) unmarshaller.unmarshal(xml);
+		adminmanager.createAdmin(admin);
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return admin; 
+
 	}
 
 	@Override
@@ -110,6 +146,7 @@ public class XMLManagerImpl implements XMLManager{
 		Patient patient = null;
 		manager = new JDBCManager();
 		patientmanager = new JDBCPatientManager(manager);
+
 		
 		try {
 			patient = patientmanager.searchPatientById(id);
