@@ -5,17 +5,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ArrayList;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Admin")
 public class Administrator implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5699187109494451255L;
-	
+
+	@XmlTransient
 	private Integer admin_id;
+	@XmlElement
 	private String name; 
+	@XmlElement
 	private String email;
+	@XmlElement
 	private Integer phone;
+	@XmlAttribute 
 	private List<TrialsApplication> trialsApplications;
+	@XmlAttribute
 	private List<Trial> trials;
 	
 	
