@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Sponsor")
-@XmlType(propOrder = {"name", "email", "phone", "cardNumber"})
+@XmlType(propOrder = {"name", "email", "phone"})
 
 public class Sponsor implements Serializable{
 	/**
@@ -25,7 +25,7 @@ public class Sponsor implements Serializable{
 	private String email;
 	@XmlElement
 	private Integer phone;
-	@XmlElement
+	@XmlTransient
 	private Integer cardNumber;
 	@XmlTransient
 	private List<Trial> trials; 

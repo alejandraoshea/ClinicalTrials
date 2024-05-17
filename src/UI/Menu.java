@@ -684,13 +684,13 @@ private static void signUpUser() {
 		
 	
 		private static void applyToCT(Integer id) throws Exception {
-			System.out.println("Type the id of the doctor");
-			Integer doctor_id = Integer.parseInt(reader.readLine());
+			System.out.println("Type the id of the administrator");
+			Integer admin_id = Integer.parseInt(reader.readLine());
 			
 			System.out.println("Type the id of the clinical trial");
 			Integer trial_id = Integer.parseInt(reader.readLine());
 			
-			patientmanager.applyToClinicalTrial(doctor_id, trial_id, id);
+			patientmanager.applyToClinicalTrial(admin_id, trial_id, id);
 			
 		}
 		

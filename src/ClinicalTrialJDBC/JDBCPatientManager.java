@@ -135,29 +135,36 @@ public class JDBCPatientManager implements PatientManager{
 
 	
 	@Override
-	public void applyToClinicalTrial(Integer doctor_id, Integer trial_id, Integer id) { //añadir trialApplication 
-		//pedir la ultima: mirar cheatsheet jdbc y sino mirar db library 
+	public void applyToClinicalTrial(Integer admin_id, Integer trial_id, Integer id) { 
 		// TODO Auto-generated method stub
 		try {
-			String sql= "INSERT INTO trialApplication (doctor_id, trial_id, dateRequest)"
+			String sql= "INSERT INTO trialApplication (admin_id, trial_id, dateRequest)"
 					+ "VALUES (?,?,CURRENT_DATE);";
 			
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-			prep.setInt(1, doctor_id);
+			prep.setInt(1, admin_id);
 			prep.setInt(2, trial_id);
-			prep.setInt(3, id);
-
 			prep.executeUpdate();
 			
 			
-			String sql2= "UPDATE patient SET trialApplication_id=? WHERE id=?;";
+			String query = "SELECT last_insert_rowid() AS lastId";
+			PreparedStatement p = manager.getConnection().prepareStatement(query);
+			ResultSet rs = p.executeQuery();
+			Integer lastId = rs.getInt("lastId");
 			
-			PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
-			//prep.setInt(1, trialApplication_id);
-			prep.setInt(2, trial_id);
-			prep.setInt(3, id);
-
-			prep.executeUpdate();	
+			
+			String updateQuery= "UPDATE patient SET trialApplication_id=? WHERE id=?;";
+			PreparedStatement prep2 = manager.getConnection().prepareStatement(updateQuery);
+			prep2.setInt(1, lastId);
+			prep2.setInt(2, id);
+			prep2.executeUpdate();
+			
+			
+			rs.close();
+			prep.close();
+			p.close();
+			prep2.close();
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

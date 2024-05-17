@@ -95,7 +95,7 @@ public JDBCManager() {
 			
 			sql = "CREATE TABLE trialApplication("
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ "doctor_id REFERENCES doctor(id), patient_id REFERENCES patient(id),"
+					+ "admin_id REFERENCES administrator(id),"
 					+ "trial_id REFERENCES trial(id), approved BOOLEAN, "
 					+ "dateRequest DATE NOT NULL, dateApproved DATE);";
 			stmt.executeUpdate(sql);
@@ -105,8 +105,7 @@ public JDBCManager() {
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "requirements TEXT NOT NULL, "
 					+ "amountMoneyInvestedTotal INTEGER NOT NULL, "
-					+ "admin_id REFERENCES administrator(id), "
-					+ "trialApplication_id REFERENCES trialApplication(id));";
+					+ "admin_id REFERENCES administrator(id);"; 
 			stmt.executeUpdate(sql);
 			
 			
