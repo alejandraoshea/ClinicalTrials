@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Admin")
+@XmlType(propOrder = {"email", "name", "phone", "ListOfTrilas"})  
 public class Administrator implements Serializable{
 	/**
 	 * 
@@ -23,7 +24,7 @@ public class Administrator implements Serializable{
 	private Integer phone;
 	@XmlAttribute 
 	private List<TrialsApplication> trialsApplications;
-	@XmlAttribute
+	@XmlElement 
 	private List<Trial> trials;
 	
 	
