@@ -18,6 +18,7 @@ public class Trial implements Serializable{
 	private List<TrialsApplication> trialsApplications; 
 	private List<InvestigationalProduct> investigationalProduct;
 	private List<Sponsor> sponsor;
+	private Administrator admin;
 	
 	
 	
@@ -148,10 +149,24 @@ public class Trial implements Serializable{
 
 
 
+	public Administrator getAdmin() {
+		return admin;
+	}
+
+
+
+
+	public void setAdmin(Administrator admin) {
+		this.admin = admin;
+	}
+
+
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(investigationalProduct, patients, requirements, sponsor, totalAmountInvested, trial_id,
-				trialsApplications);
+		return Objects.hash(admin, investigationalProduct, patients, requirements, sponsor, totalAmountInvested,
+				trial_id, trialsApplications);
 	}
 
 
@@ -166,7 +181,8 @@ public class Trial implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Trial other = (Trial) obj;
-		return Objects.equals(investigationalProduct, other.investigationalProduct)
+		return Objects.equals(admin, other.admin)
+				&& Objects.equals(investigationalProduct, other.investigationalProduct)
 				&& Objects.equals(patients, other.patients) && Objects.equals(requirements, other.requirements)
 				&& Objects.equals(sponsor, other.sponsor)
 				&& Objects.equals(totalAmountInvested, other.totalAmountInvested)
@@ -181,14 +197,9 @@ public class Trial implements Serializable{
 	public String toString() {
 		return "Trial [trial_id=" + trial_id + ", requirements=" + requirements + ", totalAmountInvested="
 				+ totalAmountInvested + ", patients=" + patients + ", trialsApplications=" + trialsApplications
-				+ ", investigationalProduct=" + investigationalProduct + ", sponsor=" + sponsor + "]";
-	}
-	
-	
-	
-	
-	
-	
-	
+				+ ", investigationalProduct=" + investigationalProduct + ", sponsor=" + sponsor + ", admin=" + admin
+				+ "]";
+	}	
+
 	
 }

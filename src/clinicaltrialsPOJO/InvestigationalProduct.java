@@ -16,7 +16,9 @@ public class InvestigationalProduct implements Serializable{
 	private String description; 
 	private String type;
 	private List<Trial> trial;
-	
+	private Engineer engineer; //relation 1 to N
+	private Doctor doctor; //relation 1 to N
+	 
 	
 	
 	
@@ -93,9 +95,33 @@ public class InvestigationalProduct implements Serializable{
 
 
 
+	public Engineer getEngineer() {
+		return engineer;
+	}
+
+
+
+	public void setEngineer(Engineer engineer) {
+		this.engineer = engineer;
+	}
+
+
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(amount, description, invProduct_id, trial, type);
+		return Objects.hash(amount, description, doctor, engineer, invProduct_id, trial, type);
 	}
 
 
@@ -110,6 +136,7 @@ public class InvestigationalProduct implements Serializable{
 			return false;
 		InvestigationalProduct other = (InvestigationalProduct) obj;
 		return Objects.equals(amount, other.amount) && Objects.equals(description, other.description)
+				&& Objects.equals(doctor, other.doctor) && Objects.equals(engineer, other.engineer)
 				&& Objects.equals(invProduct_id, other.invProduct_id) && Objects.equals(trial, other.trial)
 				&& Objects.equals(type, other.type);
 	}
@@ -119,7 +146,10 @@ public class InvestigationalProduct implements Serializable{
 	@Override
 	public String toString() {
 		return "InvestigationalProduct [invProduct_id=" + invProduct_id + ", amount=" + amount + ", description="
-				+ description + ", type=" + type + ", trial=" + trial + "]";
+				+ description + ", type=" + type + ", trial=" + trial + ", engineer=" + engineer + ", doctor=" + doctor
+				+ "]";
 	}
+
+	
 
 }

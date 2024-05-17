@@ -14,7 +14,9 @@ public class Reports implements Serializable{
 	private Integer report_id; 
 	private String medicalHistory;
 	private String treatment;
-	private List<Sponsor> sponsor; 
+	private List<Sponsor> sponsor;
+	private Doctor doctor; //1 to N relation
+	private Patient patient; //1 to N relation 
 	
 	
 	public Reports(String medicalHistory, String treatment) {
@@ -78,10 +80,32 @@ public class Reports implements Serializable{
 		this.sponsor = sponsor;
 	}
 
+	
+	
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(medicalHistory, report_id, sponsor, treatment);
+		return Objects.hash(doctor, medicalHistory, patient, report_id, sponsor, treatment);
 	}
 
 
@@ -94,7 +118,8 @@ public class Reports implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Reports other = (Reports) obj;
-		return Objects.equals(medicalHistory, other.medicalHistory) && Objects.equals(report_id, other.report_id)
+		return Objects.equals(doctor, other.doctor) && Objects.equals(medicalHistory, other.medicalHistory)
+				&& Objects.equals(patient, other.patient) && Objects.equals(report_id, other.report_id)
 				&& Objects.equals(sponsor, other.sponsor) && Objects.equals(treatment, other.treatment);
 	}
 
@@ -102,8 +127,10 @@ public class Reports implements Serializable{
 	@Override
 	public String toString() {
 		return "Reports [report_id=" + report_id + ", medicalHistory=" + medicalHistory + ", treatment=" + treatment
-				+ ", sponsor=" + sponsor + "]";
+				+ ", sponsor=" + sponsor + ", doctor=" + doctor + ", patient=" + patient + "]";
 	}
-	
 
+
+
+	
 }
