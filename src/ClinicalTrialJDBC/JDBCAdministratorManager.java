@@ -291,5 +291,31 @@ private JDBCManager manager;
 		return patients;
 	}
 	
+	@Override
+	public Administrator searchAdminById(Integer id) {
+		// TODO Auto-generated method stub
+		Administrator admin = null;
+		
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM administrator WHERE id=" + id;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			Integer admin_id = rs.getInt("id");
+			String name = rs.getString("name");
+			String email = rs.getString("email");
+			Integer phone = rs.getInt("phone");
+			
+		    admin = new Administrator (admin_id, name, email, phone);
+		    
+		    rs.close();
+		    stmt.close();
+		    
+		}catch(Exception e) {e.printStackTrace();}
+		return admin;
+	}
+	
 	
 }

@@ -19,7 +19,7 @@ public interface AdministratorManager {
 	public void deletePatientbyId(Integer patient_id); 
 	public List<Trial> getListOfTrials();
 	public List<Patient> getPatientsOfTrial(Integer trial_id);
-	
+	public Administrator searchAdminById(Integer id);
 	public List<Patient> getPatients();
 	
 

@@ -172,7 +172,6 @@ private static void signUpUser() {
    
 	try {
 		System.out.println("\nIntroduce email: \n");
-		System.out.println("Introduce email: \n");
 		String email = reader.readLine();
 		System.out.println("Introduce the password: \n");
 		String password = reader.readLine();
@@ -876,7 +875,7 @@ private static void signUpUser() {
 					System.out.println("4. Update an investigational product of a trial.");
 					System.out.println("5. Print all the investigational products of a trial.");
 					System.out.println("6. Print me in xml.");
-					System.out.println("7. Load patients from xml File.");
+					System.out.println("7. Load engineer from xml File.");
 					System.out.println("0. Return.\n");	
 					
 					choice = Integer.parseInt(reader.readLine());
