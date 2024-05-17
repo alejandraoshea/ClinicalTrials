@@ -10,12 +10,14 @@ import javax.xml.bind.Unmarshaller;
 
 import ClinicalTrialInterfaces.AdministratorManager;
 import ClinicalTrialInterfaces.DoctorManager;
+import ClinicalTrialInterfaces.EngineerManager;
 import ClinicalTrialInterfaces.PatientManager;
 import ClinicalTrialInterfaces.SponsorManager;
 import ClinicalTrialInterfaces.XMLManager;
 import ClinicalTrialJDBC.JDBCManager;
 import ClinicalTrialJDBC.JDBCPatientManager;
 import ClinicalTrialJDBC.JDBCDoctorManager;
+import ClinicalTrialJDBC.JDBCEngineerManager;
 import ClinicalTrialJDBC.JDBCSponsorManager;
 import ClinicalTrialJDBC.JDBCAdministratorManager;
 import clinicaltrialsPOJO.Administrator;
@@ -33,7 +35,8 @@ public class XMLManagerImpl implements XMLManager{
 	PatientManager patientmanager; 
 	AdministratorManager adminmanager;
 	SponsorManager sponsormanager;
-
+    EngineerManager engineermanager;
+    
 	@Override
 	public void doctor2xml(Integer id) {
 		// TODO Auto-generated method stub
@@ -167,13 +170,51 @@ public class XMLManagerImpl implements XMLManager{
 	@Override
 	public void engineer2xml(Integer id) {
 		// TODO Auto-generated method stub
-		
+		Engineer engineer = null;
+	    manager = new JDBCManager();
+	    engineermanager = new JDBCEngineerManager(manager);
+	    
+	    try {
+	        
+	        //engineer = engineermanager.searchEngineerById(id);
+	        
+	        
+	        JAXBContext jaxbContext = JAXBContext.newInstance(Engineer.class);
+	        Marshaller marshaller = jaxbContext.createMarshaller();
+	       
+	        File file = new File("./xmls/Engineer.xml");
+	        marshaller.marshal(engineer, file);
+	        
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	@Override
 	public Engineer xml2Engineer(File xml) {
 		// TODO Auto-generated method stub
-		return null;
+		Engineer engineer = null;
+	    manager = new JDBCManager();
+	    engineermanager = new JDBCEngineerManager(manager);
+	    
+	    try {
+	        
+	        JAXBContext jaxbContext = JAXBContext.newInstance(Engineer.class);
+	        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+	        
+	        
+	        engineer = (Engineer) unmarshaller.unmarshal(xml);
+	        
+	       
+	        engineermanager.createEngineer(engineer);
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return engineer;
+	    
 	}
 
 }
