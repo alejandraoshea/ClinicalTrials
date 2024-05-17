@@ -35,7 +35,7 @@ public class Menu {
 	private static SponsorManager sponsormanager;
 	private static EngineerManager engineermanager;
 	private static UserManager usermanager;
-	private static XMLManager xmlmanager; //update
+	private static XMLManager xmlmanager; 
 	
 	
 	
