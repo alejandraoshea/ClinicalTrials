@@ -97,7 +97,7 @@ public JDBCManager() {
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "doctor_id REFERENCES doctor(id), patient_id REFERENCES patient(id),"
 					+ "trial_id REFERENCES trial(id), approved BOOLEAN, "
-					+ "dateRequest DATE NOT NULL, dateApproved DATE NOT NULL);";
+					+ "dateRequest DATE NOT NULL, dateApproved DATE);";
 			stmt.executeUpdate(sql);
 			
 			
