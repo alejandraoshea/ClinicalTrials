@@ -144,21 +144,45 @@ private static void updatePassword() throws Exception {
 				
 	}
 
+/*Esta función comprueba q haya al menos 1 mayuscula, 1 numero y 1 minuscula, la pondría con un 
+ * while(false){
+ * sout("no valida, intor otra con esto")
+ * password=reader.readLine();
+ * 
+ * private static boolean checkPasswordStrength(String password) {
+    int cantMayusc = 0;
+    int cantMinus = 0;
+    int cantNum = 0;
+    for (int i = 0; i < password.length(); i++) {
+        if (password.charAt(i) >= 97 && password.charAt(i) <= 122) {
+            cantMinus++;
+        } else if (password.charAt(i) >= 65 && password.charAt(i) <= 90) {
+            cantMayusc++;
+        } else cantNum++;
+    }
 
-
+    if (cantMayusc >= 1 && cantMinus >= 1 && cantNum >= 1) {
+        return true;
+    } else return false;
+}
+*/
 private static void signUpUser() {
 	// TODO Auto-generated method stub
+	
+   
 	try {
 		System.out.println("\nIntroduce email: \n");
+		System.out.println("Introduce email: \n");
 		String email = reader.readLine();
 		System.out.println("Introduce the password: \n");
 		String password = reader.readLine();
 		
-		MessageDigest md= MessageDigest.getInstance("MD5");
-		md.update(password.getBytes());
-		byte[] pass = md.digest();
-		
-		System.out.println("Introduce the role of the user. 1: Administrator, 2: Doctor, 3. Patient, 4. Sponsor, 5. Engineer ");
+		 MessageDigest md= MessageDigest.getInstance("MD5");
+		 md.update(password.getBytes());
+		 byte[] pass = md.digest();
+		 
+	
+		System.out.println("\nIntroduce the role of the user. 1: Administrator, 2: Doctor, 3. Patient, 4. Sponsor, 5. Engineer ");
 		Integer rol = Integer.parseInt(reader.readLine());
 		Role r = usermanager.getRole(rol);
 		
@@ -182,6 +206,8 @@ private static void signUpUser() {
 		}
 }
 
+
+  
 
 
 	//admin menu:

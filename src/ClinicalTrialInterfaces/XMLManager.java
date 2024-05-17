@@ -1,5 +1,6 @@
 package ClinicalTrialInterfaces;
 
+
 import java.io.File;
 
 import clinicaltrialsPOJO.Administrator;
@@ -24,13 +25,4 @@ public interface XMLManager {
 	public void engineer2xml(Integer id);
 	public Engineer xml2Engineer(File xml);
 
-	
-
-	
-
-	
-
-	
-	
-	
 }
