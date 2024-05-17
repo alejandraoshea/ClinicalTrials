@@ -226,6 +226,7 @@ private static void signUpUser() {
 				System.out.println("7. Assign Patient to Trial"); 
 				System.out.println("8. Delete a Patient of a Trial"); 
 				System.out.println("9. Print all the patients of a Clinical Trial");
+				System.out.println("10. Print admin to xml.");
 				System.out.println("0. Return.\n"); 
          
 				choice = Integer.parseInt(reader.readLine()); 
@@ -258,6 +259,9 @@ private static void signUpUser() {
 				case 9: 
 					getAllPatientsCT(); 
 					break; 
+				case 10: 
+					printMeAdmin(id); 
+					break; 	
 				case 0: 
 					System.out.println("Back to main menu"); 
 				}
@@ -362,6 +366,11 @@ private static void signUpUser() {
 		patients = adminmanager.getPatients();
 		System.out.println(patients);
 	}
+
+	private static void printMeAdmin(Integer id) {
+		xmlmanager.admin2xml(id);
+	}
+	
 	
 
 	
