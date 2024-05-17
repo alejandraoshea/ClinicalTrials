@@ -135,19 +135,29 @@ public class JDBCPatientManager implements PatientManager{
 
 	
 	@Override
-	public void applyToClinicalTrial(Integer doctor_id, Integer trial_id, Integer id) {
+	public void applyToClinicalTrial(Integer doctor_id, Integer trial_id, Integer id) { //añadir trialApplication 
+		//pedir la ultima: mirar cheatsheet jdbc y sino mirar db library 
 		// TODO Auto-generated method stub
 		try {
-			
-			
-			String sql= "INSERT INTO trialApplication (doctor_id, patient_id, trial_id, dateRequest)"
-					+ "VALUES (?, ?,?,CURRENT_DATE);";
+			String sql= "INSERT INTO trialApplication (doctor_id, trial_id, dateRequest)"
+					+ "VALUES (?,?,CURRENT_DATE);";
 			
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-			prep.setInt(1, id);
+			prep.setInt(1, doctor_id);
 			prep.setInt(2, trial_id);
+			prep.setInt(3, id);
 
-			prep.executeUpdate();				
+			prep.executeUpdate();
+			
+			
+			String sql2= "UPDATE patient SET trialApplication_id=? WHERE id=?;";
+			
+			PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
+			//prep.setInt(1, trialApplication_id);
+			prep.setInt(2, trial_id);
+			prep.setInt(3, id);
+
+			prep.executeUpdate();	
 		}catch(Exception e){
 			e.printStackTrace();
 		}

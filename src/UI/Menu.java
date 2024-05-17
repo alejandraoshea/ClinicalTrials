@@ -198,7 +198,6 @@ private static void signUpUser() {
 		}
 		
 		User u = new User(email, pass, r);
-		usermanager.newUser(u);
 	
 	}catch(Exception e){
 		e.printStackTrace();
