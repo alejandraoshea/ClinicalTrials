@@ -352,7 +352,6 @@ private static void signUpUser() {
 	}
 	
 	
-	
 	private static void getAllPatientsCT() throws Exception {
 		System.out.println("Type the id of the clinical trial\n");
 		Integer trial_id = Integer.parseInt(reader.readLine());
@@ -371,6 +370,13 @@ private static void signUpUser() {
 		xmlmanager.admin2xml(id);
 	}
 	
+	
+	private static void getAllClinicalTrials() throws Exception {
+		List<Trial> trials = null;
+		trials = adminmanager.getListOfTrials();
+		
+		System.out.println(trials);
+	}
 	
 
 	
@@ -614,6 +620,8 @@ private static void signUpUser() {
 					System.out.println("2. Get the state of request of a patient.");
 					System.out.println("3. Print all the reports of a patient.");
 					System.out.println("4. Print all the clinical trials.");
+					System.out.println("5. Print me to xml");
+					System.out.println("6. Load patients from xml File.");
 					System.out.println("0. Return.\n");	
 					
 					choice = Integer.parseInt(reader.readLine());
@@ -632,6 +640,14 @@ private static void signUpUser() {
 					
 					case 4:
 						getAllClinicalTrials();
+						break;
+					
+					case 5:
+						printMePatient(id);
+						break;
+					
+					case 6:
+						loadPatients();
 						break;
 						
 					case 0:
@@ -689,15 +705,19 @@ private static void signUpUser() {
 			System.out.println("The state of the request of the patient is: " + state);
 		}
 		
+	
 		
-		private static void getAllClinicalTrials() throws Exception {
-			List<Trial> trials = null;
-			trials = adminmanager.getListOfTrials();
-			
-			System.out.println(trials);
+		private static void printMePatient(Integer id) {
+			xmlmanager.patient2xml(id);
 		}
 		
-		
+
+		private static void loadPatients() {
+			Patient patient = null;
+			File file = new File("./xmls/External-Patient.xml");
+			patient = xmlmanager.xml2Patient(file);
+			System.out.println(patient);
+		}
 		
 		
 		
@@ -855,6 +875,8 @@ private static void signUpUser() {
 					System.out.println("3. Add a new Investigational product to a trial.");
 					System.out.println("4. Update an investigational product of a trial.");
 					System.out.println("5. Print all the investigational products of a trial.");
+					System.out.println("6. Print me in xml.");
+					System.out.println("7. Load patients from xml File.");
 					System.out.println("0. Return.\n");	
 					
 					choice = Integer.parseInt(reader.readLine());
@@ -878,7 +900,12 @@ private static void signUpUser() {
 					case 5:
 						getInvPr();
 						break;
-					
+					case 6:
+						printMeEngineer(id);
+						break;
+					case 7:
+						loadEngineer();
+						break;
 					case 0:
 						System.out.println("Back to main menu");
 						
@@ -954,6 +981,18 @@ private static void signUpUser() {
 			Integer invProduct_id = Integer.parseInt(reader.readLine());
 			engineermanager.getInvPr(invProduct_id);
 			
+		}
+	    
+	    private static void printMeEngineer(Integer id) {
+			xmlmanager.engineer2xml(id);
+		}
+		
+
+		private static void loadEngineer() {
+			Engineer engineer = null;
+			File file = new File("./xmls/External-Engineer.xml");
+			engineer = xmlmanager.xml2Engineer(file);
+			System.out.println(engineer);
 		}
 	
 	

@@ -132,4 +132,67 @@ public class JDBCEngineerManager implements EngineerManager{
 		}
 		return engineers;
 	}
+	
+	
+	@Override
+	public Engineer searchEngineerById(Integer engineer_id) {
+		Engineer engineer= null;
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM engineer WHERE id=?"+engineer_id;
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			
+			Integer doctor_id = rs.getInt("id");
+			String name = rs.getString("name");
+			String email = rs.getString("email");
+			Integer phone = rs.getInt("phone");
+			String specialization = rs.getString("specialization");
+			
+		    engineer = new Engineer (engineer_id, name, email, phone);
+		    
+		    rs.close();
+		    stmt.close();
+			
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return engineer;
+	}
+	
+	
+	@Override
+	public List<InvestigationalProduct> getListInvPrOfEngineer(Integer engineer_id) {
+		List<InvestigationalProduct> invPr = new ArrayList<>();
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM investigationalProduct WHERE engineer_id=?"+engineer_id;
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				Integer id = rs.getInt("id");
+				String description = rs.getString("description");
+				String type = rs.getString("type");
+				Integer amountMoney = rs.getInt("amountMoney");
+			
+				InvestigationalProduct invP = new InvestigationalProduct(amountMoney, description, type);
+				invPr.add(invP);
+			}
+			
+		    rs.close();
+		    stmt.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return invPr;
+	}
+	
+	
+	
 }

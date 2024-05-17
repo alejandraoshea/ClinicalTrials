@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Patient")
+@XmlType(propOrder = {"email", "name", "phone",  "bloodType", "disease", "cured", "doctor","dateOfBirth"})
 
 public class Patient implements Serializable{
 	/**
@@ -28,18 +30,31 @@ public class Patient implements Serializable{
 	 */
 	private static final long serialVersionUID = -4568065003661484119L;
 	
+	@XmlTransient
 	private Integer patient_id;
+	@XmlAttribute
 	private String email;
+	@XmlElement
 	private String name; 
+	@XmlElement
 	private Integer phone;
+	@XmlElement
 	private Date dateOfBirth; 
+	@XmlElement
 	private String bloodType;
+	@XmlElement
 	private String disease;
+	@XmlElement
 	private boolean cured;
+	@XmlTransient
 	private byte[] photo;
+	@XmlTransient
 	private List<Reports> reports;
+	@XmlElement
 	private Doctor doctor;  //1 to N relation
+	@XmlElement
 	private Trial trial; //1 to N relation
+	@XmlTransient
 	private List<TrialsApplication> trialApplications; //1 to N relation
 	
 	

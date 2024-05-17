@@ -13,4 +13,6 @@ public interface EngineerManager {
 	public List<Engineer> getListOfEnginners();
 	public void updateInvPr(Integer investigationalProduct_id, String newDescription);
 	public InvestigationalProduct getInvPr(Integer investigationalProduct_id);	
+	public Engineer searchEngineerById(Integer engineer_id);
+	public List<InvestigationalProduct> getListInvPrOfEngineer(Integer engineer_id);
 }

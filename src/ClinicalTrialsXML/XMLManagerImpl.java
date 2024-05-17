@@ -23,6 +23,7 @@ import ClinicalTrialJDBC.JDBCAdministratorManager;
 import clinicaltrialsPOJO.Administrator;
 import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.Engineer;
+import clinicaltrialsPOJO.InvestigationalProduct;
 import clinicaltrialsPOJO.Patient;
 import clinicaltrialsPOJO.Sponsor;
 import clinicaltrialsPOJO.Reports;
@@ -106,13 +107,43 @@ public class XMLManagerImpl implements XMLManager{
 	@Override
 	public void patient2xml(Integer id) {
 		// TODO Auto-generated method stub
+		Patient patient = null;
+		manager = new JDBCManager();
+		patientmanager = new JDBCPatientManager(manager);
 		
+		try {
+			patient = patientmanager.searchPatientById(id);
+			
+			JAXBContext jaxbContext = JAXBContext.newInstance(Patient.class);
+			Marshaller marshaller = jaxbContext.createMarshaller();
+			
+			File file = new File("./xmls/Patient.xml");
+			marshaller.marshal(patient, file);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	
 	}
 
 	@Override
 	public Patient xml2Patient(File xml) {
 		// TODO Auto-generated method stub
-		return null;
+		Patient patient = null;
+		manager = new JDBCManager();
+		patientmanager = new JDBCPatientManager(manager);
+		
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(Patient.class);
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+			
+			patient = (Patient) unmarshaller.unmarshal(xml);
+			patientmanager.createPatient(patient);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return patient;
 		
 	}
 
@@ -120,33 +151,14 @@ public class XMLManagerImpl implements XMLManager{
 	public void sponsor2xml(Integer id) {
 		// TODO Auto-generated method stub
 		Sponsor s = null;
-		List<Trial> trials = new ArrayList<Trial>();
-		List<Patient> patients= new ArrayList<Patient>(); 
-		List<Reports> reports = new ArrayList<Reports>();
 		manager = new JDBCManager();
 		sponsormanager = new JDBCSponsorManager(manager);
-		adminmanager = new JDBCAdministratorManager(manager);
 		
-		Integer patient_id = null; 
-		List<Reports> reportsPatient = new ArrayList<Reports>();
 			
 		try {
 			//Do a sql query to get the sponsor by the id
 			s = sponsormanager.searchSponsorById(id);
-		
-			trials = sponsormanager.getListOfTrials();
-			s.setTrials(trials);
-				
-			//Como pongo el id de los patients ahi? Como lo busco?
-			patients = adminmanager.getPatients();
-			
-		
-			for(Patient patient: patients) {
-				patient_id = patient.getPatient_id();
-				reportsPatient = sponsormanager.getReportsOfAPatient(patient_id);
-				reports.addAll(reportsPatient);
-			}
-				
+
 			//export the owner to an xml file
 			JAXBContext jaxbContext = JAXBContext.newInstance(Sponsor.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
@@ -166,6 +178,7 @@ public class XMLManagerImpl implements XMLManager{
 		return null;
 		
 	}
+	
 
 	@Override
 	public void engineer2xml(Integer id) {
@@ -173,11 +186,13 @@ public class XMLManagerImpl implements XMLManager{
 		Engineer engineer = null;
 	    manager = new JDBCManager();
 	    engineermanager = new JDBCEngineerManager(manager);
+	    List<InvestigationalProduct> invPr = new ArrayList<InvestigationalProduct>();
 	    
 	    try {
 	        
-	        //engineer = engineermanager.searchEngineerById(id);
-	        
+	    	invPr = engineermanager.getListInvPrOfEngineer(id);
+			engineer = engineermanager.searchEngineerById(id);
+			engineer.getInvestigationalProduct().addAll(invPr);
 	        
 	        JAXBContext jaxbContext = JAXBContext.newInstance(Engineer.class);
 	        Marshaller marshaller = jaxbContext.createMarshaller();
@@ -190,6 +205,7 @@ public class XMLManagerImpl implements XMLManager{
 	        e.printStackTrace();
 	    }
 	}
+	
 
 	@Override
 	public Engineer xml2Engineer(File xml) {
@@ -206,7 +222,6 @@ public class XMLManagerImpl implements XMLManager{
 	        
 	        engineer = (Engineer) unmarshaller.unmarshal(xml);
 	        
-	       
 	        engineermanager.createEngineer(engineer);
 	        
 	    } catch (Exception e) {

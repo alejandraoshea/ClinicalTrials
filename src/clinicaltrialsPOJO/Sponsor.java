@@ -21,17 +21,15 @@ public class Sponsor implements Serializable{
 	private Integer sponsor_id;
 	@XmlElement
 	private String name;
-	@XmlElement
+	@XmlAttribute
 	private String email;
 	@XmlElement
 	private Integer phone;
 	@XmlElement
 	private Integer cardNumber;
-	@XmlElement (name = "Trial")
-	@XmlElementWrapper(name = "Trials")
+	@XmlTransient
 	private List<Trial> trials; 
-	@XmlElement (name = "Report")
-	@XmlElementWrapper(name = "Reports")
+	@XmlTransient
 	private List<Reports> reports; 
 	
 	

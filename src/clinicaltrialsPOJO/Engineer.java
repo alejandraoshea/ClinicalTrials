@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Engineer")
-@XmlType(propOrder = {"name", "phone"})
+@XmlType(propOrder = {"name", "email", "phone", "investigationalProducts"})
 
 public class Engineer implements Serializable{
 	/**
@@ -31,7 +31,7 @@ public class Engineer implements Serializable{
 	private String email;
 	@XmlElement
 	private Integer phone;
-	@XmlTransient
+	@XmlElement
 	private List<InvestigationalProduct> investigationalProduct;
 	
 	
