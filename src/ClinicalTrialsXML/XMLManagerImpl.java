@@ -100,8 +100,7 @@ public class XMLManagerImpl implements XMLManager{
 		adminmanager = new JDBCAdministratorManager(manager);
 		
 		try {
-			trails = adminmanager.getListOfTrials(id);
-			engineer.getInvestigationalProduct().addAll(invPr);
+			trials = adminmanager.getListOfTrials();
 			admin = adminmanager.searchAdminById(id);
 			admin.getTrials();
 					
