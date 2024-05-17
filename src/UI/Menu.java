@@ -140,25 +140,28 @@ private static void updatePassword() throws Exception {
 				
 	}
 
-private static boolean checkPassword (String password) {
-	
-	int cantMayusc = 0; 
-	int cantMinus = 0; 
-	int cantNum = 0; 
-	
-	for (int i = 0; i< password.length(); i++) {
-		if (password.charAt(i) <= 97&&password.charAt(i)>=122) {
-			cantMinus++; 
-		}else if(password.charAt(i)<=65&&password.charAt(i)>=90) {
-			cantMayusc++; 
-		}else 
-			cantNum++;
-	}  
-	if (password.length() >= 8 || cantMinus > 0 || cantMayusc > 0 || cantNum > 0 ) {
-		return true; 
-	}else return false;
-  }
+/*Esta función comprueba q haya al menos 1 mayuscula, 1 numero y 1 minuscula, la pondría con un 
+ * while(false){
+ * sout("no valida, intor otra con esto")
+ * password=reader.readLine();
+ * 
+ * private static boolean checkPassword(String password) {
+    int cantMayusc = 0;
+    int cantMinus = 0;
+    int cantNum = 0;
+    for (int i = 0; i < password.length(); i++) {
+        if (password.charAt(i) >= 97 && password.charAt(i) <= 122) {
+            cantMinus++;
+        } else if (password.charAt(i) >= 65 && password.charAt(i) <= 90) {
+            cantMayusc++;
+        } else cantNum++;
+    }
 
+    if (cantMayusc >= 1 && cantMinus >= 1 && cantNum >= 1) {
+        return true;
+    } else return false;
+}
+*/
 private static void signUpUser() {
 	// TODO Auto-generated method stub
 	
