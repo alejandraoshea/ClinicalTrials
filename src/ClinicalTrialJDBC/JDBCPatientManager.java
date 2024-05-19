@@ -110,7 +110,7 @@ public class JDBCPatientManager implements PatientManager{
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM report WHERE patient_id=?" + patient_id;
+			String sql = "SELECT * FROM report WHERE patient_id=" + patient_id;
 			ResultSet rs = stmt.executeQuery(sql);
 			
 			while(rs.next()){
@@ -118,7 +118,7 @@ public class JDBCPatientManager implements PatientManager{
 				String medicalHistory = rs.getString("medicalHistory");
 				String treatment = rs.getString("treatment");
 				Reports report = new Reports(id, medicalHistory, treatment);
-				patient.getReports().add(report);
+				reports.add(report);
 			}
 			
 			rs.close();
