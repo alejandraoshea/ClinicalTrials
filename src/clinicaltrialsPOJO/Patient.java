@@ -57,9 +57,18 @@ public class Patient implements Serializable{
 	@XmlTransient
 	private List<TrialsApplication> trialApplications; //1 to N relation
 	
+
 	
 	
-	
+	public Patient() {
+		super();
+		this.reports = new ArrayList<Reports>();
+		this.trialApplications = new ArrayList<TrialsApplication>();
+	}
+
+
+
+
 	public Patient(Integer patient_id, String email, String name, Integer phone, Date dateOfBirth) {
 		super();
 		this.patient_id = patient_id;

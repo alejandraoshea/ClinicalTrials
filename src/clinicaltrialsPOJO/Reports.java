@@ -19,6 +19,14 @@ public class Reports implements Serializable{
 	private Patient patient; //1 to N relation 
 	
 	
+	
+
+	public Reports() {
+		super();
+		this.sponsor = new ArrayList<Sponsor>();
+	}
+
+
 	public Reports(String medicalHistory, String treatment) {
 		super();
 		this.medicalHistory = medicalHistory;

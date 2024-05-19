@@ -19,6 +19,13 @@ public class TrialsApplication implements Serializable{
 	private Trial trial; //1 to N relation
 	
 	
+	
+	
+	public TrialsApplication() {
+		super();
+	}
+
+
 	public TrialsApplication(Integer trialsApplication_id, Date dateApplication, Date dateResolution,
 			boolean approved) {
 		super();

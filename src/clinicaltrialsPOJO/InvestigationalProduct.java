@@ -22,6 +22,14 @@ public class InvestigationalProduct implements Serializable{
 	
 	
 	
+	
+	public InvestigationalProduct() {
+		super();
+		this.trial = new ArrayList<Trial>();
+	}
+
+
+
 	public InvestigationalProduct(Integer amount, String description, String type) {
 		super();
 		this.amount = amount;

@@ -39,6 +39,15 @@ public class Administrator implements Serializable{
 	
 	
 	
+	public Administrator() {
+		super();
+		this.trialsApplications = new ArrayList<TrialsApplication>();
+		this.trials = new ArrayList<Trial>();
+	}
+
+
+
+
 	public Administrator(Integer admin_id, String name, String email, Integer phone) {
 		super();
 		this.admin_id = admin_id;
@@ -50,8 +59,7 @@ public class Administrator implements Serializable{
 	}
 	
 	
-	
-	
+
 	
 	public Administrator(String name, String email, Integer phone) {
 		super();

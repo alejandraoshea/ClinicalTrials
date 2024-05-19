@@ -33,6 +33,17 @@ public class Sponsor implements Serializable{
 	private List<Reports> reports; 
 	
 	
+	
+	
+	public Sponsor() {
+		super();
+		this.trials = new ArrayList<Trial>();
+		this.reports = new ArrayList<Reports>();
+	}
+
+
+
+
 	public Sponsor(Integer sponsor_id, String name, String email, Integer phone, Integer cardNumber) {
 		super();
 		this.sponsor_id = sponsor_id;

@@ -22,7 +22,17 @@ public class Trial implements Serializable{
 	
 	
 	
-	
+	public Trial() {
+		super();
+		this.patients = new ArrayList<Patient>();
+		this.trialsApplications = new ArrayList<TrialsApplication>();
+		this.investigationalProduct = new ArrayList<InvestigationalProduct>();
+		this.sponsor = new ArrayList<Sponsor>();
+	}
+
+
+
+
 	public Trial(Integer trial_id, Integer totalAmountInvested) {
 		super();
 		this.trial_id = trial_id;

@@ -222,7 +222,7 @@ private static void updatePassword() throws Exception {
 		
 		}catch(Exception e){
 			e.printStackTrace();
-			}
+		}
 }
 
 
