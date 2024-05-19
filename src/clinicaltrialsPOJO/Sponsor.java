@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Sponsor")
-@XmlType(propOrder = {"name", "email", "phone"})
+@XmlType(propOrder = {"name", "phone"})
 
 public class Sponsor implements Serializable{
 	/**
