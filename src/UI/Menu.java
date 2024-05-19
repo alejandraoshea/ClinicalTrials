@@ -216,6 +216,7 @@ private static void updatePassword() throws Exception {
 				createSponsor(email);
 			}else if(r.getName() == "engineer") {
 				createEngineer(email);
+				//try?
 			}
 			
 			User u = new User(email, pass, r);
