@@ -249,7 +249,8 @@ private static void updatePassword() throws Exception {
 				System.out.println("7. Assign Patient to Trial"); 
 				System.out.println("8. Delete a Patient of a Trial"); 
 				System.out.println("9. Print all the patients of a Clinical Trial");
-				System.out.println("10. Print admin to xml.");
+				System.out.println("10. Print admin to xml");
+				System.out.println("11. Load Admins from xml File"); 
 				System.out.println("0. Return.\n"); 
          
 				choice = Integer.parseInt(reader.readLine()); 
@@ -285,6 +286,9 @@ private static void updatePassword() throws Exception {
 				case 10: 
 					printMeAdmin(id); 
 					break; 	
+				case 11: 
+					loadAdmins(); 
+					break; 
 				case 0: 
 					System.out.println("Back to main menu"); 
 				}
@@ -399,6 +403,13 @@ private static void updatePassword() throws Exception {
 		trials = adminmanager.getListOfTrials();
 		
 		System.out.println(trials);
+	}
+
+	private static void loadAdmins(){
+		Admin admin = null; 
+		File file = new File(".xmls/External-Admin.xml"); 
+		admin = xmlmanager.xml2Admin(file); 
+		System.out.println(admin);   
 	}
 	
 
