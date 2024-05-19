@@ -115,9 +115,8 @@ public class JDBCPatientManager implements PatientManager{
 			
 			while(rs.next()){
 				Integer id = rs.getInt("id");
-				String medicalHistory = rs.getString("medialHistory");
+				String medicalHistory = rs.getString("medicalHistory");
 				String treatment = rs.getString("treatment");
-				
 				Reports report = new Reports(id, medicalHistory, treatment);
 				patient.getReports().add(report);
 			}

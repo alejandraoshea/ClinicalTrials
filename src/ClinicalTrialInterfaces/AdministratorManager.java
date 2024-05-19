@@ -6,6 +6,7 @@ import clinicaltrialsPOJO.Administrator;
 import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.Patient;
 import clinicaltrialsPOJO.Trial;
+import clinicaltrialsPOJO.Reports;
 
 
 public interface AdministratorManager {
@@ -21,6 +22,7 @@ public interface AdministratorManager {
 	public List<Patient> getPatientsOfTrial(Integer trial_id);
 	public Administrator searchAdminById(Integer id);
 	public List<Patient> getPatients();
+	public Reports getReportByID(Integer report_id);
 	
 
 }

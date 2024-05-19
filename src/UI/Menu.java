@@ -536,9 +536,6 @@ private static void updatePassword() throws Exception {
 		patientmanager.createPatient(patient);
 	}
 		
-	private static void assignDoctorToPatient(Integer patient_id, Integer doctor_id) {
-		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
-	}
 	
 	private static void createReport() throws Exception{
 		System.out.println("Introduce the medical History: \n");
@@ -555,8 +552,9 @@ private static void updatePassword() throws Exception {
 		System.out.println("Introduce the patient id: \n");
 		Integer patient_id = Integer.parseInt(reader.readLine());
 		Patient patient = patientmanager.searchPatientById(patient_id);
-		reports = patient.getReports();
-		reports.toString();
+		reports = patientmanager.getListReportsOfPatient(patient);
+		
+		System.out.println(reports);
 	}
 	
 
@@ -589,7 +587,10 @@ private static void updatePassword() throws Exception {
 		Integer patient_id = Integer.parseInt(reader.readLine());
 		Patient patient = patientmanager.searchPatientById(patient_id);
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
-		Reports report = new Reports(report_id);
+		Reports report = adminmanager.getReportByID(report_id);
+		
+		doctormanager.assignReportToPatient(report_id, patient_id);
+		
 		doctor.getReports().add(report);
 		patient.getReports().add(report);
 	}

@@ -12,6 +12,7 @@ import clinicaltrialsPOJO.Administrator;
 import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.InvestigationalProduct;
 import clinicaltrialsPOJO.Patient;
+import clinicaltrialsPOJO.Reports;
 import clinicaltrialsPOJO.Trial;
 
 public class JDBCAdministratorManager implements AdministratorManager{
@@ -317,5 +318,31 @@ private JDBCManager manager;
 		return admin;
 	}
 	
+	
+	@Override
+	public Reports getReportByID(Integer report_id) {
+		// TODO Auto-generated method stub
+		Reports report = null;
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM report WHERE id=" + report_id;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			Integer id = rs.getInt("id");
+			String medicalHistory = rs.getString("medicalHistory");
+			String treatment = rs.getString("treatment");
+			
+		    report = new Reports(id, medicalHistory, treatment);
+		    
+		    rs.close();
+		    stmt.close();
+		    
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return report;
+	}
 	
 }
