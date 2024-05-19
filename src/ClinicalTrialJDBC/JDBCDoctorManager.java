@@ -85,7 +85,7 @@ public class JDBCDoctorManager implements DoctorManager{
 			
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, report.getMedicalHistory());
-			prep.setString(1, report.getTreatment());
+			prep.setString(2, report.getTreatment());
 			
 			prep.executeUpdate();				
 		}catch(Exception e){
