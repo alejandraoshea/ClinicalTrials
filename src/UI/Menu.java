@@ -551,6 +551,7 @@ private static void updatePassword() throws Exception {
 		List<Reports> reports = null;
 		System.out.println("Introduce the patient id: \n");
 		Integer patient_id = Integer.parseInt(reader.readLine());
+		
 		Patient patient = patientmanager.searchPatientById(patient_id);
 		reports = patientmanager.getListReportsOfPatient(patient);
 		
@@ -887,6 +888,9 @@ private static void updatePassword() throws Exception {
 			reports = sponsormanager.getReportsOfAPatient(patient_id);
 			System.out.println(reports);
 		}
+		
+		
+		
 		
 		//engineer menu:
 		private static void engineerMenu(String email, Integer id) {
