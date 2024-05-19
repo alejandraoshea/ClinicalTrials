@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Admin")
-@XmlType(propOrder = {"email", "name", "phone", "trials"})  
+@XmlType(propOrder = {"name", "phone", "trials"})  
 public class Administrator implements Serializable{
 	/**
 	 * 
