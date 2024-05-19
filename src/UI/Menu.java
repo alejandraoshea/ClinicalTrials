@@ -157,11 +157,7 @@ private static void updatePassword() throws Exception {
 				
 	}
 
-	/*Esta función comprueba q haya al menos 1 mayuscula, 1 numero y 1 minuscula, la pondría con un 
-	 * while(false){
-	 * sout("no valida, intor otra con esto")
-	 * password=reader.readLine();
-	*/ 
+	//Esta función comprueba q haya al menos 1 mayuscula, 1 numero y 1 minuscula, la pondría con un 
 
  private static boolean checkPasswordStrength(String password) {
     int cantMayusc = 0;
