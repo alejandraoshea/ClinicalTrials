@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.sql.Date;
 import java.util.List;
+import java.nio.charset.StandardCharsets;
 
 import ClinicalTrialInterfaces.AdministratorManager;
 import ClinicalTrialInterfaces.DoctorManager;
@@ -131,11 +132,19 @@ private static void updatePassword() throws Exception {
 				
 		System.out.println("Enter current Password");
 		String passwd = reader.readLine();
+
+		User u = usermanager.checkPassword(email, passwd);
 		
 		System.out.println("Enter new Password");
 		String new_passwd = reader.readLine();
-				
-		User u = usermanager.checkPassword(email, passwd);
+		
+		boolean psswdStrong = checkPasswordStrength(new_passwd); 
+		if(psswdStrong == true) {
+			System.out.println("The password is strong");
+		}else {
+			System.out.println("The password is not strong enough. Enter a new one:");
+			new_passwd = reader.readLine();
+		}
 				
 		if(u!=null){
 			System.out.println("Login of user successful!");
@@ -144,12 +153,13 @@ private static void updatePassword() throws Exception {
 				
 	}
 
-/*Esta función comprueba q haya al menos 1 mayuscula, 1 numero y 1 minuscula, la pondría con un 
- * while(false){
- * sout("no valida, intor otra con esto")
- * password=reader.readLine();
- * 
- * private static boolean checkPasswordStrength(String password) {
+	/*Esta función comprueba q haya al menos 1 mayuscula, 1 numero y 1 minuscula, la pondría con un 
+	 * while(false){
+	 * sout("no valida, intor otra con esto")
+	 * password=reader.readLine();
+	*/ 
+
+ private static boolean checkPasswordStrength(String password) {
     int cantMayusc = 0;
     int cantMinus = 0;
     int cantNum = 0;
@@ -163,45 +173,52 @@ private static void updatePassword() throws Exception {
 
     if (cantMayusc >= 1 && cantMinus >= 1 && cantNum >= 1) {
         return true;
-    } else return false;
-}
-*/
-private static void signUpUser() {
-	// TODO Auto-generated method stub
-	
+    	} else return false;
+ 	}
+
+
+ 	private static void signUpUser() {
+ 		// TODO Auto-generated method stub
    
-	try {
-		System.out.println("\nIntroduce email: \n");
-		String email = reader.readLine();
-		System.out.println("Introduce the password: \n");
-		String password = reader.readLine();
+		try {
+			System.out.println("\nIntroduce email: \n");
+			String email = reader.readLine();
+			System.out.println("Introduce the password: \n");
+			String password = reader.readLine();
+			boolean psswdStrong = checkPasswordStrength(password); 
+			if(psswdStrong == true) {
+				System.out.println("The password is strong");
+			}else {
+				System.out.println("The password is not strong enough. Enter a new one:");
+				password = reader.readLine();
+			}
+			
+			 MessageDigest md= MessageDigest.getInstance("MD5");
+			 md.update(password.getBytes());
+			 byte[] pass = md.digest();
+			 
 		
-		 MessageDigest md= MessageDigest.getInstance("MD5");
-		 md.update(password.getBytes());
-		 byte[] pass = md.digest();
-		 
-	
-		System.out.println("\nIntroduce the role of the user. 1: Administrator, 2: Doctor, 3. Patient, 4. Sponsor, 5. Engineer ");
-		Integer rol = Integer.parseInt(reader.readLine());
-		Role r = usermanager.getRole(rol);
+			System.out.println("\nIntroduce the role of the user. 1: Administrator, 2: Doctor, 3. Patient, 4. Sponsor, 5. Engineer ");
+			Integer rol = Integer.parseInt(reader.readLine());
+			Role r = usermanager.getRole(rol);
+			
+			if(r.getName() == "administrator") {
+				createAdmin(email);
+			}else if(r.getName() == "doctor") {
+				createDoctor(email);
+			}else if(r.getName() == "patient") {
+				createPatient(email);
+			}else if(r.getName() == "sponsor") {
+				createSponsor(email);
+			}else if(r.getName() == "engineer") {
+				createEngineer(email);
+			}
+			
+			User u = new User(email, pass, r);
 		
-		if(r.getName() == "administrator") {
-			createAdmin(email);
-		}else if(r.getName() == "doctor") {
-			createDoctor(email);
-		}else if(r.getName() == "patient") {
-			createPatient(email);
-		}else if(r.getName() == "sponsor") {
-			createSponsor(email);
-		}else if(r.getName() == "engineer") {
-			createEngineer(email);
-		}
-		
-		User u = new User(email, pass, r);
-	
-	}catch(Exception e){
-		e.printStackTrace();
-		}
+		}catch(Exception e){
+			e.printStackTrace();
+			}
 }
 
 
