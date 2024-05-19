@@ -68,7 +68,7 @@ public class Menu {
 					login();	
 					break;
 				case 2:
-					System.out.println("Add info of new user\n.");
+					System.out.println("Add info of new user");
 					signUpUser();
 					break;
 				case 3: 
@@ -130,21 +130,25 @@ private static void updatePassword() throws Exception {
 		System.out.println("\nEmail: ");
 		String email = reader.readLine();
 				
-		System.out.println("Enter current Password");
+		System.out.println("\nEnter current Password");
 		String passwd = reader.readLine();
 
 		User u = usermanager.checkPassword(email, passwd);
 		
-		System.out.println("Enter new Password");
+		System.out.println("\nEnter new Password");
 		String new_passwd = reader.readLine();
 		
-		boolean psswdStrong = checkPasswordStrength(new_passwd); 
-		if(psswdStrong == true) {
-			System.out.println("The password is strong");
-		}else {
-			System.out.println("The password is not strong enough. Enter a new one:");
-			new_passwd = reader.readLine();
+		boolean psswdStrong = false; 
+		while(!psswdStrong) {
+			psswdStrong = checkPasswordStrength(new_passwd);
+			if(psswdStrong) {
+				System.out.println("\nThe password is strong");
+			}else {
+				System.out.println("\nThe password is not strong enough. Enter a new one:");
+				new_passwd = reader.readLine();
+			}
 		}
+		
 				
 		if(u!=null){
 			System.out.println("Login of user successful!");
@@ -181,16 +185,20 @@ private static void updatePassword() throws Exception {
  		// TODO Auto-generated method stub
    
 		try {
-			System.out.println("\nIntroduce email: \n");
+			System.out.println("\nIntroduce email: ");
 			String email = reader.readLine();
-			System.out.println("Introduce the password: \n");
+			System.out.println("\nIntroduce the password: ");
 			String password = reader.readLine();
-			boolean psswdStrong = checkPasswordStrength(password); 
-			if(psswdStrong == true) {
-				System.out.println("The password is strong");
-			}else {
-				System.out.println("The password is not strong enough. Enter a new one:");
-				password = reader.readLine();
+			
+			boolean psswdStrong = false; 
+			while(!psswdStrong) {
+				psswdStrong = checkPasswordStrength(password);
+				if(psswdStrong) {
+					System.out.println("The password is strong");
+				}else {
+					System.out.println("The password is not strong enough. Enter a new one:");
+					password = reader.readLine();
+				}
 			}
 			
 			 MessageDigest md= MessageDigest.getInstance("MD5");
@@ -289,9 +297,9 @@ private static void updatePassword() throws Exception {
 }
 
 	private static void createTrial() throws Exception{
-		System.out.println("Type the requirements of the trial\n"); 
+		System.out.println("\nType the requirements of the trial"); 
 		String requirements = reader.readLine(); 
-		System.out.println("Type the amount of money invested\n");
+		System.out.println("\nType the amount of money invested");
 		Integer moneyInv = Integer.parseInt(reader.readLine());
 		Trial trial = new Trial(requirements, moneyInv); 
 		adminmanager.createTrial(trial); 
@@ -299,9 +307,9 @@ private static void updatePassword() throws Exception {
 	
 	
 	private static void createAdmin(String email) throws Exception{
-		System.out.println("Type the name of the admistrator\n"); 
+		System.out.println("\nType the name of the admistrator"); 
 		String name = reader.readLine(); 
-		System.out.println("Type the phone of the admistrator\n");
+		System.out.println("\nType the phone of the admistrator");
 		Integer phone = Integer.parseInt(reader.readLine());
 		Administrator admin = new Administrator(name, email, phone); 
 		adminmanager.createAdmin(admin); 
@@ -309,11 +317,11 @@ private static void updatePassword() throws Exception {
 	
 	
 	private static void addNewAdmin() throws Exception{
-		System.out.println("Type the name of the admistrator\n"); 
+		System.out.println("\nType the name of the admistrator"); 
 		String name = reader.readLine(); 
-		System.out.println("Type the email of the admistrator\n");
+		System.out.println("\nType the email of the admistrator");
 		String email = reader.readLine();
-		System.out.println("Type the phone of the admistrator\n");
+		System.out.println("\nType the phone of the admistrator");
 		Integer phone = Integer.parseInt(reader.readLine());
 		Administrator admin = new Administrator(name, email, phone); 
 		adminmanager.createAdmin(admin); 
@@ -332,7 +340,7 @@ private static void updatePassword() throws Exception {
 	}
 	
 	private static Integer getAmountInvested() throws Exception{
-		System.out.println("Type the id of the trial\n");
+		System.out.println("\nType the id of the trial");
 		Integer id = Integer.parseInt(reader.readLine());
 		Trial trial = adminmanager.getTrialByID(id);
 		Integer amountInv = trial.getTotalAmountInvested();
@@ -342,7 +350,7 @@ private static void updatePassword() throws Exception {
 	
 	
 	private static void updateAcceptancePatient()  throws Exception{
-		System.out.println("Introduce the patient id : \n"); 
+		System.out.println("\nIntroduce the patient id :"); 
 		Integer patient_id = Integer.parseInt(reader.readLine());
 		Patient patient = patientmanager.searchPatientById(patient_id);
 		adminmanager.updateAcceptancePatient(patient_id);
@@ -350,9 +358,9 @@ private static void updatePassword() throws Exception {
 	
 
 	private static void assignPatientToTrial() throws Exception{
-		System.out.println("Introduce the patient id: \n"); 
+		System.out.println("\nIntroduce the patient id: "); 
 		Integer patient_id = Integer.parseInt(reader.readLine()); 
-		System.out.println("Introduce the trial id: \n"); 
+		System.out.println("\nIntroduce the trial id: "); 
 		Integer trial_id = Integer.parseInt(reader.readLine()); 
 		Patient patient = patientmanager.searchPatientById(patient_id);
 		Trial trial = adminmanager.getTrialByID(trial_id);
@@ -361,14 +369,14 @@ private static void updatePassword() throws Exception {
 	}
 	
 	private static void deletePatientFromTrial() throws Exception{
-		System.out.println("Introduce the patient id: \n"); 
+		System.out.println("\nIntroduce the patient id:"); 
 		Integer patient_id = Integer.parseInt(reader.readLine()); 
 		adminmanager.deletePatientbyId(patient_id);
 	}
 	
 	
 	private static void getAllPatientsCT() throws Exception {
-		System.out.println("Type the id of the clinical trial\n");
+		System.out.println("\nType the id of the clinical trial");
 		Integer trial_id = Integer.parseInt(reader.readLine());
 		List<Patient> patientsTrial = null;
 		patientsTrial = adminmanager.getPatientsOfTrial(trial_id);
@@ -474,11 +482,11 @@ private static void updatePassword() throws Exception {
 
 
 	private static void createDoctor(String email) throws Exception{
-		System.out.println("Type the name of the doctor\n");
+		System.out.println("\nType the name of the doctor");
 		String name = reader.readLine();
-		System.out.println("Type the phone of the doctor\n");
+		System.out.println("\nType the phone of the doctor");
 		Integer phone = Integer.parseInt(reader.readLine());
-		System.out.println("Type the specialization of the doctor\n");
+		System.out.println("\nType the specialization of the doctor");
 		String specialization = reader.readLine();
 		
 		Doctor doctor = new Doctor(name, phone, email, specialization);
@@ -488,13 +496,13 @@ private static void updatePassword() throws Exception {
 	
 	
 	private static void addNewDoctor() throws Exception{
-		System.out.println("Type the name of the doctor\n");
+		System.out.println("\nType the name of the doctor");
 		String name = reader.readLine();
-		System.out.println("Type the email of the doctor\n");
+		System.out.println("\nType the email of the doctor\n");
 		String email = reader.readLine();
-		System.out.println("Type the phone of the doctor\n");
+		System.out.println("\nType the phone of the doctor\n");
 		Integer phone = Integer.parseInt(reader.readLine());
-		System.out.println("Type the specialization of the doctor\n");
+		System.out.println("\nType the specialization of the doctor\n");
 		String specialization = reader.readLine();
 		
 		Doctor doctor = new Doctor(name, phone, email, specialization);
