@@ -1,0 +1,19 @@
+<?xml version = "1.0" encoding = "UTF-8" standalone = "yes"?> 
+
+<!DOCTYPE Administrator [ 
+
+<!ELEMENT  Administrator (name, phone, trials)> 
+      <!ATTLIST Administrator email CDATA #REQUIRED> 
+          <!ELEMENT name (#PCDATA)> 
+          <!ELEMENT phone (#PCDATA)> 
+          <!ELEMENT trials (#PCDATA)> 
+]>
+
+
+
+<Administrator email = "nerealeria@gmail.com"> 
+	<name> Nerea </name>
+	<phone> 659992451 </phone>
+	<trials> 1 </trials>
+
+</Administrator>

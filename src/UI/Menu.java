@@ -406,8 +406,8 @@ private static void updatePassword() throws Exception {
 	}
 
 	private static void loadAdmins(){
-		Admin admin = null; 
-		File file = new File(".xmls/External-Admin.xml"); 
+		Administrator admin = null; 
+		File file = new File("./xmls/External-Doctor.xml"); 
 		admin = xmlmanager.xml2Admin(file); 
 		System.out.println(admin);   
 	}
