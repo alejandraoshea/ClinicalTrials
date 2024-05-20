@@ -39,7 +39,6 @@ public class Menu {
 	private static XMLManager xmlmanager; 
 	
 	
-	
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
 
 	public static void main(String[] args) {
