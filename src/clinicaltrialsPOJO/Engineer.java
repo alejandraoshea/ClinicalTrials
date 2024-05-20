@@ -31,7 +31,8 @@ public class Engineer implements Serializable{
 	private String email;
 	@XmlElement
 	private Integer phone;
-	@XmlElement
+	@XmlElementWrapper(name = "investigationalProducts")
+	@XmlElement(name = "investigationalProduct")
 	private List<InvestigationalProduct> investigationalProduct;
 	
 	
