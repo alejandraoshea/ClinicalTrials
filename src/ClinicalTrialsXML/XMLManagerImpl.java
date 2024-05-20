@@ -186,22 +186,20 @@ public class XMLManagerImpl implements XMLManager{
 	@Override
 	public void sponsor2xml(Integer id) {
 		// TODO Auto-generated method stub
-		Sponsor s = null;
+		Sponsor sponsor = null;
 		manager = new JDBCManager();
 		sponsormanager = new JDBCSponsorManager(manager);
 		
 			
 		try {
-			//Do a sql query to get the sponsor by the id
-			s = sponsormanager.searchSponsorById(id);
+			sponsor = sponsormanager.searchSponsorById(id);
 
-			//export the owner to an xml file
 			JAXBContext jaxbContext = JAXBContext.newInstance(Sponsor.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
 			
 			File file = new File("Sponsor.xml");
-			marshaller.marshal(s, file);
-			System.out.print(s);
+			marshaller.marshal(sponsor, file);
+		
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -210,9 +208,20 @@ public class XMLManagerImpl implements XMLManager{
 	@Override
 	public Sponsor xml2Sponsor(File xml) {
 		// TODO Auto-generated method stub
+		Sponsor sponsor = null;
+		manager = new JDBCManager();
+		sponsormanager = new JDBCSponsorManager(manager);
 		
-		return null;
-		
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(Sponsor.class);
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+			
+			sponsor = (Sponsor) unmarshaller.unmarshal(xml);
+			sponsormanager.createSponsor(sponsor);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return sponsor;
 	}
 	
 
