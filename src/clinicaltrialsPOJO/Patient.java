@@ -22,7 +22,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Patient")
-@XmlType(propOrder = {"email", "name", "phone",  "bloodType", "disease", "cured", "doctor","dateOfBirth"})
+@XmlType(propOrder = {"name", "phone",  "bloodType", "disease", "cured", "doctor","dateOfBirth"})
 
 public class Patient implements Serializable{
 	/**
