@@ -34,7 +34,7 @@ public class Administrator implements Serializable{
 	private Integer phone;
 	@XmlTransient
 	private List<TrialsApplication> trialsApplications;
-	@XmlElementWrapped(name = "trials")
+	@XmlElementWrapper(name = "trials")
 	@XmlElement(name = "trial")
 	private List<Trial> trials;
 	
