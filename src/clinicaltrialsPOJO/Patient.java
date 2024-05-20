@@ -52,7 +52,7 @@ public class Patient implements Serializable{
 	private List<Reports> reports;
 	@XmlElement
 	private Doctor doctor;  //1 to N relation
-	@XmlElement
+	@XmlTransient
 	private Trial trial; //1 to N relation
 	@XmlTransient
 	private List<TrialsApplication> trialApplications; //1 to N relation
