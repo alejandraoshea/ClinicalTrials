@@ -772,6 +772,8 @@ private static void updatePassword() throws Exception {
 					System.out.println("4. Create an investment.");
 					System.out.println("5. Update an investment.");
 					System.out.println("6. Print all the reports of a trial.");
+					System.out.println("7. Print me to xml.");
+					System.out.println("8. Load from xml.");
 					System.out.println("0. Return.\n");	
 						
 					choice = Integer.parseInt(reader.readLine());
@@ -800,7 +802,14 @@ private static void updatePassword() throws Exception {
 						getListReportsOfPatient();
 						break;
 						
-					
+					case 7:
+						printMeSponsor(id);
+						break;
+						
+					case 8:
+						loadSponsor();
+						break;
+						
 					case 0:
 						System.out.println("Back to main menu");
 							
@@ -901,6 +910,21 @@ private static void updatePassword() throws Exception {
 			reports = sponsormanager.getReportsOfAPatient(patient_id);
 			System.out.println(reports);
 		}
+		
+		
+		private static void printMeSponsor(Integer id) {
+			xmlmanager.sponsor2xml(id);
+		}
+		
+
+		private static void loadSponsor() {
+			Sponsor sponsor = null;
+			File file = new File("./xmls/External-Sponsor.xml");
+			sponsor = xmlmanager.xml2Sponsor(file);
+			System.out.println(sponsor);
+		}
+		
+		
 		
 		
 		
