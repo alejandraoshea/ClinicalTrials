@@ -42,6 +42,17 @@ public class Reports implements Serializable{
 		this.treatment = treatment;
 		this.sponsor = new ArrayList<Sponsor>();
 	}
+	
+	
+	
+
+
+	public Reports(String medicalHistory, String treatment, Doctor doctor) {
+		super();
+		this.medicalHistory = medicalHistory;
+		this.treatment = treatment;
+		this.doctor = doctor;
+	}
 
 
 	public Reports(Integer report_id) {

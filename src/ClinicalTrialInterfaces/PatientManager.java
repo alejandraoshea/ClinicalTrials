@@ -12,6 +12,7 @@ public interface PatientManager {
 	public void applyToClinicalTrial(Integer admin_id, Integer trial_id, Integer patient_id);
 	public boolean getStateRequest(Integer patient_id);
 	public Patient searchPatientById(Integer patient_id);
+	public Patient searchPatientByEmail(String email);
 	public List<Reports> getListReportsOfPatient(Patient patient);
 	
 }

@@ -169,6 +169,32 @@ public class JDBCPatientManager implements PatientManager{
 		}
 		
 	}
+
+
+	@Override
+	public Patient searchPatientByEmail(String email) {
+		// TODO Auto-generated method stub
+Patient patient = null;
+		
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM patient WHERE email=" + email;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			Integer patient_id = rs.getInt("id");
+			String name = rs.getString("name");
+			Integer phone = rs.getInt("phone");
+			
+		    patient = new Patient (patient_id, name, email, phone);
+		    
+		    rs.close();
+		    stmt.close();
+		    
+		}catch(Exception e) {e.printStackTrace();}
+		return patient;
+	}
 	
 	
 	

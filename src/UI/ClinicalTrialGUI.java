@@ -104,20 +104,20 @@ public class ClinicalTrialGUI extends JFrame {
                   
                    if( u!= null && u.getRole().getName().equals("administrator")) {
                    	role = "admin";
-                   	showMenu(role);
+                   	showMenu(u, role);
                    	
                    }else if( u!= null && u.getRole().getName().equals("doctor")) {
                    	role = "doctor";
-                   	showMenu(role);
+                   	showMenu(u, role);
                    }else if( u!= null && u.getRole().getName().equals("patient")) {
                    	role = "patient";
-                   	showMenu(role);
+                   	showMenu(u, role);
                    }else if( u!= null && u.getRole().getName().equals("sponsor")) {
                    	role = "sponsor";
-                   	showMenu(role);
+                   	showMenu(u, role);
                    }else if( u!= null && u.getRole().getName().equals("engineer")) {
                    	role = "engineer";
-                   	showMenu(role);
+                   	showMenu(u, role);
                    }
                   
                   
@@ -501,7 +501,7 @@ public class ClinicalTrialGUI extends JFrame {
    
    
   
-   private void showMenu(String role) {
+   private void showMenu(User u, String role) {
        menuFrame = new JFrame("Clinical Trial Database");
        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        menuFrame.setPreferredSize(new Dimension(1200, 800));
@@ -529,7 +529,7 @@ public class ClinicalTrialGUI extends JFrame {
        		buttons = new JButton[]{new JButton("Add a new Clinical Trial"),
        				new JButton("Add a new Administrator"), new JButton("Show all the patients in DB"),
        				new JButton("Show all the admins in DB"), new JButton("Show amount invested"),
-       				new JButton("Update acceptance state\nof a patient"), new JButton("Assign patient to a CT"),
+       				new JButton("Update acceptance state of a patient"), new JButton("Assign patient to a CT"),
        				new JButton("Delete a patient of a CT"), new JButton("Show all patients of CT"),
        				new JButton("Print admin to xml"), new JButton("Load admin from xml")};
        		break;
@@ -538,13 +538,13 @@ public class ClinicalTrialGUI extends JFrame {
                 buttons = new JButton[]{new JButton("Add new doctor"), new JButton("Show all the doctors in DB"),
                		 new JButton("Assign doctor to a patient"), new JButton("Update speciality of a doctor"),
                		 new JButton("Create a report"), new JButton("Assign report to patient"),
-               		 new JButton("Print all reports\nof patient"), new JButton("Choose investigational product"),
+               		 new JButton("Show all reports of patient"), new JButton("Choose investigational product"),
                		 new JButton("Print doctor to xml"), new JButton("Load doctor from xml")};
                 break;
                
            case "patient":
                buttons = new JButton[]{new JButton("Apply to a CT"), new JButton("Get the state of request"),
-              		 new JButton("Show all reports"), new JButton("Show all Clinical Trials"),
+              		 new JButton("Show all reports of patient"), new JButton("Show all Clinical Trials"),
               		 new JButton("Print patient to xml"), new JButton("Load patient from xml")};
                break;  
               
@@ -557,7 +557,7 @@ public class ClinicalTrialGUI extends JFrame {
               
            case "engineer":
            	buttons = new JButton[]{new JButton("Add a new engineer"), new JButton("Show all engineers in DB"),
-                 		 new JButton("Add a new Inv Product"), new JButton("Show all Inv Pr of trial"),
+                 		 new JButton("Add a new Inv Product"), new JButton("Show all Inv Pr"),
                  		 new JButton("Print engineer to xml"), new JButton("Load engineer from xml")};
            	break;
               
@@ -626,8 +626,8 @@ public class ClinicalTrialGUI extends JFrame {
 	                    case "Assign report to patient":
 	                        assignReportToPatient();
 	                        break;
-	                    case "Print all reports of patient":
-	                        printAllReportsOfPatient();
+	                    case "Show all reports of patient":
+	                        showAllReportsOfPatient();
 	                        break;
 	                    case "Choose investigational product":
 	                        chooseInvestigationalProduct();
@@ -639,13 +639,10 @@ public class ClinicalTrialGUI extends JFrame {
 	                        loadFromXML("doctor");
 	                        break;
 	                    case "Apply to a CT":
-	                        applyToCT();
+	                        applyToCT(u);
 	                        break;
 	                    case "Get the state of request":
 	                        getStateOfRequest();
-	                        break;
-	                    case "Show all reports":
-	                        showAllReports();
 	                        break;
 	                    case "Print patient to xml":
 	                        printToXML("patient");
@@ -668,9 +665,6 @@ public class ClinicalTrialGUI extends JFrame {
 	                    case "Update an investment":
 	                        updateInvestment();
 	                        break;
-	                    case "Show all reports of patient":
-	                        showAllReportsOfPatient();
-	                        break;
 	                    case "Print sponsor to xml":
 	                        printToXML("sponsor");
 	                        break;
@@ -687,7 +681,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        addNewInvProduct();
 	                        break;
 	                    case "Show all Inv Pr of trial":
-	                        showAllInvPrOfTrial();
+	                        showAllInvPr();
 	                        break;
 	                    case "Print engineer to xml":
 	                        printToXML("engineer");
@@ -793,13 +787,14 @@ public class ClinicalTrialGUI extends JFrame {
    	formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
   
    	JLabel nameLabel = new JLabel("Name:");
-   	JTextArea nameField = new JTextArea(5, 20);
-       JLabel phoneLabel = new JLabel("Phone:");
-       JTextField phoneField = new JTextField(20);
-       customizeTextField(phoneField);
-       JLabel emailLabel = new JLabel("Email:");
-       JTextField emailField = new JTextField(20);
-       customizeTextField(emailField);
+   	JTextField nameField = new JTextField(20);
+   	customizeTextField(nameField);
+    JLabel phoneLabel = new JLabel("Phone:");
+    JTextField phoneField = new JTextField(20);
+    customizeTextField(phoneField);
+    JLabel emailLabel = new JLabel("Email:");
+    JTextField emailField = new JTextField(20);
+    customizeTextField(emailField);
    	
        JButton createButton = new JButton("Create");
        customizeButton(createButton);
@@ -819,8 +814,11 @@ public class ClinicalTrialGUI extends JFrame {
            }
        });
        formPanel.add(nameLabel);
+       formPanel.add(nameField, "growx, wrap");
        formPanel.add(phoneLabel);
+       formPanel.add(phoneField, "growx, wrap");
        formPanel.add(emailLabel);
+       formPanel.add(emailField, "growx, wrap");
        formPanel.add(createButton, "span, align center");
        contentPanel.add(formPanel, BorderLayout.CENTER);
        contentPanel.revalidate();
@@ -897,67 +895,121 @@ public class ClinicalTrialGUI extends JFrame {
    }
   
    private void updateAcceptanceState() {
-	    List<Patient> patients = adminmanager.getPatients();
-	    String[] columnNames = {"ID", "Name", "Email", "Phone", "Date of Birth", "Cured", "Blood Type", "Name of Disease", "Acceptance State"}; // Column names
-	    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-	        @Override
-	        public boolean isCellEditable(int row, int column) {
-	            return column == 8; // Make only the Acceptance State column editable
-	        }
-	    };
+	   contentPanel.removeAll();
+	    JPanel formPanel = new JPanel();
+	    formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][]20[]"));
 
-	    for (Patient patient : patients) {
-	        Object[] rowData = {
-	            patient.getPatient_id(),
-	            patient.getName(),
-	            patient.getEmail(),
-	            patient.getPhone(),
-	            patient.getDateOfBirth(),
-	            patient.isCured(),
-	            patient.getBloodType(),
-	            patient.getDisease(),
-	            //patient.gettrialacceptance
-	        };
-	        model.addRow(rowData);
-	    }
+	    JLabel patientIdLabel = new JLabel("Patient ID:");
+	    JTextField patientIdField = new JTextField(20);
+	    customizeTextField(patientIdField);
 
-	    JTable table = new JTable(model);
-	    table.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(new JComboBox<>(new String[]{"Accepted", "Pending", "Rejected"})));
-	    JScrollPane scrollPane = new JScrollPane(table);
+	    JButton updateButton = new JButton("Update");
+	    customizeButton(updateButton);
 
-	    // Add save button to update acceptance states
-	    JButton saveButton = new JButton("Save Changes");
-	    customizeButton(saveButton);
-	    saveButton.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            for (int i = 0; i < table.getRowCount(); i++) {
-	                int patientId = (int) table.getValueAt(i, 0);
-	                String newState = (String) table.getValueAt(i, 8);
-	                //adminmanager.updateAcceptanceState(patientId, newState); 
-	            }
-	            JOptionPane.showMessageDialog(contentPanel, "Acceptance states updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	    updateButton.addActionListener(e -> {
+	        try {
+	            Integer patientId = Integer.parseInt(patientIdField.getText());
+	            adminmanager.updateAcceptancePatient(patientId);
+	            JOptionPane.showMessageDialog(contentPanel, "Acceptance state updated successfully!");
+	        } catch (NumberFormatException ex) {
+	            JOptionPane.showMessageDialog(contentPanel, "Please enter a valid patient ID!", "Error", JOptionPane.ERROR_MESSAGE);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while updating the acceptance state.", "Error", JOptionPane.ERROR_MESSAGE);
 	        }
 	    });
 
-	    // Clear and update content panel
-	    contentPanel.removeAll();
-	    contentPanel.setLayout(new BorderLayout());
-	    contentPanel.add(new JLabel("Update Acceptance State for Patients"), BorderLayout.NORTH); // Add the title above the table
-	    contentPanel.add(scrollPane, BorderLayout.CENTER);
-	    contentPanel.add(saveButton, BorderLayout.SOUTH);
+	    formPanel.add(patientIdLabel);
+	    formPanel.add(patientIdField, "growx");
+	    formPanel.add(updateButton, "span, align center");
+	    
+	    contentPanel.add(formPanel, BorderLayout.CENTER);
 	    contentPanel.revalidate();
 	    contentPanel.repaint();
 	}
 
 
    private void assignPatientToCT() {
+	   contentPanel.removeAll();
+	    JPanel formPanel = new JPanel();
+	    formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][]20[]"));
+
+	    JLabel patientIdLabel = new JLabel("Patient ID:");
+	    JTextField patientIdField = new JTextField(20);
+	    customizeTextField(patientIdField);
+
+	    JLabel trialIdLabel = new JLabel("Trial ID:");
+	    JTextField trialIdField = new JTextField(20);
+	    customizeTextField(trialIdField);
+
+	    JButton assignButton = new JButton("Assign");
+	    customizeButton(assignButton);
+
+	    assignButton.addActionListener(e -> {
+	        try {
+	            Integer patientId = Integer.parseInt(patientIdField.getText());
+	            Integer trialId = Integer.parseInt(trialIdField.getText());
+
+	            Patient patient = patientmanager.searchPatientById(patientId);
+	            Trial trial = adminmanager.getTrialByID(trialId);
+
+	            if (patient != null && trial != null) {
+	                trial.getPatients().add(patient);
+	                adminmanager.assignPatientToTrial(patientId, trialId);
+	                JOptionPane.showMessageDialog(contentPanel, "Patient assigned to trial successfully!");
+	            } else {
+	                JOptionPane.showMessageDialog(contentPanel, "Patient or trial not found!", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+	        } catch (NumberFormatException ex) {
+	            JOptionPane.showMessageDialog(contentPanel, "Please enter valid IDs!", "Error", JOptionPane.ERROR_MESSAGE);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while assigning the patient.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	    });
+
+	    formPanel.add(patientIdLabel);
+	    formPanel.add(patientIdField, "growx");
+	    formPanel.add(trialIdLabel);
+	    formPanel.add(trialIdField, "growx");
+	    formPanel.add(assignButton, "span, align center");
+	    
+	    contentPanel.add(formPanel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
      
    }
    
    
    private void deletePatientOfCT() {
-      
+	   contentPanel.removeAll();
+	    JPanel formPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+
+	    JLabel patientIdLabel = new JLabel("Patient ID:");
+	    JTextField patientIdField = new JTextField(20);
+	    JButton deleteButton = new JButton("Delete");
+	    customizeButton(deleteButton);
+
+	    deleteButton.addActionListener(e -> {
+	        try {
+	            Integer patientId = Integer.parseInt(patientIdField.getText());
+	            adminmanager.deletePatientbyId(patientId);
+	            JOptionPane.showMessageDialog(contentPanel, "Patient deleted from trial successfully!");
+	        } catch (NumberFormatException ex) {
+	            JOptionPane.showMessageDialog(contentPanel, "Please enter a valid patient ID.", "Error", JOptionPane.ERROR_MESSAGE);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while deleting the patient from trial.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	    });
+
+	    formPanel.add(patientIdLabel);
+	    formPanel.add(patientIdField);
+	    formPanel.add(deleteButton);
+
+	    contentPanel.add(formPanel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
    }
    
    
@@ -1025,48 +1077,53 @@ public class ClinicalTrialGUI extends JFrame {
   
    private void addNewDoctor() {
 	   contentPanel.removeAll();
-	   	JPanel formPanel = new JPanel();
-	   	formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
+	   JPanel formPanel = new JPanel();
+	   formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
 	  
-	   	JLabel nameLabel = new JLabel("Name:");
-	       JTextField nameField = new JTextField(20);
-	       customizeTextField(nameField);
-	       JLabel phoneLabel = new JLabel("Phone:");
-	       JTextField phoneField = new JTextField(20);
-	       customizeTextField(phoneField);
-	       JLabel emailLabel = new JLabel("Email:");
-	       JTextField emailField = new JTextField(20);
-	       customizeTextField(emailField);
-	       
-	       JLabel specializationLabel = new JLabel("Specialization:");
-	       JTextField specializationField = new JTextField(20);
-	       customizeTextField(specializationField);
-	   	
-	       JButton createButton = new JButton("Create");
-	       customizeButton(createButton);
-	      
-	       createButton.addActionListener(e -> {
-	           String name = nameField.getText();
-	           String phone = phoneField.getText();
-	           String email = emailField.getText();
-	           String specialization = specializationField.getText();
+	   JLabel nameLabel = new JLabel("Name:");
+       JTextField nameField = new JTextField(20);
+       customizeTextField(nameField);
+       JLabel phoneLabel = new JLabel("Phone:");
+       JTextField phoneField = new JTextField(20);
+       customizeTextField(phoneField);
+       JLabel emailLabel = new JLabel("Email:");
+       JTextField emailField = new JTextField(20);
+       customizeTextField(emailField);
+       
+       JLabel specializationLabel = new JLabel("Specialization:");
+       JTextField specializationField = new JTextField(20);
+       customizeTextField(specializationField);
+   	
+       JButton createButton = new JButton("Create");
+       customizeButton(createButton);
+      
+       createButton.addActionListener(e -> {
+       String name = nameField.getText();
+       String phone = phoneField.getText();
+       String email = emailField.getText();
+       String specialization = specializationField.getText();
 	          
-	           try {
-	               Integer phoneNumber = Integer.parseInt(phone);
-	               Doctor doctor = new Doctor(name, phoneNumber, email, specialization);
-	               doctormanager.createDoctor(doctor);
-	           }catch (Exception exp) {
-	               exp.printStackTrace();
-	           }
-	       });
-	       formPanel.add(nameLabel);
-	       formPanel.add(phoneLabel);
-	       formPanel.add(emailLabel);
-	       formPanel.add(specializationLabel);
-	       formPanel.add(createButton, "span, align center");
-	       contentPanel.add(formPanel, BorderLayout.CENTER);
-	       contentPanel.revalidate();
-	       contentPanel.repaint();
+       try {
+           Integer phoneNumber = Integer.parseInt(phone);
+           Doctor doctor = new Doctor(name, phoneNumber, email, specialization);
+           doctormanager.createDoctor(doctor);
+       	}catch (Exception exp) {
+           exp.printStackTrace();
+       	}
+       });
+       formPanel.add(nameLabel);
+       formPanel.add(nameField, "growx, wrap 20");
+       formPanel.add(phoneLabel);
+       formPanel.add(phoneField, "growx, wrap 20");
+       formPanel.add(emailLabel);
+       formPanel.add(emailField, "growx, wrap 20");
+       formPanel.add(specializationLabel);
+       formPanel.add(specializationField, "growx, wrap 20");
+       
+       formPanel.add(createButton, "span, align center");
+       contentPanel.add(formPanel, BorderLayout.CENTER);
+       contentPanel.revalidate();
+       contentPanel.repaint();
    }
    
    
@@ -1097,36 +1154,376 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void assignDoctorToPatient() {
-       // Implement the method to assign a doctor to a patient
-   }
-   private void updateDoctorSpeciality() {
-       // Implement the method to update the speciality of a doctor
-   }
-   private void createReport() {
-       // Implement the method to create a report
-   }
-   private void assignReportToPatient() {
-       // Implement the method to assign a report to a patient
-   }
-   private void printAllReportsOfPatient() {
-       // Implement the method to print all reports of a patient
-   }
-   private void chooseInvestigationalProduct() {
-       // Implement the method to choose an investigational product
-   }
-   private void applyToCT() {
-       // Implement the method for a patient to apply to a clinical trial
-   }
-   private void getStateOfRequest() {
-       // Implement the method to get the state of a patient's request
-   }
-   private void showAllReports() {
-       // Implement the method to show all reports
-   }
+	   contentPanel.removeAll();
+	    JPanel formPanel = new JPanel();
+	    formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][]20[]"));
 
+	    JLabel patientIdLabel = new JLabel("Patient ID:");
+	    JTextField patientIdField = new JTextField(20);
+	    customizeTextField(patientIdField);
+
+	    JLabel doctorIdLabel = new JLabel("Doctor ID:");
+	    JTextField doctorIdField = new JTextField(20);
+	    customizeTextField(doctorIdField);
+
+	    JButton assignButton = new JButton("Assign");
+	    customizeButton(assignButton);
+
+	    assignButton.addActionListener(e -> {
+	        try {
+	            Integer patientId = Integer.parseInt(patientIdField.getText());
+	            Integer doctorId = Integer.parseInt(doctorIdField.getText());
+
+	            Doctor doctor = doctormanager.searchDoctorById(doctorId);
+	            Patient patient = patientmanager.searchPatientById(patientId);
+
+	            if (doctor != null && patient != null) {
+	                doctor.getPatients().add(patient);
+	                JOptionPane.showMessageDialog(contentPanel, "Doctor assigned to patient successfully!");
+	            } else {
+	                JOptionPane.showMessageDialog(contentPanel, "Doctor or patient not found!", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+	        } catch (NumberFormatException ex) {
+	            JOptionPane.showMessageDialog(contentPanel, "Please enter valid IDs!", "Error", JOptionPane.ERROR_MESSAGE);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while assigning the doctor.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	    });
+
+	    formPanel.add(patientIdLabel);
+	    formPanel.add(patientIdField, "growx");
+	    formPanel.add(doctorIdLabel);
+	    formPanel.add(doctorIdField, "growx");
+	    formPanel.add(assignButton, "span, align center");
+
+	    contentPanel.add(formPanel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
+   }
+   
+   
+   
+   private void updateDoctorSpeciality() {
+	   contentPanel.removeAll();
+	    JPanel formPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+
+	    JLabel specialityLabel = new JLabel("New Specialty:");
+	    JTextField specialityField = new JTextField(20);
+	    customizeTextField(specialityField);
+	    JLabel doctorIdLabel = new JLabel("Doctor ID:");
+	    JTextField doctorIdField = new JTextField(20);
+	    customizeTextField(doctorIdField);
+	    JButton updateButton = new JButton("Update");
+	    customizeButton(updateButton);
+
+	    updateButton.addActionListener(e -> {
+	        try {
+	            String newSpeciality = specialityField.getText();
+	            int doctorId = Integer.parseInt(doctorIdField.getText());
+	            doctormanager.updateSpeciality(doctorId, newSpeciality);
+	            JOptionPane.showMessageDialog(contentPanel, "Doctor specialty updated successfully!");
+	        } catch (NumberFormatException ex) {
+	            JOptionPane.showMessageDialog(contentPanel, "Please enter a valid doctor ID!", "Error", JOptionPane.ERROR_MESSAGE);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while updating the doctor's specialty.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	    });
+
+	    formPanel.add(specialityLabel);
+	    formPanel.add(specialityField);
+	    formPanel.add(doctorIdLabel);
+	    formPanel.add(doctorIdField);
+	    formPanel.add(updateButton);
+
+	    contentPanel.add(formPanel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
+   }
+   
+   
+   private void createReport() {
+	   contentPanel.removeAll();
+	   	
+	   	JPanel formPanel = new JPanel();
+	   	formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
+	  
+	   	JLabel medicalHLabel = new JLabel("Medical History:");
+	    JTextArea medHTextArea = new JTextArea(5, 20);
+	    JScrollPane mHScrollPane = new JScrollPane(medHTextArea);
+	    
+	    JLabel treatmentLabel = new JLabel("Treatment:");
+	    JTextArea treatmentTextArea = new JTextArea(5, 20);
+	    JScrollPane trmtScrollPane = new JScrollPane(treatmentTextArea);
+	    
+	    JLabel docIDLabel = new JLabel("Doctor ID:");
+	    JTextField docIDField = new JTextField(20);
+	    customizeTextField(docIDField);
+	
+	    JButton createButton = new JButton("Create");
+   	    customizeButton(createButton);
+	  
+	    createButton.addActionListener(e -> {
+	       String medHist = medHTextArea.getText();
+	       String treatmentT = treatmentTextArea.getText();
+	       String docIDtext = docIDField.getText();
+	       try {
+	           Integer doctor_id = Integer.parseInt(docIDtext);
+	           Doctor doctor = doctormanager.searchDoctorById(doctor_id);
+	           Reports report = new Reports(medHist, treatmentT, doctor);
+	           doctormanager.createReport(report);
+	           JOptionPane.showMessageDialog(menuFrame, "Report added successfully!");
+	           
+	           medHTextArea.setText("");
+	           treatmentTextArea.setText("");
+	       } catch (NumberFormatException ex) {
+	           JOptionPane.showMessageDialog(menuFrame, "Please enter a valid amount.", "Error", JOptionPane.ERROR_MESSAGE);
+	       }
+	   });
+	    
+       
+       formPanel.add(medicalHLabel);
+       formPanel.add(medHTextArea, "growx, wrap");
+       formPanel.add(treatmentLabel);
+       formPanel.add(treatmentTextArea, "growx, wrap");
+       formPanel.add(docIDLabel);
+       formPanel.add(docIDField, "growx, wrap");
+       formPanel.add(createButton, "span, align center");
+       contentPanel.add(formPanel, BorderLayout.CENTER);
+       contentPanel.revalidate();
+       contentPanel.repaint();
+   }
+   
+   
+   
+   private void assignReportToPatient() {
+	    contentPanel.removeAll();
+	    JPanel formPanel = new JPanel();
+	    formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[]"));
+
+	    JLabel reportIdLabel = new JLabel("Report ID:");
+	    JTextField reportIdField = new JTextField(20);
+	    customizeTextField(reportIdField);
+
+	    JLabel doctorIdLabel = new JLabel("Doctor ID:");
+	    JTextField doctorIdField = new JTextField(20);
+	    customizeTextField(doctorIdField);
+
+	    JLabel patientIdLabel = new JLabel("Patient ID:");
+	    JTextField patientIdField = new JTextField(20);
+	    customizeTextField(patientIdField);
+
+	    JButton assignButton = new JButton("Assign");
+	    customizeButton(assignButton);
+
+	    assignButton.addActionListener(e -> {
+	        try {
+	            Integer reportId = Integer.parseInt(reportIdField.getText());
+	            Integer doctorId = Integer.parseInt(doctorIdField.getText());
+	            Integer patientId = Integer.parseInt(patientIdField.getText());
+
+	            Reports report = adminmanager.getReportByID(reportId);
+	            Doctor doctor = doctormanager.searchDoctorById(doctorId);
+	            Patient patient = patientmanager.searchPatientById(patientId);
+
+	            if (report != null && doctor != null && patient != null) {
+	                doctormanager.assignReportToPatient(reportId, patientId);
+	                doctor.getReports().add(report);
+	                patient.getReports().add(report);
+	                JOptionPane.showMessageDialog(contentPanel, "Report assigned to patient successfully!");
+	            } else {
+	                JOptionPane.showMessageDialog(contentPanel, "Report, doctor, or patient not found!", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+	        } catch (NumberFormatException ex) {
+	            JOptionPane.showMessageDialog(contentPanel, "Please enter valid IDs!", "Error", JOptionPane.ERROR_MESSAGE);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while assigning the report.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	    });
+
+
+	    formPanel.add(reportIdLabel);
+	    formPanel.add(reportIdField, "growx");
+	    formPanel.add(doctorIdLabel);
+	    formPanel.add(doctorIdField, "growx");
+	    formPanel.add(patientIdLabel);
+	    formPanel.add(patientIdField, "growx");
+	    formPanel.add(assignButton, "span, align center");
+	    
+	    contentPanel.add(formPanel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
+	}
+	   
+   
+   
+   
+   
+   private void chooseInvestigationalProduct() {
+	   contentPanel.removeAll();
+	    JPanel formPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+
+	    JLabel doctorIdLabel = new JLabel("Doctor ID:");
+	    JTextField doctorIdField = new JTextField(20);
+	    customizeTextField(doctorIdField);
+	    JLabel invProductIdLabel = new JLabel("Investigational Product ID:");
+	    JTextField invProductIdField = new JTextField(20);
+	    customizeTextField(invProductIdField);
+	    JButton chooseButton = new JButton("Choose");
+	    customizeButton(chooseButton);
+
+	    chooseButton.addActionListener(e -> {
+	        try {
+	            int doctorId = Integer.parseInt(doctorIdField.getText());
+	            int invProductId = Integer.parseInt(invProductIdField.getText());
+	            doctormanager.chooseInvProductById(doctorId, invProductId);
+	            JOptionPane.showMessageDialog(contentPanel, "Investigational product chosen successfully!");
+	        } catch (NumberFormatException ex) {
+	            JOptionPane.showMessageDialog(contentPanel, "Please enter valid IDs!", "Error", JOptionPane.ERROR_MESSAGE);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while choosing the investigational product.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	    });
+
+	    formPanel.add(doctorIdLabel);
+	    formPanel.add(doctorIdField);
+	    formPanel.add(invProductIdLabel);
+	    formPanel.add(invProductIdField);
+	    formPanel.add(chooseButton);
+
+	    contentPanel.add(formPanel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
+   }
+  
+   
+   
+   private void applyToCT(User u) {
+	   contentPanel.removeAll();
+	    JPanel formPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+
+	    JLabel adminIdLabel = new JLabel("Administrator ID:");
+	    JTextField adminIdField = new JTextField(20);
+	    JLabel trialIdLabel = new JLabel("Clinical Trial ID:");
+	    JTextField trialIdField = new JTextField(20);
+	    JButton applyButton = new JButton("Apply");
+
+	    applyButton.addActionListener(e -> {
+	        try {
+	            Integer adminId = Integer.parseInt(adminIdField.getText());
+	            Integer trialId = Integer.parseInt(trialIdField.getText());
+	            String uEmail = u.getEmail();
+	            Patient patient = patientmanager.searchPatientByEmail(uEmail);
+	            
+	            Integer patientId = patient.getPatient_id();
+	            
+	            patientmanager.applyToClinicalTrial(adminId, trialId, patientId);
+	            JOptionPane.showMessageDialog(contentPanel, "Application submitted successfully!");
+	        } catch (NumberFormatException ex) {
+	            JOptionPane.showMessageDialog(contentPanel, "Please enter valid IDs!", "Error", JOptionPane.ERROR_MESSAGE);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while applying to the clinical trial.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	    });
+
+	    formPanel.add(adminIdLabel);
+	    formPanel.add(adminIdField);
+	    formPanel.add(trialIdLabel);
+	    formPanel.add(trialIdField);
+	    formPanel.add(applyButton);
+
+	    contentPanel.add(formPanel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
+   }
+   
+   
+   private void getStateOfRequest() {
+	   contentPanel.removeAll();
+	    JPanel formPanel = new JPanel(new GridLayout(2, 1, 10, 10));
+
+	    JLabel patientIdLabel = new JLabel("Patient ID:");
+	    JTextField patientIdField = new JTextField(20);
+	    JButton getStateButton = new JButton("Get State");
+
+	    getStateButton.addActionListener(e -> {
+	        try {
+	            int patientId = Integer.parseInt(patientIdField.getText());
+	            boolean state = patientmanager.getStateRequest(patientId);
+	            JOptionPane.showMessageDialog(contentPanel, "The state of the request of the patient is: " + state);
+	        } catch (NumberFormatException ex) {
+	            JOptionPane.showMessageDialog(contentPanel, "Please enter a valid patient ID!", "Error", JOptionPane.ERROR_MESSAGE);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while getting the state of the request.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	    });
+
+	    formPanel.add(patientIdLabel);
+	    formPanel.add(patientIdField);
+	    formPanel.add(getStateButton);
+
+	    contentPanel.add(formPanel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
+   }
+  
+   
    
    private void addNewSponsor() {
-       // Implement the method to add a new sponsor
+	   contentPanel.removeAll();
+	   JPanel formPanel = new JPanel();
+	   formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
+	  
+	   JLabel nameLabel = new JLabel("Name:");
+       JTextField nameField = new JTextField(20);
+       customizeTextField(nameField);
+       JLabel phoneLabel = new JLabel("Phone:");
+       JTextField phoneField = new JTextField(20);
+       customizeTextField(phoneField);
+       JLabel emailLabel = new JLabel("Email:");
+       JTextField emailField = new JTextField(20);
+       customizeTextField(emailField);
+       
+       JLabel cardNLabel = new JLabel("Card Number:");
+       JTextField cNbField = new JTextField(20);
+       customizeTextField(cNbField);
+   	
+       JButton createButton = new JButton("Create");
+       customizeButton(createButton);
+      
+       createButton.addActionListener(e -> {
+       String name = nameField.getText();
+       String phone = phoneField.getText();
+       String email = emailField.getText();
+       String cardStr = cNbField.getText();
+	          
+       try {
+           Integer phoneNumber = Integer.parseInt(phone);
+           Integer cardNumber = Integer.parseInt(cardStr);
+           Sponsor sponsor = new Sponsor(name, email, phoneNumber, cardNumber);
+           sponsormanager.createSponsor(sponsor);
+       	}catch (Exception exp) {
+           exp.printStackTrace();
+       	}
+       });
+       formPanel.add(nameLabel);
+       formPanel.add(nameField, "growx, wrap 20");
+       formPanel.add(phoneLabel);
+       formPanel.add(phoneField, "growx, wrap 20");
+       formPanel.add(emailLabel);
+       formPanel.add(emailField, "growx, wrap 20");
+       formPanel.add(cardNLabel);
+       formPanel.add(cNbField, "growx, wrap 20");
+       
+       formPanel.add(createButton, "span, align center");
+       contentPanel.add(formPanel, BorderLayout.CENTER);
+       contentPanel.revalidate();
+       contentPanel.repaint();
    }
    
    
@@ -1176,12 +1573,85 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void createInvestment() {
-       // Implement the method to create an investment
+	   contentPanel.removeAll();
+	    JPanel formPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+
+	    JLabel trialIdLabel = new JLabel("Trial ID:");
+	    JTextField trialIdField = new JTextField(20);
+	    JLabel sponsorIdLabel = new JLabel("Sponsor ID:");
+	    JTextField sponsorIdField = new JTextField(20);
+	    JLabel amountLabel = new JLabel("Amount Invested:");
+	    JTextField amountField = new JTextField(20);
+	    JButton createButton = new JButton("Create");
+
+	    createButton.addActionListener(e -> {
+	        try {
+	            int trialId = Integer.parseInt(trialIdField.getText());
+	            int sponsorId = Integer.parseInt(sponsorIdField.getText());
+	            int amount = Integer.parseInt(amountField.getText());
+	            sponsormanager.createInvestment(trialId, sponsorId, amount);
+	            JOptionPane.showMessageDialog(contentPanel, "Investment created successfully!");
+	        } catch (NumberFormatException ex) {
+	            JOptionPane.showMessageDialog(contentPanel, "Please enter valid values!", "Error", JOptionPane.ERROR_MESSAGE);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while creating the investment.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	    });
+
+	    formPanel.add(trialIdLabel);
+	    formPanel.add(trialIdField);
+	    formPanel.add(sponsorIdLabel);
+	    formPanel.add(sponsorIdField);
+	    formPanel.add(amountLabel);
+	    formPanel.add(amountField);
+	    formPanel.add(createButton);
+
+	    contentPanel.add(formPanel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
+	   
    }
    
    
    private void updateInvestment() {
-       // Implement the method to update an investment
+	   contentPanel.removeAll();
+	    JPanel formPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+
+	    JLabel trialIdLabel = new JLabel("Trial ID:");
+	    JTextField trialIdField = new JTextField(20);
+	    JLabel sponsorIdLabel = new JLabel("Sponsor ID:");
+	    JTextField sponsorIdField = new JTextField(20);
+	    JLabel amountLabel = new JLabel("Amount Invested:");
+	    JTextField amountField = new JTextField(20);
+	    JButton updateButton = new JButton("Update");
+
+	    updateButton.addActionListener(e -> {
+	        try {
+	            int trialId = Integer.parseInt(trialIdField.getText());
+	            int sponsorId = Integer.parseInt(sponsorIdField.getText());
+	            int amount = Integer.parseInt(amountField.getText());
+	            sponsormanager.updateInvestment(trialId, sponsorId, amount);
+	            JOptionPane.showMessageDialog(contentPanel, "Investment updated successfully!");
+	        } catch (NumberFormatException ex) {
+	            JOptionPane.showMessageDialog(contentPanel, "Please enter valid values!", "Error", JOptionPane.ERROR_MESSAGE);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while updating the investment.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
+	    });
+
+	    formPanel.add(trialIdLabel);
+	    formPanel.add(trialIdField);
+	    formPanel.add(sponsorIdLabel);
+	    formPanel.add(sponsorIdField);
+	    formPanel.add(amountLabel);
+	    formPanel.add(amountField);
+	    formPanel.add(updateButton);
+
+	    contentPanel.add(formPanel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
    }
    
    
@@ -1244,7 +1714,46 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void addNewEngineer() {
-       // Implement the method to add a new engineer
+	   contentPanel.removeAll();
+	   	JPanel formPanel = new JPanel();
+	   	formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
+	  
+	   	JLabel nameLabel = new JLabel("Name:");
+	   	JTextField nameField = new JTextField(20);
+	   	customizeTextField(nameField);
+	    JLabel phoneLabel = new JLabel("Phone:");
+	    JTextField phoneField = new JTextField(20);
+	    customizeTextField(phoneField);
+	    JLabel emailLabel = new JLabel("Email:");
+	    JTextField emailField = new JTextField(20);
+	    customizeTextField(emailField);
+	   	
+	       JButton createButton = new JButton("Create");
+	       customizeButton(createButton);
+	      
+	       createButton.addActionListener(e -> {
+	           String name = nameField.getText();
+	           String phone = phoneField.getText();
+	           String email = emailField.getText();
+	          
+	           try {
+	               Integer phoneNumber = Integer.parseInt(phone);
+	               Engineer eng = new Engineer(name, email, phoneNumber);
+	               engineermanager.createEngineer(eng);
+	           }catch (Exception exp) {
+	               exp.printStackTrace();
+	           }
+	       });
+	       formPanel.add(nameLabel);
+	       formPanel.add(nameField, "growx, wrap");
+	       formPanel.add(phoneLabel);
+	       formPanel.add(phoneField, "growx, wrap");
+	       formPanel.add(emailLabel);
+	       formPanel.add(emailField, "growx, wrap");
+	       formPanel.add(createButton, "span, align center");
+	       contentPanel.add(formPanel, BorderLayout.CENTER);
+	       contentPanel.revalidate();
+	       contentPanel.repaint();
    }
    
    
@@ -1267,86 +1776,129 @@ public class ClinicalTrialGUI extends JFrame {
 	    contentPanel.add(scrollPane, BorderLayout.CENTER);
 	    contentPanel.revalidate();
 	    contentPanel.repaint();
+	    
+	    
    }
    
    
    private void addNewInvProduct() {
-       // Implement the method to add a new investigational product
+	   contentPanel.removeAll();
+	   	JPanel formPanel = new JPanel();
+	   	formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
+	  
+	   	JLabel descriptionLabel = new JLabel("Description:");
+	   	JTextField descriptionField = new JTextField(20);
+	   	customizeTextField(descriptionField);
+	   	
+	    JLabel typeLabel = new JLabel("Type:");
+	    JTextField typeField = new JTextField(20);
+	    customizeTextField(typeField);
+	    
+	    JLabel moneyLabel = new JLabel("Money:");
+	    JTextField moneyField = new JTextField(20);
+	    customizeTextField(moneyField);
+	   	
+	       JButton createButton = new JButton("Create");
+	       customizeButton(createButton);
+	      
+	       createButton.addActionListener(e -> {
+	           String description = descriptionField.getText();
+	           String type = typeField.getText();
+	           String moneyStr = moneyField.getText();
+	          
+	           try {
+	               Integer moneyAmount = Integer.parseInt(moneyStr);
+	               InvestigationalProduct iP = new InvestigationalProduct(moneyAmount, type, description);
+	              engineermanager.createInvPr(iP);
+	           }catch (Exception exp) {
+	               exp.printStackTrace();
+	           }
+	       });
+	       formPanel.add(descriptionLabel);
+	       formPanel.add(descriptionField, "growx, wrap");
+	       formPanel.add(typeLabel);
+	       formPanel.add(typeField, "growx, wrap");
+	       formPanel.add(moneyLabel);
+	       formPanel.add(moneyField, "growx, wrap");
+	       formPanel.add(createButton, "span, align center");
+	       contentPanel.add(formPanel, BorderLayout.CENTER);
+	       contentPanel.revalidate();
+	       contentPanel.repaint();
    }
    
    
-   private void showAllInvPrOfTrial() {
-	   contentPanel.removeAll();
-	   	
-	   JPanel inputPanel = new JPanel();
-       inputPanel.setLayout(new FlowLayout());
-       JLabel trialIDLabel = new JLabel("Clinical Trial ID:");
-       JTextField trialIDField = new JTextField(20);
-       customizeTextField(trialIDField);
-       JButton getIDButton = new JButton("Get ID");
-       customizeButton(getIDButton);
-       inputPanel.add(trialIDLabel);
-       inputPanel.add(trialIDField);
-       inputPanel.add(getIDButton);
-       contentPanel.add(inputPanel, BorderLayout.NORTH);
-       contentPanel.revalidate();
-       contentPanel.repaint();
-   	
-       /*getIDButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               String trialIDStr = trialIDField.getText();
-               try {
-                   Integer trial_id = Integer.parseInt(trialIDStr);
-                   List<InvestigationalProduct> invPr = doctormanager.
-                   if (patients != null && !patients.isEmpty()) {
-                       String[] columnNames = {"ID", "Description", "Type", "Amount of Money", "Doctor ID", "Engineer ID"};
-                       DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-                       for (Patient patient : patients) {
-                           Object[] rowData = {
-                               patient.getPatient_id(),
-                               patient.getName(),
-                               patient.getEmail(),
-                               patient.getPhone(),
-                               patient.getDateOfBirth(),
-                               patient.isCured(),
-                               patient.getBloodType(),
-                               patient.getDisease()
-                           };
-                           model.addRow(rowData);
-                       }
-                       JTable table = new JTable(model);
-                       JScrollPane scrollPane = new JScrollPane(table);
-                       contentPanel.removeAll();
-                       contentPanel.add(inputPanel, BorderLayout.NORTH);
-                       contentPanel.add(scrollPane, BorderLayout.CENTER);
-                       contentPanel.revalidate();
-                       contentPanel.repaint();
-                   } else {
-                       JOptionPane.showMessageDialog(menuFrame, "No patients found for the given Clinical Trial ID.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                   }
-               } catch (NumberFormatException ex) {
-                   JOptionPane.showMessageDialog(menuFrame, "Please enter a valid Clinical Trial ID.", "Error", JOptionPane.ERROR_MESSAGE);
-               } catch (Exception ex) {
-                   ex.printStackTrace();
-                   JOptionPane.showMessageDialog(menuFrame, "An error occurred while fetching the patients.", "Error", JOptionPane.ERROR_MESSAGE);
-               }
-           }
-       });
-       */
-
+   private void showAllInvPr() {
+	   List<InvestigationalProduct> invPr = doctormanager.getlistInvProd();
+		String[] columnNames = {"ID", "Description", "Type", "Amount Money", "Engineer ID", "Doctor ID"}; //column names
+	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // Create table model
+	    for (InvestigationalProduct invProduct : invPr) {
+	        Object[] rowData = {
+	            invProduct.getInvProduct_id(),
+	            invProduct.getDescription(),
+	            invProduct.getType(),
+	            invProduct.getAmount(),
+	            invProduct.getEngineer().getEngineer_id(),
+	            invProduct.getDoctor().getDoctor_id()
+	        };
+	        model.addRow(rowData);
+	    }
+	    JTable table = new JTable(model);
+	    JScrollPane scrollPane = new JScrollPane(table);
+	    contentPanel.removeAll();
+	    contentPanel.add(scrollPane, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
    }
    
    
    private void printToXML(String role) {
-       // Implement the method to print to XML based on the role
+	   try {
+	        switch (role.toLowerCase()) {
+	        	case "administrator":
+	        		String uEmail = u.getEmail();
+	 	            Patient patient = patientmanager.searchPatientByEmail(uEmail);
+	 	            
+	        		printAdminToXML();
+	        		break;
+	        	case "doctor":
+	                printDoctorToXML();
+	                break;
+	        	case "patient":
+	                printPatientToXML();
+	                break;
+	            case "sponsor":
+	                printSponsorToXML();
+	                break;
+	            case "engineer":
+	                printEngineerToXML();
+	                break;
+	            default:
+	                JOptionPane.showMessageDialog(contentPanel, "Unsupported role: " + role, "Error", JOptionPane.ERROR_MESSAGE);
+	                break;
+	        }
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(contentPanel, "An error occurred while printing to XML.", "Error", JOptionPane.ERROR_MESSAGE);
+	    }
    }
+   
+   
+   
+   private void printSponsorToXML() {
+	    try {
+	        xmlmanager.sponsor2xml(SponsorID);
+	        JOptionPane.showMessageDialog(contentPanel, "Sponsor data printed to XML successfully!");
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(contentPanel, "An error occurred while printing sponsor data to XML.", "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	}
    
    
    private void loadFromXML(String role) {
        // Implement the method to load from XML based on the role
    }
-  
+ 
   
   
   

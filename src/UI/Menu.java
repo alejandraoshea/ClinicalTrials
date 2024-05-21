@@ -7,6 +7,7 @@ import java.security.MessageDigest;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.nio.charset.StandardCharsets;
 
@@ -340,6 +341,7 @@ private static void updatePassword() throws Exception {
 	private static void updateAcceptancePatient(Integer patient_id) {
 		Patient patient = patientmanager.searchPatientById(patient_id); 
 		patientmanager.getStateRequest(patient_id);
+		adminmanager.updateAcceptancePatient(patient_id);
 	}
 	
 	private static Integer getAmountInvested() throws Exception{
@@ -963,7 +965,7 @@ private static void updatePassword() throws Exception {
 						break;
 					
 					case 5:
-						getInvPr();
+						getInvPrEngineer(id);
 						break;
 					case 6:
 						printMeEngineer(id);
@@ -1045,6 +1047,13 @@ private static void updatePassword() throws Exception {
 	    	System.out.println("Introduce the investigational product id: \n");
 			Integer invProduct_id = Integer.parseInt(reader.readLine());
 			engineermanager.getInvPr(invProduct_id);
+			
+		}
+	    
+	    private static void getInvPrEngineer(Integer id) throws Exception {
+	    	List<InvestigationalProduct> invPr = new ArrayList<InvestigationalProduct>();
+			invPr = engineermanager.getListInvPrOfEngineer(id);
+			System.out.println(invPr);
 			
 		}
 	    
