@@ -1,0 +1,36 @@
+<?xml version = "1.0" encoding = "UTF-8" standalone = "yes"?>
+
+<!DOCTYPE Doctor [ 
+<!ELEMENT Doctor (name, phone, specialization, patients,investigationalProducts)> 
+	<!ATTLIST Doctor email CDATA #REQUIRED> 
+	<!ELEMENT name (#PCDATA)> 
+	<!ELEMENT phone (#PCDATA)> 
+	<!ELEMENT specialization (#PCDATA)> 
+	<!ELEMENT patients (patient+)> 
+	<!ELEMENT patient (#PCDATA)> 
+		<!ELEMENT name (#PCDATA)> 
+	        <!ELEMENT phone (#PCDATA)> 
+	        <!ELEMENT bloodType (#PCDATA)> 
+	        <!ELEMENT disease (#PCDATA)> 
+	        <!ELEMENT cured (#PCDATA)> 
+	        <!ELEMENT doctor (name, phone, specialization, patients, investigationalProducts)> 
+	        <!ELEMENT dateOfBirth (#PCDATA)> 
+	<!ELEMENT investigationalProducts (investigationalProduct+)> 
+	<!ELEMENT investigationalProduct (#PCDATA)>
+		<!ELEMENT amount (#PCDATA)> 
+		<!ELEMENT description (#PCDATA)> 
+		<!ELEMENT type (#PCDATA)> 
+
+]>
+
+<Doctor email = "juangarcia@gmail.com"> 
+    <name>Juan</name>
+    <phone>612345678</phone>
+    <specialization> Surgeon </specialization>
+    <patients> 
+      <patient>2</patient>
+    </patients>
+    <investigationalProducts> 
+      <investigationalProduct> machine </investigationalProduct>
+    </investigationalProducts>
+  </Doctor>

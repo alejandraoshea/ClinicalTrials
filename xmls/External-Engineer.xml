@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "UTF-8" standalone = "yes"?>
+
+
+<!DOCTYPE Engineer [ 
+<!ELEMENT Engineer (name, phone, investigationalProducts)> 
+	<!ATTLIST Engineer email CDATA #REQUIRED> 
+	<!ELEMENT name (#PCDATA)> 
+	<!ELEMENT phone (#PCDATA)> 
+	<!ELEMENT investigationalProducts (investigationalProduct+)>
+	<!ELEMENT investigationalProduct (#PCDATA)>
+		<!ELEMENT amount (#PCDATA)> 
+		<!ELEMENT description (#PCDATA)> 
+		<!ELEMENT type (#PCDATA)> 
+]>
+
+<Engineer email = "willsmith@gmail.com"> 
+  <name>Will</name>
+  <phone>612345678</phone>
+  <investigationalProducts> 
+  	<investigationalProduct>drug</investigationalProduct>
+  	<investigationalProduct>machine</investigationalProduct>
+  </investigationalProducts>
+</Engineer>
+
+
+
+
+
