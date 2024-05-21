@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.nio.charset.StandardCharsets;
 
@@ -533,8 +535,10 @@ private static void updatePassword() throws Exception {
 		System.out.println("Type the phone of the doctor\n");
 		Integer phone = Integer.parseInt(reader.readLine());
 		System.out.println("Type the date of birth");
-		//cheatsheet: localdate a date
-		Date dateOfBirth = Date.valueOf(reader.readLine());
+		String dateRead = reader.readLine();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate localdob = LocalDate.parse(dateRead, formatter);
+		Date dateOfBirth = Date.valueOf(localdob);
 		System.out.println("Type the blood type of the patient");
 		String bloodType = reader.readLine();
 		System.out.println("Type the type of disease of the patient");
