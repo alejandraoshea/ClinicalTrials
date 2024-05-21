@@ -147,6 +147,7 @@ public class JPAUserManager implements UserManager{
 		catch(Exception e){
 			e.printStackTrace();
 		}
+	}
 
 
 	@Override

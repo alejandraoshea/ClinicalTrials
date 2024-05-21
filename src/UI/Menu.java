@@ -151,7 +151,7 @@ private static void updatePassword() throws Exception {
 				
 		if(u!=null){
 			System.out.println("Login of user successful!");
-			usermanager.changePassword(u, new_passwd);
+			usermanager.changePassword(email, new_passwd);
 		}
 				
 	}
