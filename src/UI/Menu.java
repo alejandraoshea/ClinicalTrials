@@ -158,7 +158,7 @@ private static void updatePassword() throws Exception {
 				
 	}
 
-	//Esta función comprueba q haya al menos 1 mayuscula, 1 numero y 1 minuscula, la pondría con un 
+	//Esta función comprueba q haya al menos 1 mayuscula, 1 numero y 1 minuscula
 
  private static boolean checkPasswordStrength(String password) {
     int cantMayusc = 0;
