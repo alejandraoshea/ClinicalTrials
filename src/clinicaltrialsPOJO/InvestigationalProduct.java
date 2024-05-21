@@ -5,18 +5,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "InvestigationalProduct") 
+@XmlType(propOrder = {"amount", "description", "type"})  
 public class InvestigationalProduct implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6715210654882847041L;
 	
+	@XmlTransient
 	private Integer invProduct_id;
+	@XmlElement
 	private Integer amount; 
+	@XmlElement
 	private String description; 
+	@XmlElement
 	private String type;
+	@XmlTransient
 	private List<Trial> trial;
+	@XmlTransient
 	private Engineer engineer; //relation 1 to N
+	@XmlTransient
 	private Doctor doctor; //relation 1 to N
 	 
 	
