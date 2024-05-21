@@ -205,15 +205,15 @@ private static void updatePassword() throws Exception {
 			Integer rol = Integer.parseInt(reader.readLine());
 			Role r = usermanager.getRole(rol);
 			
-			if(r.getName() == "administrator") {
+			if(r.getName().equals("administrator")) {
 				createAdmin(email);
-			}else if(r.getName() == "doctor") {
+			}else if(r.getName().equals("doctor")) {
 				createDoctor(email);
-			}else if(r.getName() == "patient") {
+			}else if(r.getName().equals("patient")) {
 				createPatient(email);
-			}else if(r.getName() == "sponsor") {
+			}else if(r.getName().equals("sponsor")) {
 				createSponsor(email);
-			}else if(r.getName() == "engineer") {
+			}else if(r.getName().equals("engineer")) {
 				createEngineer(email);
 				//try?
 			}
@@ -533,6 +533,7 @@ private static void updatePassword() throws Exception {
 		System.out.println("Type the phone of the doctor\n");
 		Integer phone = Integer.parseInt(reader.readLine());
 		System.out.println("Type the date of birth");
+		//cheatsheet: localdate a date
 		Date dateOfBirth = Date.valueOf(reader.readLine());
 		System.out.println("Type the blood type of the patient");
 		String bloodType = reader.readLine();
@@ -599,7 +600,7 @@ private static void updatePassword() throws Exception {
 		Reports report = adminmanager.getReportByID(report_id);
 		
 		doctormanager.assignReportToPatient(report_id, patient_id);
-		
+		//trial_id
 		doctor.getReports().add(report);
 		patient.getReports().add(report);
 	}
