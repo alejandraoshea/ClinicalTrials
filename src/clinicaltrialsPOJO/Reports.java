@@ -1,4 +1,4 @@
-package clinicaltrialsPOJO;
+1package clinicaltrialsPOJO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
