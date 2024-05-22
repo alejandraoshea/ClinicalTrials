@@ -1926,10 +1926,8 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    
-   private static void loadAdmin() {
-	   JFrame frame = new JFrame("Administrator Loader");
-       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       frame.setSize(400, 300);
+   private void loadAdmin() {
+	   contentPanel.removeAll();
 
        JPanel panel = new JPanel(new MigLayout("fill"));
        JTextArea textArea = new JTextArea();
@@ -1938,21 +1936,25 @@ public class ClinicalTrialGUI extends JFrame {
 
        JButton loadButton = new JButton("Load Administrator");
        loadButton.addActionListener(e -> {
-    	   Administrator admin = null; 
-   			File file = new File("./xmls/External-Administrator.xml");
-   			admin = xmlmanager.xml2Admin(file);
-           if (admin != null) {
-               textArea.setText(admin.toString());
-           } else {
-               textArea.setText("Failed to load Engineer.");
+    	   try {
+	    	   Administrator admin = null; 
+	   			File file = new File("./xmls/External-Administrator.xml");
+	   			admin = xmlmanager.xml2Admin(file);
+	           if (admin != null) {
+	               textArea.setText(admin.toString());
+	           } else {
+	               textArea.setText("Failed to load administrator.");
+	           }
+    	   }catch (Exception exp) {
+               exp.printStackTrace();
            }
        });
 
        panel.add(scrollPane, "grow, push, wrap");
        panel.add(loadButton, "align center");
-
-       frame.add(panel);
-       frame.setVisible(true);
+       contentPanel.add(panel, BorderLayout.CENTER);
+       contentPanel.revalidate();
+       contentPanel.repaint();
 	}
    
    
@@ -1975,7 +1977,7 @@ public class ClinicalTrialGUI extends JFrame {
            if (d != null) {
                textArea.setText(d.toString());
            } else {
-               textArea.setText("Failed to load Engineer.");
+               textArea.setText("Failed to load doctor.");
            }
        });
 
@@ -2005,7 +2007,7 @@ public class ClinicalTrialGUI extends JFrame {
            if (p != null) {
                textArea.setText(p.toString());
            } else {
-               textArea.setText("Failed to load Engineer.");
+               textArea.setText("Failed to load patient.");
            }
        });
 
