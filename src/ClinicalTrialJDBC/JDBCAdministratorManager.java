@@ -94,13 +94,13 @@ private JDBCManager manager;
 
 	
 	@Override
-	public void updateAcceptancePatient(Integer patient_id) {
+	public void updateAcceptancePatient(Integer id) {
 		try {
-			String sql = "UPDATE trialApplication SET approved = ? WHERE patient_id =?;";
+			String sql = "UPDATE trialApplication SET approved = ? WHERE id =?;";
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			
 			prep.setBoolean(1, true);
-			prep.setInt(2, patient_id);
+			prep.setInt(2, id);
 			prep.executeUpdate();
 			
 		}

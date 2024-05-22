@@ -899,11 +899,15 @@ public class ClinicalTrialGUI extends JFrame {
    private void updateAcceptanceState() {
 	   contentPanel.removeAll();
 	    JPanel formPanel = new JPanel();
-	    formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][]20[]"));
+	    formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
 
 	    JLabel patientIdLabel = new JLabel("Patient ID:");
 	    JTextField patientIdField = new JTextField(20);
 	    customizeTextField(patientIdField);
+	    
+	    JLabel tAppIdLabel = new JLabel("Trial Application ID:");
+	    JTextField tAppIdField = new JTextField(20);
+	    customizeTextField(tAppIdField);
 
 	    JButton updateButton = new JButton("Update");
 	    customizeButton(updateButton);
@@ -911,7 +915,8 @@ public class ClinicalTrialGUI extends JFrame {
 	    updateButton.addActionListener(e -> {
 	        try {
 	            Integer patientId = Integer.parseInt(patientIdField.getText());
-	            adminmanager.updateAcceptancePatient(patientId);
+	            Integer trialAppId = Integer.parseInt(tAppIdField.getText());
+	            adminmanager.updateAcceptancePatient(trialAppId);
 	            JOptionPane.showMessageDialog(contentPanel, "Acceptance state updated successfully!");
 	        } catch (NumberFormatException ex) {
 	            JOptionPane.showMessageDialog(contentPanel, "Please enter a valid patient ID!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -922,7 +927,9 @@ public class ClinicalTrialGUI extends JFrame {
 	    });
 
 	    formPanel.add(patientIdLabel);
-	    formPanel.add(patientIdField, "growx");
+	    formPanel.add(patientIdField, "growx, wrap");
+	    formPanel.add(tAppIdLabel);
+	    formPanel.add(tAppIdField, "growx, wrap");
 	    formPanel.add(updateButton, "span, align center");
 	    
 	    contentPanel.add(formPanel, BorderLayout.CENTER);
@@ -1530,15 +1537,15 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void showAllTrials() {
-	   List<Administrator> admins = adminmanager.getListOfAdmins();
-		String[] columnNames = {"ID", "Name", "Email", "Phone"}; //column names
+	   List<Trial> trials = adminmanager.getListOfTrials();
+		String[] columnNames = {"ID", "Requirements", "Amount Money", "Admin ID"}; //column names
 	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // Create table model
-	    for (Administrator admin : admins) {
+	    for (Trial trial : trials) {
 	        Object[] rowData = {
-	            admin.getAdmin_id(),
-	            admin.getName(),
-	            admin.getEmail(),
-	            admin.getPhone()
+	            trial.getTrial_id(),
+	            trial.getRequirements(),
+	            trial.getTotalAmountInvested(),
+	            trial.getAdmin().getAdmin_id()
 	        };
 	        model.addRow(rowData);
 	    }
@@ -1680,7 +1687,8 @@ public class ClinicalTrialGUI extends JFrame {
 	               String patientIDStr = patientIDField.getText();
 	               try {
 	                   Integer patient_id = Integer.parseInt(patientIDStr);
-	                   List<Reports> reports = sponsormanager.getReportsOfAPatient(patient_id);
+	                   Patient patient = patientmanager.searchPatientById(patient_id);
+	                   List<Reports> reports = patientmanager.getListReportsOfPatient(patient);
 	                   if (reports != null && !reports.isEmpty()) {
 	                       String[] columnNames = {"ID", "Medical History", "Treatment", "Doctor ID", "Patient ID"};
 	                       DefaultTableModel model = new DefaultTableModel(columnNames, 0);
