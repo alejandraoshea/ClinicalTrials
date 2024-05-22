@@ -4,6 +4,7 @@ import java.util.List;
 
 import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.InvestigationalProduct;
+import clinicaltrialsPOJO.Patient;
 import clinicaltrialsPOJO.Reports;
 
 
@@ -17,4 +18,5 @@ public interface DoctorManager {
 	public List<InvestigationalProduct> getlistInvProd(); 
 	public InvestigationalProduct chooseInvProductById(Integer investigationalProduct_id,Integer doctor_id);
 	public Doctor searchDoctorById(Integer doctor_id);
+	public Doctor searchDoctorByEmail(String email);
 }

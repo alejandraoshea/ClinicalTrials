@@ -603,7 +603,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        showAllPatientsOfCT();
 	                        break;
 	                    case "Print admin to xml":
-	                        printToXML("admin");
+	                        printAdminToXML(u);
 	                        break;
 	                    case "Load admin from xml":
 	                        loadFromXML("admin");
@@ -633,7 +633,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        chooseInvestigationalProduct();
 	                        break;
 	                    case "Print doctor to xml":
-	                        printToXML("doctor");
+	                        printDoctorToXML(u);
 	                        break;
 	                    case "Load doctor from xml":
 	                        loadFromXML("doctor");
@@ -645,7 +645,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        getStateOfRequest();
 	                        break;
 	                    case "Print patient to xml":
-	                        printToXML("patient");
+	                    	printPatientToXML(u);
 	                        break;
 	                    case "Load patient from xml":
 	                        loadFromXML("patient");
@@ -666,7 +666,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        updateInvestment();
 	                        break;
 	                    case "Print sponsor to xml":
-	                        printToXML("sponsor");
+	                        printSponsorToXML(u);
 	                        break;
 	                    case "Load sponsor from xml":
 	                        loadFromXML("sponsor");
@@ -684,7 +684,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        showAllInvPr();
 	                        break;
 	                    case "Print engineer to xml":
-	                        printToXML("engineer");
+	                        printEngineerToXML(u);
 	                        break;
 	                    case "Load engineer from xml":
 	                        loadFromXML("engineer");
@@ -1850,49 +1850,78 @@ public class ClinicalTrialGUI extends JFrame {
 	    contentPanel.repaint();
    }
    
+      
    
-   private void printToXML(String role) {
-	   try {
-	        switch (role.toLowerCase()) {
-	        	case "administrator":
-	        		String uEmail = u.getEmail();
-	 	            Patient patient = patientmanager.searchPatientByEmail(uEmail);
-	 	            
-	        		printAdminToXML();
-	        		break;
-	        	case "doctor":
-	                printDoctorToXML();
-	                break;
-	        	case "patient":
-	                printPatientToXML();
-	                break;
-	            case "sponsor":
-	                printSponsorToXML();
-	                break;
-	            case "engineer":
-	                printEngineerToXML();
-	                break;
-	            default:
-	                JOptionPane.showMessageDialog(contentPanel, "Unsupported role: " + role, "Error", JOptionPane.ERROR_MESSAGE);
-	                break;
-	        }
+   private void printAdminToXML(User u) {
+	    try {
+	    	String email = u.getEmail();
+	    	Administrator admin = adminmanager.searchAdminByEmail(email);
+	    	Integer id = admin.getAdmin_id();
+	        xmlmanager.admin2xml(id);
+	        JOptionPane.showMessageDialog(contentPanel, "Administrator data printed to XML successfully!");
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
-	        JOptionPane.showMessageDialog(contentPanel, "An error occurred while printing to XML.", "Error", JOptionPane.ERROR_MESSAGE);
+	        JOptionPane.showMessageDialog(contentPanel, "An error occurred while printing administrator data to XML.", "Error", JOptionPane.ERROR_MESSAGE);
 	    }
-   }
+	}
    
-   
-   
-   private void printSponsorToXML() {
+   private void printDoctorToXML(User u) {
 	    try {
-	        xmlmanager.sponsor2xml(SponsorID);
+	    	String email = u.getEmail();
+	    	Doctor d = doctormanager.searchDoctorByEmail(email);
+	    	Integer id = d.getDoctor_id();
+	        xmlmanager.doctor2xml(id);
+	        JOptionPane.showMessageDialog(contentPanel, "Doctor data printed to XML successfully!");
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(contentPanel, "An error occurred while printing doctor data to XML.", "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	}
+   
+   
+   
+   private void printPatientToXML(User u) {
+	    try {
+	    	String email = u.getEmail();
+	    	Patient p = patientmanager.searchPatientByEmail(email);
+	    	Integer id = p.getPatient_id();
+	        xmlmanager.patient2xml(id);
+	        JOptionPane.showMessageDialog(contentPanel, "Patient data printed to XML successfully!");
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(contentPanel, "An error occurred while printing patient data to XML.", "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	}
+   
+   
+   
+   private void printSponsorToXML(User u) {
+	    try {
+	    	String email = u.getEmail();
+	    	Sponsor s = sponsormanager.searchSponsorByEmail(email);
+	    	Integer id = s.getSponsor_id();
+	        xmlmanager.sponsor2xml(id);
 	        JOptionPane.showMessageDialog(contentPanel, "Sponsor data printed to XML successfully!");
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
 	        JOptionPane.showMessageDialog(contentPanel, "An error occurred while printing sponsor data to XML.", "Error", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
+   
+   
+   
+   private void printEngineerToXML(User u) {
+	    try {
+	    	//añadir
+	        xmlmanager.sponsor2xml(EngineerID);
+	        JOptionPane.showMessageDialog(contentPanel, "Engineer data printed to XML successfully!");
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(contentPanel, "An error occurred while printing engineer data to XML.", "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	}
+   
+   
    
    
    private void loadFromXML(String role) {

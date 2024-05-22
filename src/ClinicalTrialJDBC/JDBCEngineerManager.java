@@ -192,4 +192,32 @@ public class JDBCEngineerManager implements EngineerManager{
 	
 	
 	
+	@Override
+	public Engineer searchEngineerByEmail(String email) {
+		// TODO Auto-generated method stub
+		Engineer eng = null;  
+		
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM engineer WHERE email=" + email;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			Integer id = rs.getInt("id");
+			String name = rs.getString("name");
+			Integer phone = rs.getInt("phone");			
+			
+		    eng = new Engineer (id, name, email, phone);
+		    
+		    rs.close();
+		    stmt.close();
+		    
+		}catch(Exception e) {e.printStackTrace();}
+		return eng;
+	}
+	
+	
+	
+	
 }

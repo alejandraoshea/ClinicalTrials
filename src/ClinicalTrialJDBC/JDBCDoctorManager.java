@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ClinicalTrialInterfaces.DoctorManager;
+import clinicaltrialsPOJO.Administrator;
 import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.InvestigationalProduct;
 import clinicaltrialsPOJO.Reports;
@@ -217,6 +218,33 @@ public class JDBCDoctorManager implements DoctorManager{
 			String specialization = rs.getString("specialization");
 			
 		    doctor = new Doctor (doctor_id, name, email, phone, specialization);
+		    
+		    rs.close();
+		    stmt.close();
+		    
+		}catch(Exception e) {e.printStackTrace();}
+		return doctor;
+	}
+	
+	
+	@Override
+	public Doctor searchDoctorByEmail(String email) {
+		// TODO Auto-generated method stub
+		Doctor doctor =  null; 
+		
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM doctor WHERE email=" + email;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			Integer id = rs.getInt("id");
+			String name = rs.getString("name");
+			Integer phone = rs.getInt("phone");
+			String specialization = rs.getString("specialization");
+			
+		    doctor = new Doctor (id, name, email, phone, specialization);
 		    
 		    rs.close();
 		    stmt.close();

@@ -23,6 +23,7 @@ public interface AdministratorManager {
 	public Administrator searchAdminById(Integer id);
 	public List<Patient> getPatients();
 	public Reports getReportByID(Integer report_id);
+	public Administrator searchAdminByEmail(String email);
 	
 
 }

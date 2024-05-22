@@ -3,6 +3,8 @@ package ClinicalTrialInterfaces;
 import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.Engineer;
 import clinicaltrialsPOJO.InvestigationalProduct;
+import clinicaltrialsPOJO.Patient;
+
 import java.util.List;
 
 public interface EngineerManager {
@@ -13,4 +15,5 @@ public interface EngineerManager {
 	public InvestigationalProduct getInvPr(Integer investigationalProduct_id);	
 	public Engineer searchEngineerById(Integer engineer_id);
 	public List<InvestigationalProduct> getListInvPrOfEngineer(Integer engineer_id);
+	public Engineer searchEngineerByEmail(String email);
 }

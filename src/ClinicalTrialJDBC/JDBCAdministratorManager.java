@@ -345,4 +345,30 @@ private JDBCManager manager;
 		return report;
 	}
 	
+	
+	@Override
+	public Administrator searchAdminByEmail(String email) {
+		// TODO Auto-generated method stub
+		Administrator admin =  null; 
+		
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM administrator WHERE email=" + email;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			Integer id = rs.getInt("id");
+			String name = rs.getString("name");
+			Integer phone = rs.getInt("phone");
+			
+		    admin = new Administrator (id, name, email, phone);
+		    
+		    rs.close();
+		    stmt.close();
+		    
+		}catch(Exception e) {e.printStackTrace();}
+		return admin;
+	}
+	
 }
