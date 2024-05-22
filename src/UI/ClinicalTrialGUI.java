@@ -180,10 +180,11 @@ public class ClinicalTrialGUI extends JFrame {
                doctormanager.createDoctor(doctor);
                rol = 2;
            } else if (name.equals("patient")) {
-               // Create patient logic
+               Patient patient = new Patient(additionalInfo.get("name"), email, Integer.parseInt(additionalInfo.get("phone")), Date.valueOf(additionalInfo.get("dateOfBirth")), 
+            		   additionalInfo.get("bloodType"), additionalInfo.get("disease"), Boolean.parseBoolean(additionalInfo.get("cured")));
+               patientmanager.createPatient(patient);
            	rol = 3;
            } else if (name.equals("sponsor")) {
-               // Create sponsor logic
            	Sponsor sponsor = new Sponsor(additionalInfo.get("name"), email, Integer.parseInt(additionalInfo.get("phone")), Integer.parseInt(additionalInfo.get("cardNumber")));
                sponsormanager.createSponsor(sponsor);
            	rol = 4;
@@ -1927,8 +1928,6 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void loadAdmin() {
-	   contentPanel.removeAll();
-
        JPanel panel = new JPanel(new MigLayout("fill"));
        JTextArea textArea = new JTextArea();
        textArea.setEditable(false);
@@ -1938,13 +1937,33 @@ public class ClinicalTrialGUI extends JFrame {
        loadButton.addActionListener(e -> {
     	   try {
 	    	   Administrator admin = null; 
-	   			File file = new File("./xmls/External-Administrator.xml");
+	   			File file = new File("./xmls/External-Admin.xml");
 	   			admin = xmlmanager.xml2Admin(file);
 	           if (admin != null) {
-	               textArea.setText(admin.toString());
+	        	   String[] columnNames = {"Admin ID", "Name", "Email", "Phone"};
+	                DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+	                Object[] rowData = {
+	                    admin.getAdmin_id(),
+	                    admin.getName(),
+	                    admin.getEmail(),
+	                    admin.getPhone()
+	                };
+	                model.addRow(rowData);
+	                
+	                JTable table = new JTable(model);
+	                JScrollPane tableScrollPane = new JScrollPane(table);
+
+	                panel.removeAll();
+	                panel.add(tableScrollPane, "grow, push, wrap");
+	                panel.add(loadButton, "align center");
+	                panel.revalidate();
+	                panel.repaint();
+	                
 	           } else {
 	               textArea.setText("Failed to load administrator.");
 	           }
+	           
+	           
     	   }catch (Exception exp) {
                exp.printStackTrace();
            }
@@ -1959,7 +1978,7 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    
-   private static void loadDoctor() {
+   private void loadDoctor() {
 	   JFrame frame = new JFrame("Doctor Loader");
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        frame.setSize(400, 300);
@@ -1975,7 +1994,24 @@ public class ClinicalTrialGUI extends JFrame {
    			File file = new File("./xmls/External-Doctor.xml");
    			d = xmlmanager.xml2Doctor(file);
            if (d != null) {
-               textArea.setText(d.toString());
+        	   String[] columnNames = {"ID", "Name", "Email", "Phone", "Specialization"}; //column names
+               DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+               Object[] rowData = {
+	    		   d.getDoctor_id(),
+	    		   d.getEmail(),
+	    		   d.getPhone(),
+	    		   d.getSpecialization()
+               };
+               model.addRow(rowData);
+
+               JTable table = new JTable(model);
+               JScrollPane tableScrollPane = new JScrollPane(table);
+               
+               contentPanel.removeAll();
+               contentPanel.add(tableScrollPane, "grow, push, wrap");
+               contentPanel.add(loadButton, "align center");
+               contentPanel.revalidate();
+               contentPanel.repaint();
            } else {
                textArea.setText("Failed to load doctor.");
            }
@@ -1983,13 +2019,13 @@ public class ClinicalTrialGUI extends JFrame {
 
        panel.add(scrollPane, "grow, push, wrap");
        panel.add(loadButton, "align center");
-
-       frame.add(panel);
-       frame.setVisible(true);
+       contentPanel.add(panel, BorderLayout.CENTER);
+       contentPanel.revalidate();
+       contentPanel.repaint();
 	}
    
    
-   private static void loadPatient() {
+   private void loadPatient() {
 	   JFrame frame = new JFrame("Patient Loader");
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        frame.setSize(400, 300);
@@ -2001,11 +2037,31 @@ public class ClinicalTrialGUI extends JFrame {
 
        JButton loadButton = new JButton("Load patient");
        loadButton.addActionListener(e -> {
-    	   Patient p = null; 
+    	   Patient patient = null; 
    			File file = new File("./xmls/External-Patient.xml");
-   			p = xmlmanager.xml2Patient(file);
-           if (p != null) {
-               textArea.setText(p.toString());
+   			patient = xmlmanager.xml2Patient(file);
+           if (patient != null) {
+        	   String[] columnNames = {"ID", "Name", "Email", "Phone", "Date of birth", "Cured", "Blood Type", "Name of disease"}; //column names
+               DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+               Object[] rowData = {
+	    		   patient.getPatient_id(),
+	    		   patient.getEmail(),
+	    		   patient.getPhone(),
+	    		   patient.getDateOfBirth(),
+	    		   patient.isCured(),
+	    		   patient.getBloodType(),
+	    		   patient.getDisease()
+               };
+               model.addRow(rowData);
+
+               JTable table = new JTable(model);
+               JScrollPane tableScrollPane = new JScrollPane(table);
+               
+               contentPanel.removeAll();
+               contentPanel.add(tableScrollPane, "grow, push, wrap");
+               contentPanel.add(loadButton, "align center");
+               contentPanel.revalidate();
+               contentPanel.repaint();
            } else {
                textArea.setText("Failed to load patient.");
            }
@@ -2013,17 +2069,13 @@ public class ClinicalTrialGUI extends JFrame {
 
        panel.add(scrollPane, "grow, push, wrap");
        panel.add(loadButton, "align center");
-
-       frame.add(panel);
-       frame.setVisible(true);
+       contentPanel.add(panel, BorderLayout.CENTER);
+       contentPanel.revalidate();
+       contentPanel.repaint();
 	}
    
    
-   private static void loadSponsor() {
-	   JFrame frame = new JFrame("Sponsor Loader");
-       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       frame.setSize(400, 300);
-
+   private void loadSponsor() {
        JPanel panel = new JPanel(new MigLayout("fill"));
        JTextArea textArea = new JTextArea();
        textArea.setEditable(false);
@@ -2034,8 +2086,26 @@ public class ClinicalTrialGUI extends JFrame {
     	   Sponsor s = null; 
    			File file = new File("./xmls/External-Sponsor.xml");
    			s = xmlmanager.xml2Sponsor(file);
-           if (s != null) {
-               textArea.setText(s.toString());
+   			if (s != null) {
+	        	   String[] columnNames = {"Sponsor ID", "Name", "Email", "Phone", "Card Number"};
+	                DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+	                Object[] rowData = {
+	                    s.getSponsor_id(),
+	                    s.getName(),
+	                    s.getEmail(),
+	                    s.getPhone(),
+	                    s.getCardNumber()
+	                };
+	                model.addRow(rowData);
+	                
+	                JTable table = new JTable(model);
+	                JScrollPane tableScrollPane = new JScrollPane(table);
+
+	                contentPanel.removeAll();
+	                contentPanel.add(tableScrollPane, "grow, push, wrap");
+	                contentPanel.add(loadButton, "align center");
+	                contentPanel.revalidate();
+	                contentPanel.repaint();
            } else {
                textArea.setText("Failed to load sponsor.");
            }
@@ -2043,18 +2113,14 @@ public class ClinicalTrialGUI extends JFrame {
 
        panel.add(scrollPane, "grow, push, wrap");
        panel.add(loadButton, "align center");
-
-       frame.add(panel);
-       frame.setVisible(true);
+       contentPanel.add(panel, BorderLayout.CENTER);
+       contentPanel.revalidate();
+       contentPanel.repaint();
 	}
  
   
-   private static void loadEngineer() {
-	   JFrame frame = new JFrame("Engineer Loader");
-       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       frame.setSize(400, 300);
-
-       JPanel panel = new JPanel(new MigLayout("fill"));
+   private void loadEngineer() {
+	   JPanel panel = new JPanel(new MigLayout("fill"));
        JTextArea textArea = new JTextArea();
        textArea.setEditable(false);
        JScrollPane scrollPane = new JScrollPane(textArea);
@@ -2064,8 +2130,25 @@ public class ClinicalTrialGUI extends JFrame {
     	   Engineer engineer = null;
    			File file = new File("./xmls/External-Engineer.xml");
    			engineer = xmlmanager.xml2Engineer(file);
-           if (engineer != null) {
-               textArea.setText(engineer.toString());
+   			if (engineer != null) {
+        	   String[] columnNames = {"Engineer ID", "Name", "Email", "Phone"};
+               DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+               Object[] rowData = {
+                   engineer.getEngineer_id(),
+                   engineer.getName(),
+                   engineer.getEmail(),
+                   engineer.getPhone()
+               };
+               model.addRow(rowData);
+
+               JTable table = new JTable(model);
+               JScrollPane tableScrollPane = new JScrollPane(table);
+               
+               contentPanel.removeAll();
+               contentPanel.add(tableScrollPane, "grow, push, wrap");
+               contentPanel.add(loadButton, "align center");
+               contentPanel.revalidate();
+               contentPanel.repaint();
            } else {
                textArea.setText("Failed to load Engineer.");
            }
@@ -2073,9 +2156,9 @@ public class ClinicalTrialGUI extends JFrame {
 
        panel.add(scrollPane, "grow, push, wrap");
        panel.add(loadButton, "align center");
-
-       frame.add(panel);
-       frame.setVisible(true);
+       contentPanel.add(panel, BorderLayout.CENTER);
+       contentPanel.revalidate();
+       contentPanel.repaint();
 	}
    
   
