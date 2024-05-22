@@ -23,6 +23,7 @@ import clinicaltrialsPOJO.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -606,7 +607,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        printAdminToXML(u);
 	                        break;
 	                    case "Load admin from xml":
-	                        loadFromXML("admin");
+	                    	loadAdmin();
 	                        break;
 	                    case "Add new doctor":
 	                        addNewDoctor();
@@ -636,7 +637,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        printDoctorToXML(u);
 	                        break;
 	                    case "Load doctor from xml":
-	                        loadFromXML("doctor");
+	                        loadDoctor();
 	                        break;
 	                    case "Apply to a CT":
 	                        applyToCT(u);
@@ -648,7 +649,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                    	printPatientToXML(u);
 	                        break;
 	                    case "Load patient from xml":
-	                        loadFromXML("patient");
+	                        loadPatient();
 	                        break;
 	                    case "Add a new sponsor":
 	                        addNewSponsor();
@@ -669,7 +670,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        printSponsorToXML(u);
 	                        break;
 	                    case "Load sponsor from xml":
-	                        loadFromXML("sponsor");
+	                    	loadSponsor();
 	                        break;
 	                    case "Add a new engineer":
 	                        addNewEngineer();
@@ -687,7 +688,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        printEngineerToXML(u);
 	                        break;
 	                    case "Load engineer from xml":
-	                        loadFromXML("engineer");
+	                        loadEngineer();
 	                        break;
 	                    default:
 	                        System.out.println("Action not defined for this button");
@@ -1925,13 +1926,156 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    
+   private static void loadAdmin() {
+	   JFrame frame = new JFrame("Administrator Loader");
+       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       frame.setSize(400, 300);
+
+       JPanel panel = new JPanel(new MigLayout("fill"));
+       JTextArea textArea = new JTextArea();
+       textArea.setEditable(false);
+       JScrollPane scrollPane = new JScrollPane(textArea);
+
+       JButton loadButton = new JButton("Load Administrator");
+       loadButton.addActionListener(e -> {
+    	   Administrator admin = null; 
+   			File file = new File("./xmls/External-Administrator.xml");
+   			admin = xmlmanager.xml2Admin(file);
+           if (admin != null) {
+               textArea.setText(admin.toString());
+           } else {
+               textArea.setText("Failed to load Engineer.");
+           }
+       });
+
+       panel.add(scrollPane, "grow, push, wrap");
+       panel.add(loadButton, "align center");
+
+       frame.add(panel);
+       frame.setVisible(true);
+	}
    
-   private void loadFromXML(String role) {
-       // Implement the method to load from XML based on the role
-   }
+   
+   
+   private static void loadDoctor() {
+	   JFrame frame = new JFrame("Doctor Loader");
+       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       frame.setSize(400, 300);
+
+       JPanel panel = new JPanel(new MigLayout("fill"));
+       JTextArea textArea = new JTextArea();
+       textArea.setEditable(false);
+       JScrollPane scrollPane = new JScrollPane(textArea);
+
+       JButton loadButton = new JButton("Load doctor");
+       loadButton.addActionListener(e -> {
+    	   Doctor d = null;  
+   			File file = new File("./xmls/External-Doctor.xml");
+   			d = xmlmanager.xml2Doctor(file);
+           if (d != null) {
+               textArea.setText(d.toString());
+           } else {
+               textArea.setText("Failed to load Engineer.");
+           }
+       });
+
+       panel.add(scrollPane, "grow, push, wrap");
+       panel.add(loadButton, "align center");
+
+       frame.add(panel);
+       frame.setVisible(true);
+	}
+   
+   
+   private static void loadPatient() {
+	   JFrame frame = new JFrame("Patient Loader");
+       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       frame.setSize(400, 300);
+
+       JPanel panel = new JPanel(new MigLayout("fill"));
+       JTextArea textArea = new JTextArea();
+       textArea.setEditable(false);
+       JScrollPane scrollPane = new JScrollPane(textArea);
+
+       JButton loadButton = new JButton("Load patient");
+       loadButton.addActionListener(e -> {
+    	   Patient p = null; 
+   			File file = new File("./xmls/External-Patient.xml");
+   			p = xmlmanager.xml2Patient(file);
+           if (p != null) {
+               textArea.setText(p.toString());
+           } else {
+               textArea.setText("Failed to load Engineer.");
+           }
+       });
+
+       panel.add(scrollPane, "grow, push, wrap");
+       panel.add(loadButton, "align center");
+
+       frame.add(panel);
+       frame.setVisible(true);
+	}
+   
+   
+   private static void loadSponsor() {
+	   JFrame frame = new JFrame("Sponsor Loader");
+       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       frame.setSize(400, 300);
+
+       JPanel panel = new JPanel(new MigLayout("fill"));
+       JTextArea textArea = new JTextArea();
+       textArea.setEditable(false);
+       JScrollPane scrollPane = new JScrollPane(textArea);
+
+       JButton loadButton = new JButton("Load sponsor");
+       loadButton.addActionListener(e -> {
+    	   Sponsor s = null; 
+   			File file = new File("./xmls/External-Sponsor.xml");
+   			s = xmlmanager.xml2Sponsor(file);
+           if (s != null) {
+               textArea.setText(s.toString());
+           } else {
+               textArea.setText("Failed to load sponsor.");
+           }
+       });
+
+       panel.add(scrollPane, "grow, push, wrap");
+       panel.add(loadButton, "align center");
+
+       frame.add(panel);
+       frame.setVisible(true);
+	}
  
   
-  
+   private static void loadEngineer() {
+	   JFrame frame = new JFrame("Engineer Loader");
+       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       frame.setSize(400, 300);
+
+       JPanel panel = new JPanel(new MigLayout("fill"));
+       JTextArea textArea = new JTextArea();
+       textArea.setEditable(false);
+       JScrollPane scrollPane = new JScrollPane(textArea);
+
+       JButton loadButton = new JButton("Load Engineer");
+       loadButton.addActionListener(e -> {
+    	   Engineer engineer = null;
+   			File file = new File("./xmls/External-Engineer.xml");
+   			engineer = xmlmanager.xml2Engineer(file);
+           if (engineer != null) {
+               textArea.setText(engineer.toString());
+           } else {
+               textArea.setText("Failed to load Engineer.");
+           }
+       });
+
+       panel.add(scrollPane, "grow, push, wrap");
+       panel.add(loadButton, "align center");
+
+       frame.add(panel);
+       frame.setVisible(true);
+	}
+   
   
   
    public static void main(String[] args) {

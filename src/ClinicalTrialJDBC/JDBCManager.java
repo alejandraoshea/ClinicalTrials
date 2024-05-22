@@ -64,7 +64,7 @@ public JDBCManager() {
 			sql = "CREATE TABLE sponsor(id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "name TEXT NOT NULL, "
 					+ "phone INTEGER NOT NULL UNIQUE, email TEXT NOT NULL,"
-					+ "cardNumber INTEGER NOT NULL, reports INTEGER NOT NULL);";
+					+ "cardNumber INTEGER NOT NULL, reports INTEGER);";
 			stmt.executeUpdate(sql);
 			
 			
