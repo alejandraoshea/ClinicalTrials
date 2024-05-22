@@ -1912,8 +1912,10 @@ public class ClinicalTrialGUI extends JFrame {
    
    private void printEngineerToXML(User u) {
 	    try {
-	    	//añadir
-	        xmlmanager.sponsor2xml(EngineerID);
+	    	String email = u.getEmail();
+	    	Engineer eng = engineermanager.searchEngineerByEmail(email);
+	    	Integer id = eng.getEngineer_id();
+	        xmlmanager.sponsor2xml(id);
 	        JOptionPane.showMessageDialog(contentPanel, "Engineer data printed to XML successfully!");
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
