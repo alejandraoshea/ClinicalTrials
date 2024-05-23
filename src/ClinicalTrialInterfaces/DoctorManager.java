@@ -14,7 +14,7 @@ public interface DoctorManager {
 	public List<Doctor> getListOfDoctors();
 	public void updateSpeciality(Integer doctor_id, String newSpeciality);
 	public void createReport(Reports report);
-	public void assignReportToPatient(Integer report_id, Integer patient_id);
+	public void assignReportToPatient(Integer report_id, Integer patient_id, Integer doctor_id);
 	public List<InvestigationalProduct> getlistInvProd(); 
 	public InvestigationalProduct chooseInvProductById(Integer investigationalProduct_id,Integer doctor_id);
 	public Doctor searchDoctorById(Integer doctor_id);

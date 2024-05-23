@@ -54,6 +54,8 @@ public class ClinicalTrialGUI extends JFrame {
    private JFrame menuFrame;
    private JTable table;
    private JPanel contentPanel;
+   private JComboBox<String> bloodTypeComboBox;
+   
   
    public ClinicalTrialGUI() {
        super("Clinical Trial Database");
@@ -280,7 +282,6 @@ public class ClinicalTrialGUI extends JFrame {
        Map<String, JTextField> additionalFields = new HashMap<>();
        JRadioButton curedYes = null;
        JRadioButton curedNo = null;
-       JComboBox<String> bloodTypeComboBox = null;
        
        if (userType.equals("administrator")) {
            JLabel nameLabel = new JLabel("Name:");
@@ -408,6 +409,10 @@ public class ClinicalTrialGUI extends JFrame {
                Map<String, String> additionalInfo = new HashMap<>();
                for (Map.Entry<String, JTextField> entry : additionalFields.entrySet()) {
                    additionalInfo.put(entry.getKey(), entry.getValue().getText());
+               }
+               if (userType.equals("patient")) {
+                   String selectedBloodType = (String) bloodTypeComboBox.getSelectedItem();
+                   additionalInfo.put("bloodType", selectedBloodType);
                }
                signUpUser(email, password, userType, additionalInfo);
                registrationDialog.dispose();
@@ -1188,6 +1193,7 @@ public class ClinicalTrialGUI extends JFrame {
 
 	            if (doctor != null && patient != null) {
 	                doctor.getPatients().add(patient);
+	                doctormanager.assignDoctorToPatient(patientId, doctorId);
 	                JOptionPane.showMessageDialog(contentPanel, "Doctor assigned to patient successfully!");
 	            } else {
 	                JOptionPane.showMessageDialog(contentPanel, "Doctor or patient not found!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1337,7 +1343,7 @@ public class ClinicalTrialGUI extends JFrame {
 	            Patient patient = patientmanager.searchPatientById(patientId);
 
 	            if (report != null && doctor != null && patient != null) {
-	                doctormanager.assignReportToPatient(reportId, patientId);
+	                doctormanager.assignReportToPatient(reportId, patientId, doctorId); 
 	                doctor.getReports().add(report);
 	                patient.getReports().add(report);
 	                JOptionPane.showMessageDialog(contentPanel, "Report assigned to patient successfully!");
@@ -1412,42 +1418,57 @@ public class ClinicalTrialGUI extends JFrame {
    
    private void applyToCT(User u) {
 	   contentPanel.removeAll();
-	    JPanel formPanel = new JPanel(new GridLayout(3, 1, 10, 10));
-
-	    JLabel adminIdLabel = new JLabel("Administrator ID:");
+	    
+	    JPanel inputPanel = new JPanel();
+	    inputPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
+	    
+	    JLabel adminIdLabel = new JLabel("Administrator ID: ");
 	    JTextField adminIdField = new JTextField(20);
-	    JLabel trialIdLabel = new JLabel("Clinical Trial ID:");
+	    customizeTextField(adminIdField);
+
+	    JLabel trialIdLabel = new JLabel("Clinical Trial ID: ");
 	    JTextField trialIdField = new JTextField(20);
+	    customizeTextField(trialIdField);
+	    
 	    JButton applyButton = new JButton("Apply");
+	    customizeButton(applyButton);
 
-	    applyButton.addActionListener(e -> {
-	        try {
-	            Integer adminId = Integer.parseInt(adminIdField.getText());
-	            Integer trialId = Integer.parseInt(trialIdField.getText());
-	            String uEmail = u.getEmail();
-	            Patient patient = patientmanager.searchPatientByEmail(uEmail);
-	            
-	            Integer patientId = patient.getPatient_id();
-	            
-	            patientmanager.applyToClinicalTrial(adminId, trialId, patientId);
-	            JOptionPane.showMessageDialog(contentPanel, "Application submitted successfully!");
-	        } catch (NumberFormatException ex) {
-	            JOptionPane.showMessageDialog(contentPanel, "Please enter valid IDs!", "Error", JOptionPane.ERROR_MESSAGE);
-	        } catch (Exception ex) {
-	            ex.printStackTrace();
-	            JOptionPane.showMessageDialog(contentPanel, "An error occurred while applying to the clinical trial.", "Error", JOptionPane.ERROR_MESSAGE);
-	        }
-	    });
+	    inputPanel.add(adminIdLabel);
+	    inputPanel.add(adminIdField, "growx");
+	    inputPanel.add(trialIdLabel);
+	    inputPanel.add(trialIdField, "growx");
+	    inputPanel.add(applyButton,"span, align center");
 
-	    formPanel.add(adminIdLabel);
-	    formPanel.add(adminIdField);
-	    formPanel.add(trialIdLabel);
-	    formPanel.add(trialIdField);
-	    formPanel.add(applyButton);
-
-	    contentPanel.add(formPanel, BorderLayout.CENTER);
+	    contentPanel.add(inputPanel, BorderLayout.NORTH);
 	    contentPanel.revalidate();
 	    contentPanel.repaint();
+
+	    applyButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	String adminIdStr = adminIdField.getText();
+	            String trialIdStr = trialIdField.getText();
+	            try {
+	                Integer adminId = Integer.parseInt(adminIdStr);
+	                Integer trialId = Integer.parseInt(trialIdStr);
+	                String uEmail = u.getEmail();
+	                Patient patient = patientmanager.searchPatientByEmail(uEmail);
+
+	                if (patient != null) {
+	                    Integer patientId = patient.getPatient_id();
+	                    patientmanager.applyToClinicalTrial(adminId, trialId, patientId);
+	                    JOptionPane.showMessageDialog(contentPanel, "Application submitted successfully!");
+	                } else {
+	                    JOptionPane.showMessageDialog(contentPanel, "Patient not found!", "Error", JOptionPane.ERROR_MESSAGE);
+	                }
+	            } catch (NumberFormatException ex) {
+	                JOptionPane.showMessageDialog(contentPanel, "Please enter valid IDs!", "Error", JOptionPane.ERROR_MESSAGE);
+	            } catch (Exception ex) {
+	                ex.printStackTrace();
+	                JOptionPane.showMessageDialog(contentPanel, "An error occurred while applying to the clinical trial.", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+	        }
+	    });
    }
    
    

@@ -16,9 +16,11 @@ import clinicaltrialsPOJO.Patient;
 public class JDBCPatientManager implements PatientManager{
 
 	private JDBCManager manager;
+	private JDBCDoctorManager doctormanager;
 	
 	public JDBCPatientManager (JDBCManager m) {
 		this.manager = m;
+		this.doctormanager = new JDBCDoctorManager(manager);
 	}
 
 	
@@ -117,7 +119,9 @@ public class JDBCPatientManager implements PatientManager{
 				Integer id = rs.getInt("id");
 				String medicalHistory = rs.getString("medicalHistory");
 				String treatment = rs.getString("treatment");
-				Reports report = new Reports(id, medicalHistory, treatment);
+				Integer doctorId = rs.getInt("doctor_id");
+				Doctor d = doctormanager.searchDoctorById(doctorId);
+				Reports report = new Reports(id, medicalHistory, treatment, d, patient);
 				reports.add(report);
 			}
 			

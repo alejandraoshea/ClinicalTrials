@@ -605,7 +605,7 @@ private static void updatePassword() throws Exception {
 		Doctor doctor = doctormanager.searchDoctorById(doctor_id);
 		Reports report = adminmanager.getReportByID(report_id);
 		
-		doctormanager.assignReportToPatient(report_id, patient_id);
+		doctormanager.assignReportToPatient(report_id, patient_id, doctor_id);
 		//trial_id
 		doctor.getReports().add(report);
 		patient.getReports().add(report);

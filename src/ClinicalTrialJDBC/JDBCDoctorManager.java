@@ -97,7 +97,7 @@ public class JDBCDoctorManager implements DoctorManager{
 	
 
 	@Override
-	public void assignReportToPatient(Integer report_id, Integer patient_id) {
+	public void assignReportToPatient(Integer report_id, Integer patient_id, Integer doctor_id) {
 		// TODO Auto-generated method stub
 		try {
 			String sql = "UPDATE report SET patient_id = ? WHERE id = ?;";
@@ -106,6 +106,14 @@ public class JDBCDoctorManager implements DoctorManager{
 			prep.setInt(1, patient_id);
 			prep.setInt(2, report_id);
 			prep.executeUpdate();
+			
+			
+			String sql2 = "UPDATE report SET doctor_id = ? WHERE id = ?;";
+			PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
+			
+			prep2.setInt(1, doctor_id);
+			prep2.setInt(2, report_id);
+			prep2.executeUpdate();
 			
 		}
 		catch(Exception e){
