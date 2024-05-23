@@ -1,5 +1,6 @@
 package ClinicalTrialJDBC;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -17,7 +18,7 @@ import clinicaltrialsPOJO.Trial;
 
 public class JDBCAdministratorManager implements AdministratorManager{
 
-private JDBCManager manager;
+private JDBCManager manager; 
 	
 	public JDBCAdministratorManager (JDBCManager m) {
 		this.manager = m;
@@ -217,7 +218,10 @@ private JDBCManager manager;
 				Integer id = rs.getInt("id");
 				String requirements = rs.getString("requirements");
 				Integer amountMoney = rs.getInt("amountMoneyInvestedTotal");
+				Integer adminId = rs.getInt("admin_id");
+				Administrator admin = searchAdminById(adminId);
 				Trial trial = new Trial(id, requirements, amountMoney);
+				trial.setAdmin(admin);
 				trials.add(trial);
 			}
 			
@@ -248,8 +252,11 @@ private JDBCManager manager;
 				String name = rs.getString("name");
 				String email = rs.getString("email");
 				Integer phone = rs.getInt("phone");
-			
-				Patient patient = new Patient (patient_id, name, email, phone);
+				Date date = rs.getDate("dateOfBirth");
+				String bloodT = rs.getString("bloodType");
+				String disease = rs.getString("nameOfDisease");
+				Boolean cured = rs.getBoolean("cured");
+				Patient patient = new Patient (patient_id, name, email, phone, date, bloodT, disease, cured);
 				patients.add(patient);
 			}
 		  rs.close();
@@ -277,10 +284,14 @@ private JDBCManager manager;
 			while(rs.next()) {
 				Integer patient_id = rs.getInt("id");
 				String name = rs.getString("name");
-				String email = rs.getString("email");
 				Integer phone = rs.getInt("phone");
+				String email = rs.getString("email");
+				Date date = rs.getDate("dateOfBirth");
+				Boolean cured = rs.getBoolean("cured");
+				String bloodT = rs.getString("bloodType");
+				String disease = rs.getString("nameOfDisease");
 			
-				Patient patient = new Patient (patient_id, name, email, phone);
+				Patient patient = new Patient (patient_id, name, email, phone, date, bloodT, disease, cured);
 				patients.add(patient);
 			}
 		  rs.close();

@@ -183,7 +183,7 @@ public class ClinicalTrialGUI extends JFrame {
                rol = 2;
            } else if (name.equals("patient")) {
                Patient patient = new Patient(additionalInfo.get("name"), email, Integer.parseInt(additionalInfo.get("phone")), Date.valueOf(additionalInfo.get("dateOfBirth")), 
-            		   additionalInfo.get("bloodType"), additionalInfo.get("disease"), Boolean.parseBoolean(additionalInfo.get("cured")));
+            		   additionalInfo.get("bloodType"), additionalInfo.get("nameOfDisease"), Boolean.parseBoolean(additionalInfo.get("cured")));
                patientmanager.createPatient(patient);
            	rol = 3;
            } else if (name.equals("sponsor")) {
@@ -840,6 +840,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    for (Patient patient: patients) {
 	        Object[] rowData = {
 	        	patient.getPatient_id(),
+	        	patient.getName(), 
 	        	patient.getEmail(),
 	        	patient.getPhone(),
 	        	patient.getDateOfBirth(),
@@ -1142,7 +1143,6 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void showAllDoctors() {
-       // Implement the method to show all doctors
 	   List<Doctor> doctors = doctormanager.getListOfDoctors();
 		String[] columnNames = {"ID", "Name", "Email", "Phone", "Specialization"}; //column names
 	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // Create table model
