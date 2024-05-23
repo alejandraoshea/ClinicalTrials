@@ -840,7 +840,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    for (Patient patient: patients) {
 	        Object[] rowData = {
 	        	patient.getPatient_id(),
-	        	patient.getName(), 
+	        	patient.getName(),
 	        	patient.getEmail(),
 	        	patient.getPhone(),
 	        	patient.getDateOfBirth(),
