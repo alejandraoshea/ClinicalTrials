@@ -48,13 +48,13 @@ public class ClinicalTrialGUI extends JFrame {
 	private static UserManager usermanager;
 	private static XMLManager xmlmanager;
    // Icons
-   private static final Icon loginIcon = new ImageIcon("path/to/loginIcon.png");
-   private static final Icon registerIcon = new ImageIcon("path/to/registerIcon.png");
-   private static final Icon logoutIcon = new ImageIcon("path/to/logoutIcon.png");
    private JFrame menuFrame;
    private JTable table;
    private JPanel contentPanel;
    private JComboBox<String> bloodTypeComboBox;
+   private JComboBox<String> roleType;
+   private JRadioButton curedYes;
+   private JRadioButton curedNo;
    
   
    public ClinicalTrialGUI() {
@@ -69,13 +69,11 @@ public class ClinicalTrialGUI extends JFrame {
        xmlmanager = new XMLManagerImpl();
       
        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       setPreferredSize(new Dimension(800, 600)); // Set initial size of the frame
-       setExtendedState(JFrame.MAXIMIZED_BOTH);
        this.setTitle("Clinical Trial Database");
-       JPanel mainPanel = new JPanel(new MigLayout("wrap 2", "[][grow]", "40[]20[][][]20[]"));
+       JPanel mainPanel = new JPanel(new MigLayout("wrap 2", "[][grow]", "60[]20[][][]20[]"));
        mainPanel.setBackground(new Color(167, 192, 189));
        JLabel titleLabel = new JLabel("Clinical Trial Database");
-       titleLabel.setFont(new Font("Cambria", Font.BOLD, 35));
+       titleLabel.setFont(new Font("Cambria", Font.BOLD, 50));
        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
       
        //Login/Register
@@ -85,7 +83,7 @@ public class ClinicalTrialGUI extends JFrame {
        JLabel passwordLabel = new JLabel("Password:");
        JPasswordField passwordField = new JPasswordField(20);
        customizeTextField(passwordField);
-       JButton loginButton = new JButton("Login", loginIcon);
+       JButton loginButton = new JButton("Login");
        customizeButton(loginButton);
        loginButton.addActionListener(new ActionListener() {
            @Override
@@ -132,12 +130,12 @@ public class ClinicalTrialGUI extends JFrame {
                }
            }
        });
-       JButton registerButton = new JButton("Register", registerIcon);
+       JButton registerButton = new JButton("Register");
        customizeButton(registerButton);
        registerButton.addActionListener(new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent e) {
-               showUserTypeSelection();
+        	   showRegistrationDialog();
            }
        });
        
@@ -163,34 +161,35 @@ public class ClinicalTrialGUI extends JFrame {
        getContentPane().add(mainPanel, BorderLayout.CENTER);
        pack();
        setLocationRelativeTo(null);
+       this.setExtendedState(JFrame.MAXIMIZED_BOTH);
        setVisible(true);
    }
   
-   private static void signUpUser(String email, String password, String name, Map<String, String> additionalInfo) {
+   private void signUpUser(String email, String password, String selectedRole, Map<String, String> additionalInfo) {
        try {
            MessageDigest md = MessageDigest.getInstance("MD5");
            md.update(password.getBytes());
            byte[] pass = md.digest();
            Integer rol = null;
           
-           if (name.equals("administrator")) {
+           if (selectedRole.equals("administrator")) {
                Administrator admin = new Administrator(additionalInfo.get("name"), email, Integer.parseInt(additionalInfo.get("phone")));
                adminmanager.createAdmin(admin);
                rol = 1;
-           } else if (name.equals("doctor")) {
+           } else if (selectedRole.equals("doctor")) {
                Doctor doctor = new Doctor(additionalInfo.get("name"), Integer.parseInt(additionalInfo.get("phone")), email, additionalInfo.get("specialization"));
                doctormanager.createDoctor(doctor);
                rol = 2;
-           } else if (name.equals("patient")) {
+           } else if (selectedRole.equals("patient")) {
                Patient patient = new Patient(additionalInfo.get("name"), email, Integer.parseInt(additionalInfo.get("phone")), Date.valueOf(additionalInfo.get("dateOfBirth")), 
             		   additionalInfo.get("bloodType"), additionalInfo.get("nameOfDisease"), Boolean.parseBoolean(additionalInfo.get("cured")));
                patientmanager.createPatient(patient);
            	rol = 3;
-           } else if (name.equals("sponsor")) {
+           } else if (selectedRole.equals("sponsor")) {
            	Sponsor sponsor = new Sponsor(additionalInfo.get("name"), email, Integer.parseInt(additionalInfo.get("phone")), Integer.parseInt(additionalInfo.get("cardNumber")));
                sponsormanager.createSponsor(sponsor);
            	rol = 4;
-           } else if (name.equals("engineer")) {
+           } else if (selectedRole.equals("engineer")) {
            	Engineer enigneer = new Engineer(additionalInfo.get("name"), email, Integer.parseInt(additionalInfo.get("phone")));
                engineermanager.createEngineer(enigneer);
            	rol = 5;
@@ -198,79 +197,23 @@ public class ClinicalTrialGUI extends JFrame {
            Role r = usermanager.getRole(rol);
            User u = new User(email, pass, r);
            usermanager.newUser(u);
+           if(u!=null) {
+        	   String role = u.getRole().getName();
+        	   showMenu(u, role);
+           }else {
+        	   JOptionPane.showMessageDialog(null, "Login failed. Please click on the login button", "Login Failed", JOptionPane.WARNING_MESSAGE);
+           }
           
        } catch (Exception e) {
            e.printStackTrace();
        }
    }
   
-   private void showUserTypeSelection() {
-       JFrame userTypeFrame = new JFrame("Select User Type");
-       JPanel userTypePanel = new JPanel(new MigLayout("wrap 1", "[]", "[]20[]"));
-       userTypePanel.setBackground(new Color(167, 192, 189));
-       JLabel userTypeLabel = new JLabel("Select User Type:");
-       userTypePanel.add(userTypeLabel, "wrap");
-       JButton adminButton = new JButton("Administrator");
-       JButton doctorButton = new JButton("Doctor");
-       JButton patientButton = new JButton("Patient");
-       JButton sponsorButton = new JButton("Sponsor");
-       JButton engineerButton = new JButton("Engineer");
-       customizeButton(adminButton);
-       customizeButton(doctorButton);
-       customizeButton(patientButton);
-       customizeButton(sponsorButton);
-       customizeButton(engineerButton);
-       adminButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               showRegistrationDialog("administrator");
-               userTypeFrame.dispose();
-           }
-       });
-       doctorButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               showRegistrationDialog("doctor");
-               userTypeFrame.dispose();
-           }
-       });
-       patientButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               showRegistrationDialog("patient");
-               userTypeFrame.dispose();
-           }
-       });
-       sponsorButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               showRegistrationDialog("sponsor");
-               userTypeFrame.dispose();
-           }
-       });
-       engineerButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               showRegistrationDialog("engineer");
-               userTypeFrame.dispose();
-           }
-       });
-       userTypePanel.add(adminButton);
-       userTypePanel.add(doctorButton);
-       userTypePanel.add(patientButton);
-       userTypePanel.add(sponsorButton);
-       userTypePanel.add(engineerButton);
-       userTypeFrame.getContentPane().add(userTypePanel);
-       userTypeFrame.pack();
-       userTypeFrame.setLocationRelativeTo(this);
-       userTypeFrame.setVisible(true);
-   }
+   
   
-  
-  
-  
-   private void showRegistrationDialog(String userType) {
-       JFrame registrationDialog = new JFrame("Registration - " + userType);
+   private void showRegistrationDialog() {
+       JFrame registrationDialog = new JFrame("Registration" );
+       registrationDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
        JPanel registrationPanel = new JPanel(new MigLayout("wrap 2", "[][grow]", "[][][][]20[]"));
        registrationPanel.setBackground(new Color(167, 192, 189));
        JLabel emailLabel = new JLabel("Email:");
@@ -280,125 +223,91 @@ public class ClinicalTrialGUI extends JFrame {
        JPasswordField passwordField = new JPasswordField(20);
        customizeTextField(passwordField);
        Map<String, JTextField> additionalFields = new HashMap<>();
-       JRadioButton curedYes = null;
-       JRadioButton curedNo = null;
+       JLabel roleLabel = new JLabel("Role:");
+       String[] typesUsers = {"Administrator", "Doctor", "Patient", "Sponsor", "Engineer"};
+       roleType = new JComboBox<>(typesUsers);
        
-       if (userType.equals("administrator")) {
-           JLabel nameLabel = new JLabel("Name:");
-           JTextField nameField = new JTextField(20);
-           customizeTextField(nameField);
-           additionalFields.put("name", nameField);
-           JLabel phoneLabel = new JLabel("Phone:");
-           JTextField phoneField = new JTextField(20);
-           customizeTextField(phoneField);
-           additionalFields.put("phone", phoneField);
-           registrationPanel.add(nameLabel);
-           registrationPanel.add(nameField, "growx, wrap");
-           registrationPanel.add(phoneLabel);
-           registrationPanel.add(phoneField, "growx, wrap");
-          
-          
-       } else if (userType.equals("doctor")) {
-           JLabel nameLabel = new JLabel("Name:");
-           JTextField nameField = new JTextField(20);
-           customizeTextField(nameField);
-           additionalFields.put("name", nameField);
-           JLabel phoneLabel = new JLabel("Phone:");
-           JTextField phoneField = new JTextField(20);
-           customizeTextField(phoneField);
-           additionalFields.put("phone", phoneField);
-           JLabel specializationLabel = new JLabel("Specialization:");
-           JTextField specializationField = new JTextField(20);
-           customizeTextField(specializationField);
-           additionalFields.put("specialization", specializationField);
-           registrationPanel.add(nameLabel);
-           registrationPanel.add(nameField, "growx, wrap");
-           registrationPanel.add(phoneLabel);
-           registrationPanel.add(phoneField, "growx, wrap");
-           registrationPanel.add(specializationLabel);
-           registrationPanel.add(specializationField, "growx, wrap");
-     
-       } else if (userType.equals("patient")) {
-    	   JLabel nameLabel = new JLabel("Name:");
-           JTextField nameField = new JTextField(20);
-           customizeTextField(nameField);
-           additionalFields.put("name", nameField);
-           JLabel phoneLabel = new JLabel("Phone:");
-           JTextField phoneField = new JTextField(20);
-           customizeTextField(phoneField);
-           additionalFields.put("phone", phoneField);
+       JPanel additionalRegistration = new JPanel(new MigLayout("wrap 2", "[][grow]", "[][][][]20[]"));
+       additionalRegistration.setBackground(new Color(167, 192, 189));
+       
+       roleType.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+        	   additionalRegistration.removeAll();
+               additionalFields.clear();
+               String selectedRole = (String) roleType.getSelectedItem();
 
-           JLabel doBLabel = new JLabel("Date of Birth:");
-           JTextField dobField = new JTextField(20);
-           customizeTextField(dobField);
-           additionalFields.put("dateOfBirth", dobField);
-           
-           JLabel bloodTypeLabel = new JLabel("Blood Type:");
-           String[] bloodTypes = {"A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"};
-           bloodTypeComboBox = new JComboBox<>(bloodTypes);
-           
-           JLabel nameOfDiseaseLabel = new JLabel("Name of Disease:");
-           JTextField nameDiseaseField = new JTextField(20);
-           customizeTextField(nameDiseaseField);
-           additionalFields.put("nameOfDisease", nameDiseaseField);
-           
-           JLabel curedLabel = new JLabel("Cured:");
-           curedYes = new JRadioButton("Yes");
-           curedNo = new JRadioButton("No");
-           ButtonGroup curedGroup = new ButtonGroup();
-           curedGroup.add(curedYes);
-           curedGroup.add(curedNo);
+               JLabel nameLabel = new JLabel("Name:");
+               JTextField nameField = new JTextField(20);
+               customizeTextField(nameField);
+               additionalFields.put("name", nameField);
 
-           registrationPanel.add(nameLabel);
-           registrationPanel.add(nameField, "growx, wrap");
-           registrationPanel.add(phoneLabel);
-           registrationPanel.add(phoneField, "growx, wrap");
-           registrationPanel.add(doBLabel);
-           registrationPanel.add(dobField, "growx, wrap");
-           registrationPanel.add(bloodTypeLabel);
-           registrationPanel.add(bloodTypeComboBox, "growx, wrap");           
-           registrationPanel.add(nameOfDiseaseLabel);
-           registrationPanel.add(nameDiseaseField, "growx, wrap");
-           registrationPanel.add(curedLabel);
-           registrationPanel.add(curedYes, "split 2");
-           registrationPanel.add(curedNo, "wrap");
-          
-       } else if (userType.equals("sponsor")) {
-           JLabel nameLabel = new JLabel("Name:");
-           JTextField nameField = new JTextField(20);
-           customizeTextField(nameField);
-           additionalFields.put("name", nameField);
-           JLabel phoneLabel = new JLabel("Phone:");
-           JTextField phoneField = new JTextField(20);
-           customizeTextField(phoneField);
-           additionalFields.put("phone", phoneField);
-           JLabel cardNumberLabel = new JLabel("Card number:");
-           JTextField cardNumberField = new JTextField(20);
-           customizeTextField(cardNumberField);
-           additionalFields.put("cardNumber", cardNumberField);
-           registrationPanel.add(nameLabel);
-           registrationPanel.add(nameField, "growx, wrap");
-           registrationPanel.add(phoneLabel);
-           registrationPanel.add(phoneField, "growx, wrap");
-           registrationPanel.add(cardNumberLabel);
-           registrationPanel.add(cardNumberField, "growx, wrap");
-     
-       } else if (userType.equals("engineer")) {
-           JLabel nameLabel = new JLabel("Name:");
-           JTextField nameField = new JTextField(20);
-           customizeTextField(nameField);
-           additionalFields.put("name", nameField);
-           JLabel phoneLabel = new JLabel("Phone:");
-           JTextField phoneField = new JTextField(20);
-           customizeTextField(phoneField);
-           additionalFields.put("phone", phoneField);
-           registrationPanel.add(nameLabel);
-           registrationPanel.add(nameField, "growx, wrap");
-           registrationPanel.add(phoneLabel);
-           registrationPanel.add(phoneField, "growx, wrap");
-          
-       }
-      
+               JLabel phoneLabel = new JLabel("Phone:");
+               JTextField phoneField = new JTextField(20);
+               customizeTextField(phoneField);
+               additionalFields.put("phone", phoneField);
+
+               additionalRegistration.add(nameLabel);
+               additionalRegistration.add(nameField, "growx, wrap");
+               additionalRegistration.add(phoneLabel);
+               additionalRegistration.add(phoneField, "growx, wrap");
+
+               if ("Doctor".equals(selectedRole)) {
+                   JLabel specializationLabel = new JLabel("Specialization:");
+                   JTextField specializationField = new JTextField(20);
+                   customizeTextField(specializationField);
+                   additionalFields.put("specialization", specializationField);
+
+                   additionalRegistration.add(specializationLabel);
+                   additionalRegistration.add(specializationField, "growx, wrap");
+
+               } else if ("Patient".equals(selectedRole)) {
+                   JLabel dobLabel = new JLabel("Date of Birth:");
+                   JTextField dobField = new JTextField(20);
+                   customizeTextField(dobField);
+                   additionalFields.put("dateOfBirth", dobField);
+
+                   JLabel bloodTypeLabel = new JLabel("Blood Type:");
+                   String[] bloodTypes = {"A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"};
+                   bloodTypeComboBox = new JComboBox<>(bloodTypes);
+
+                   JLabel diseaseLabel = new JLabel("Name of Disease:");
+                   JTextField diseaseField = new JTextField(20);
+                   customizeTextField(diseaseField);
+                   additionalFields.put("nameOfDisease", diseaseField);
+
+                   JLabel curedLabel = new JLabel("Cured:");
+                   curedYes = new JRadioButton("Yes");
+                   curedNo = new JRadioButton("No");
+                   ButtonGroup curedGroup = new ButtonGroup();
+                   curedGroup.add(curedYes);
+                   curedGroup.add(curedNo);
+
+                   additionalRegistration.add(dobLabel);
+                   additionalRegistration.add(dobField, "growx, wrap");
+                   additionalRegistration.add(bloodTypeLabel);
+                   additionalRegistration.add(bloodTypeComboBox, "growx, wrap");
+                   additionalRegistration.add(diseaseLabel);
+                   additionalRegistration.add(diseaseField, "growx, wrap");
+                   additionalRegistration.add(curedLabel);
+                   additionalRegistration.add(curedYes, "split 2");
+                   additionalRegistration.add(curedNo, "wrap");
+
+               } else if ("Sponsor".equals(selectedRole)) {
+                   JLabel cardNumberLabel = new JLabel("Card Number:");
+                   JTextField cardNumberField = new JTextField(20);
+                   customizeTextField(cardNumberField);
+                   additionalFields.put("cardNumber", cardNumberField);
+
+                   additionalRegistration.add(cardNumberLabel);
+                   additionalRegistration.add(cardNumberField, "growx, wrap");
+               }
+
+               registrationPanel.revalidate();
+               registrationPanel.repaint();
+           }
+       });
+
        JButton registerButton = new JButton("Register");
        customizeButton(registerButton);
        registerButton.addActionListener(new ActionListener() {
@@ -406,29 +315,37 @@ public class ClinicalTrialGUI extends JFrame {
            public void actionPerformed(ActionEvent e) {
                String email = emailField.getText();
                String password = new String(passwordField.getPassword());
+               String selectedRole = ((String) roleType.getSelectedItem()).toLowerCase();
                Map<String, String> additionalInfo = new HashMap<>();
                for (Map.Entry<String, JTextField> entry : additionalFields.entrySet()) {
                    additionalInfo.put(entry.getKey(), entry.getValue().getText());
                }
-               if (userType.equals("patient")) {
+               if ("patient".equals(selectedRole)) {
                    String selectedBloodType = (String) bloodTypeComboBox.getSelectedItem();
                    additionalInfo.put("bloodType", selectedBloodType);
+                   additionalInfo.put("cured", curedYes.isSelected() ? "true" : "false");
                }
-               signUpUser(email, password, userType, additionalInfo);
+               signUpUser(email, password, selectedRole, additionalInfo);
                registrationDialog.dispose();
            }
        });
+
        registrationPanel.add(emailLabel);
        registrationPanel.add(emailField, "growx, wrap");
        registrationPanel.add(passwordLabel);
        registrationPanel.add(passwordField, "growx, gapbottom 20, wrap");
+       registrationPanel.add(roleLabel);
+       registrationPanel.add(roleType, "growx, wrap");
+       registrationPanel.add(additionalRegistration, "span, growx, wrap");
        registrationPanel.add(registerButton, "span, center, growx, wrap");
+
        registrationDialog.getContentPane().add(registrationPanel);
        registrationDialog.pack();
-       registrationDialog.setLocationRelativeTo(this);
+       registrationDialog.setLocationRelativeTo(null);
+       registrationDialog.setExtendedState(JFrame.MAXIMIZED_BOTH);
        registrationDialog.setVisible(true);
    }
-  
+
    
    
    
@@ -715,7 +632,7 @@ public class ClinicalTrialGUI extends JFrame {
        customizeButton(searchButton);
        topBar.add(searchBar, "growx");
        topBar.add(searchButton, "wrap");
-       JButton logoutButton = new JButton("Logout", logoutIcon);
+       JButton logoutButton = new JButton("Logout");
        customizeButton(logoutButton);
        logoutButton.setPreferredSize(new Dimension(120, 40));
        logoutButton.addActionListener(new ActionListener() {
@@ -757,6 +674,7 @@ public class ClinicalTrialGUI extends JFrame {
        JScrollPane requirementsScrollPane = new JScrollPane(requirementsTextArea);
        JLabel amountLabel = new JLabel("Amount Invested:");
        JTextField amountTextField = new JTextField(20);
+       customizeTextField(amountTextField);
    	
        JButton createButton = new JButton("Create");
        customizeButton(createButton);
@@ -1478,7 +1396,9 @@ public class ClinicalTrialGUI extends JFrame {
 
 	    JLabel patientIdLabel = new JLabel("Patient ID:");
 	    JTextField patientIdField = new JTextField(20);
+	    customizeTextField(patientIdField);
 	    JButton getStateButton = new JButton("Get State");
+	    customizeButton(getStateButton);
 
 	    getStateButton.addActionListener(e -> {
 	        try {
@@ -1608,11 +1528,15 @@ public class ClinicalTrialGUI extends JFrame {
 
 	    JLabel trialIdLabel = new JLabel("Trial ID:");
 	    JTextField trialIdField = new JTextField(20);
+	    customizeTextField(trialIdField);
 	    JLabel sponsorIdLabel = new JLabel("Sponsor ID:");
 	    JTextField sponsorIdField = new JTextField(20);
+	    customizeTextField(sponsorIdField);
 	    JLabel amountLabel = new JLabel("Amount Invested:");
 	    JTextField amountField = new JTextField(20);
+	    customizeTextField(amountField);
 	    JButton createButton = new JButton("Create");
+	    customizeButton(createButton);
 
 	    createButton.addActionListener(e -> {
 	        try {
@@ -1650,11 +1574,15 @@ public class ClinicalTrialGUI extends JFrame {
 
 	    JLabel trialIdLabel = new JLabel("Trial ID:");
 	    JTextField trialIdField = new JTextField(20);
+	    customizeTextField(trialIdField);
 	    JLabel sponsorIdLabel = new JLabel("Sponsor ID:");
 	    JTextField sponsorIdField = new JTextField(20);
+	    customizeTextField(sponsorIdField);
 	    JLabel amountLabel = new JLabel("Amount Invested:");
 	    JTextField amountField = new JTextField(20);
+	    customizeTextField(amountField);
 	    JButton updateButton = new JButton("Update");
+	    customizeButton(updateButton);
 
 	    updateButton.addActionListener(e -> {
 	        try {
@@ -1963,6 +1891,7 @@ public class ClinicalTrialGUI extends JFrame {
        JScrollPane scrollPane = new JScrollPane(textArea);
 
        JButton loadButton = new JButton("Load Administrator");
+       customizeButton(loadButton);
        loadButton.addActionListener(e -> {
     	   try {
 	    	   Administrator admin = null; 
