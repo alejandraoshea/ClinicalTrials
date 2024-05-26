@@ -200,15 +200,16 @@ public class JDBCEngineerManager implements EngineerManager{
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM engineer WHERE email=" + email;
+			String sql = "SELECT * FROM engineer WHERE email= \"" + email + "\"";
 		
 			ResultSet rs = stmt.executeQuery(sql);
 			
 			Integer id = rs.getInt("id");
 			String name = rs.getString("name");
+			String mail = rs.getString("email");
 			Integer phone = rs.getInt("phone");			
 			
-		    eng = new Engineer (id, name, email, phone);
+		    eng = new Engineer (id, name, mail, phone);
 		    
 		    rs.close();
 		    stmt.close();

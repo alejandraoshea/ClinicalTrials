@@ -397,6 +397,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    changePasswordDialog.getContentPane().add(changePasswordPanel);
 	    changePasswordDialog.pack();
 	    changePasswordDialog.setLocationRelativeTo(this);
+	    setExtendedState(JFrame.MAXIMIZED_BOTH);
 	    changePasswordDialog.setVisible(true);
    }
   
@@ -428,11 +429,7 @@ public class ClinicalTrialGUI extends JFrame {
    private void showMenu(User u, String role) {
        menuFrame = new JFrame("Clinical Trial Database");
        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       menuFrame.setPreferredSize(new Dimension(1200, 800));
        menuFrame.setBackground(new Color(167, 192, 189));
-       menuFrame.setSize(400,300);
-       menuFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-       menuFrame.setVisible(true);
        menuFrame.setLayout(new BorderLayout());
       
       
@@ -474,7 +471,7 @@ public class ClinicalTrialGUI extends JFrame {
               
            case "sponsor":
            	buttons = new JButton[]{new JButton("Add a new sponsor"), new JButton("Show all Clinical Trials"),
-                 		 new JButton("Show all the sponsors"), new JButton("Create an investment"),
+                 		 new JButton("Create an investment"),
                  		new JButton("Update an investment"), new JButton("Show all reports of patient"),
                  		 new JButton("Print sponsor to xml"), new JButton("Load sponsor from xml")};
                break;
@@ -525,6 +522,9 @@ public class ClinicalTrialGUI extends JFrame {
 	                        break;
 	                    case "Show all patients of CT":
 	                        showAllPatientsOfCT();
+	                        break;
+	                    case "Show all the sponsors":
+	                        showAllSponsors();
 	                        break;
 	                    case "Print admin to xml":
 	                        printAdminToXML(u);
@@ -579,9 +579,6 @@ public class ClinicalTrialGUI extends JFrame {
 	                        break;
 	                    case "Show all Clinical Trials":
 	                        showAllTrials();
-	                        break;
-	                    case "Show all the sponsors":
-	                        showAllSponsors();
 	                        break;
 	                    case "Create an investment":
 	                        createInvestment();
@@ -653,10 +650,10 @@ public class ClinicalTrialGUI extends JFrame {
        menuPanel.add(sidebar, BorderLayout.WEST);
        menuPanel.add(topBar, BorderLayout.NORTH);
        menuPanel.add(contentPanel, BorderLayout.CENTER);
-       menuFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
        menuFrame.getContentPane().add(menuPanel);
        menuFrame.pack();
        menuFrame.setLocationRelativeTo(null);
+       menuFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
        menuFrame.setVisible(true);
    }
    
@@ -1520,6 +1517,8 @@ public class ClinicalTrialGUI extends JFrame {
 	    contentPanel.revalidate();
 	    contentPanel.repaint();
    }
+   
+   
    
    
    private void createInvestment() {

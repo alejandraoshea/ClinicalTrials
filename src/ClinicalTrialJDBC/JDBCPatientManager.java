@@ -138,7 +138,7 @@ public class JDBCPatientManager implements PatientManager{
 
 	
 	@Override
-	public void applyToClinicalTrial(Integer admin_id, Integer trial_id, Integer id) { 
+	public void applyToClinicalTrial(Integer admin_id, Integer trial_id, Integer patient_id) { 
 		// TODO Auto-generated method stub
 		try {
 			String sql= "INSERT INTO trialApplication (admin_id, trial_id, dateRequest)"
@@ -159,7 +159,7 @@ public class JDBCPatientManager implements PatientManager{
 			String updateQuery= "UPDATE patient SET trialApplication_id=? WHERE id=?;";
 			PreparedStatement prep2 = manager.getConnection().prepareStatement(updateQuery);
 			prep2.setInt(1, lastId);
-			prep2.setInt(2, id);
+			prep2.setInt(2, patient_id);
 			prep2.executeUpdate();
 			
 			
@@ -183,19 +183,20 @@ public class JDBCPatientManager implements PatientManager{
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM patient WHERE email=" + email;
+			String sql = "SELECT * FROM patient WHERE email= \"" + email + "\"";
 		
 			ResultSet rs = stmt.executeQuery(sql);
 			
 			Integer patient_id = rs.getInt("id");
 			String name = rs.getString("name");
+			String mail = rs.getString("email");
 			Integer phone = rs.getInt("phone");
 			Date date = rs.getDate("dateOfBirth");
 			Boolean cured = rs.getBoolean("cured");
 			String bloodT = rs.getString("bloodType");
 			String disease = rs.getString("nameOfDisease");
 		
-			patient = new Patient (patient_id, name, email, phone, date, bloodT, disease, cured);
+			patient = new Patient (patient_id, name, mail, phone, date, bloodT, disease, cured);
 		    
 		    rs.close();
 		    stmt.close();

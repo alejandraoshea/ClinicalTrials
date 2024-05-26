@@ -208,16 +208,17 @@ public class JDBCSponsorManager implements SponsorManager{
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM sponsor WHERE email=" + email;
+			String sql = "SELECT * FROM sponsor WHERE email= \"" + email + "\"";
 		
 			ResultSet rs = stmt.executeQuery(sql);
 			
 			Integer id = rs.getInt("id");
 			String name = rs.getString("name");
+			String mail = rs.getString("email");
 			Integer phone = rs.getInt("phone");
 			Integer cN = rs.getInt("cardNumber");
 			
-		    s = new Sponsor (id, name, email, phone, cN);
+		    s = new Sponsor (id, name, mail, phone, cN);
 		    
 		    rs.close();
 		    stmt.close();

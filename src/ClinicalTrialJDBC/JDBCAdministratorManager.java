@@ -72,20 +72,18 @@ private JDBCManager manager;
 		Integer moneyInvested = null; 
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM trial WHERE id=" + trial_id;
+			String sql = "SELECT amountMoneyInvestedTotal FROM trial WHERE id=" + trial_id;
 		
 			ResultSet rs = stmt.executeQuery(sql);
 			
-			String requirements = rs.getString("requirements");
-			Integer amountMoney = rs.getInt("amountMoneyInvestedTotal");
+			//String requirements = rs.getString("requirements");
+			moneyInvested = rs.getInt("amountMoneyInvestedTotal");
 			
-		    Trial trial = new Trial(trial_id, requirements, amountMoney);
+		    //Trial trial = new Trial(trial_id, requirements, amountMoney);
+		    //moneyInvested = trial.getTotalAmountInvested();
 		    
 		    rs.close();
 		    stmt.close();
-		    
-		    
-		    moneyInvested = trial.getTotalAmountInvested();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -103,6 +101,12 @@ private JDBCManager manager;
 			prep.setBoolean(1, true);
 			prep.setInt(2, id);
 			prep.executeUpdate();
+			
+			String sql2 = "UPDATE trialApplication SET dateApproved = CURRENT DATE WHERE id =?;";
+			PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
+			
+			prep2.setInt(1, id);
+			prep2.executeUpdate();
 			
 		}
 		catch(Exception e){
@@ -123,8 +127,7 @@ private JDBCManager manager;
 			prep.setInt(2, patient_id);
 			prep.executeUpdate();
 			
-		}
-		catch(Exception e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
@@ -145,8 +148,8 @@ private JDBCManager manager;
 			while(rs.next()){
 				Integer id = rs.getInt("id");
 				String name = rs.getString("name");
-				Integer phone = rs.getInt("phone");
 				String email = rs.getString("email");
+				Integer phone = rs.getInt("phone");
 				Administrator admin = new Administrator(id, name, email, phone);
 				admins.add(admin);
 			}
@@ -308,7 +311,6 @@ private JDBCManager manager;
 		// TODO Auto-generated method stub
 		Administrator admin = null;
 		
-		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM administrator WHERE id=" + id;
@@ -365,15 +367,16 @@ private JDBCManager manager;
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM administrator WHERE email=" + email;
+			String sql = "SELECT * FROM administrator WHERE email= \"" + email + "\"";
 		
 			ResultSet rs = stmt.executeQuery(sql);
 			
 			Integer id = rs.getInt("id");
 			String name = rs.getString("name");
+			String mail = rs.getString("email");
 			Integer phone = rs.getInt("phone");
 			
-		    admin = new Administrator (id, name, email, phone);
+		    admin = new Administrator (id, name, mail, phone);
 		    
 		    rs.close();
 		    stmt.close();
