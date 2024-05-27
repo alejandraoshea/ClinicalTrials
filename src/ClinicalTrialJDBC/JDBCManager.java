@@ -72,14 +72,6 @@ public JDBCManager() {
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "description TEXT NOT NULL, "
 					+ "type TEXT CHECK (type in ('drug', 'machine')), "
-					+ "engineer_id REFERENCES engineer(id), doctor_id REFERENCES doctor(id));";
-			stmt.executeUpdate(sql);
-			
-			
-			sql = "CREATE TABLE investigationalProduct("
-					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ "description TEXT NOT NULL, "
-					+ "type TEXT CHECK (type in ('drug', 'machine')), "
 					+ "engineer_id REFERENCES engineer(id), doctor_id REFERENCES doctor(id),"
 					+ "amountMoney INTEGER NOT NULL);";
 			stmt.executeUpdate(sql);

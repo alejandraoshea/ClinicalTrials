@@ -16,7 +16,7 @@ public interface DoctorManager {
 	public void createReport(Reports report);
 	public void assignReportToPatient(Integer report_id, Integer patient_id, Integer doctor_id);
 	public List<InvestigationalProduct> getlistInvProd(); 
-	public InvestigationalProduct chooseInvProductById(Integer investigationalProduct_id,Integer doctor_id);
+	public InvestigationalProduct chooseInvProductById(Integer investigationalProduct_id,Integer doctor_id, Integer trial_id);
 	public Doctor searchDoctorById(Integer doctor_id);
 	public Doctor searchDoctorByEmail(String email);
 }

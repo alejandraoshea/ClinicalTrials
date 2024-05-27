@@ -44,13 +44,14 @@ public class JDBCEngineerManager implements EngineerManager{
 		// TODO Auto-generated method stub
 		try {
 			String sql= "INSERT INTO investigationalProduct (description,"
-					+ "type, amountMoney)"
-					+ "VALUES (?,?,?)";
+					+ "type, amountMoney, engineer_id, doctor_id)"
+					+ "VALUES (?,?,?,?, NULL)";
 			
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, invP.getDescription());
 			prep.setString(2, invP.getType());
 			prep.setInt(3, invP.getAmount());
+			prep.setInt(4, invP.getEngineer().getEngineer_id());
 			prep.executeUpdate();				
 		}catch(Exception e){
 			e.printStackTrace();

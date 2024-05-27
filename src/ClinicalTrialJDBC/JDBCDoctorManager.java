@@ -151,7 +151,7 @@ public class JDBCDoctorManager implements DoctorManager{
 
 	
 	@Override
-	public InvestigationalProduct chooseInvProductById(Integer investigationalProduct_id, Integer doctor_id){
+	public InvestigationalProduct chooseInvProductById(Integer investigationalProduct_id, Integer doctor_id, Integer trial_id){
 		// TODO Auto-generated method stub
 		InvestigationalProduct invP = null;
 		
@@ -168,6 +168,21 @@ public class JDBCDoctorManager implements DoctorManager{
 			Integer amountMoney = rs.getInt("amountMoney");
 			
 		    invP = new InvestigationalProduct(invPr_id, amountMoney, description, type);
+		    
+		    
+		    String sql2 = "INSERT INTO investigationalProductChosen(invProduct_id, trial_id)"
+		    		+ "VALUES(?,?);";
+		    PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
+			
+			prep2.setInt(1, investigationalProduct_id);
+			prep2.setInt(2, trial_id);
+			prep2.executeUpdate();
+			
+			/*String sql3 =  "UPDATE investigationalProduct SET doctor_id= ? WHERE id= ?;";
+		    PreparedStatement prep = manager.getConnection().prepareStatement(sql3);
+			prep.setInt(1, doctor_id);
+			prep.setInt(2, investigationalProduct_id);
+			prep.executeUpdate();*/
 		    
 		    rs.close();
 		    stmt.close();

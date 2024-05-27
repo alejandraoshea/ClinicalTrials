@@ -486,6 +486,10 @@ public class ClinicalTrialGUI extends JFrame {
                buttons = new JButton[]{new JButton("Option 1"), new JButton("Option 2"), new JButton("Option 3")};
                break;
        }
+       
+       
+       String email = u.getEmail();
+       
        for (JButton button : buttons) {
            customizeButton(button);
            button.setFont(new Font("Cambria", Font.PLAIN, 11));
@@ -599,7 +603,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        showAllEngineers();
 	                        break;
 	                    case "Add a new Inv Product":
-	                        addNewInvProduct();
+	                        addNewInvProduct(email);
 	                        break;
 	                    case "Show all Inv Pr of trial":
 	                        showAllInvPr();
@@ -913,10 +917,12 @@ public class ClinicalTrialGUI extends JFrame {
    
    private void deletePatientOfCT() {
 	   contentPanel.removeAll();
-	    JPanel formPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+	   JPanel formPanel = new JPanel();
+	    formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][]20[]"));
 
 	    JLabel patientIdLabel = new JLabel("Patient ID:");
 	    JTextField patientIdField = new JTextField(20);
+	    customizeTextField(patientIdField);
 	    JButton deleteButton = new JButton("Delete");
 	    customizeButton(deleteButton);
 
@@ -934,8 +940,8 @@ public class ClinicalTrialGUI extends JFrame {
 	    });
 
 	    formPanel.add(patientIdLabel);
-	    formPanel.add(patientIdField);
-	    formPanel.add(deleteButton);
+	    formPanel.add(patientIdField, "growx");
+	    formPanel.add(deleteButton, "span, align center");
 
 	    contentPanel.add(formPanel, BorderLayout.CENTER);
 	    contentPanel.revalidate();
@@ -1136,7 +1142,9 @@ public class ClinicalTrialGUI extends JFrame {
    
    private void updateDoctorSpeciality() {
 	   contentPanel.removeAll();
-	    JPanel formPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+	   JPanel formPanel = new JPanel();
+	    formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][]20[]"));
+
 
 	    JLabel specialityLabel = new JLabel("New Specialty:");
 	    JTextField specialityField = new JTextField(20);
@@ -1162,10 +1170,10 @@ public class ClinicalTrialGUI extends JFrame {
 	    });
 
 	    formPanel.add(specialityLabel);
-	    formPanel.add(specialityField);
+	    formPanel.add(specialityField, "growx");
 	    formPanel.add(doctorIdLabel);
-	    formPanel.add(doctorIdField);
-	    formPanel.add(updateButton);
+	    formPanel.add(doctorIdField, "growx");
+	    formPanel.add(updateButton,  "span, align center");
 
 	    contentPanel.add(formPanel, BorderLayout.CENTER);
 	    contentPanel.revalidate();
@@ -1293,7 +1301,8 @@ public class ClinicalTrialGUI extends JFrame {
    
    private void chooseInvestigationalProduct() {
 	   contentPanel.removeAll();
-	    JPanel formPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+	    JPanel formPanel = new JPanel();
+	    formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]40[]"));
 
 	    JLabel doctorIdLabel = new JLabel("Doctor ID:");
 	    JTextField doctorIdField = new JTextField(20);
@@ -1301,14 +1310,34 @@ public class ClinicalTrialGUI extends JFrame {
 	    JLabel invProductIdLabel = new JLabel("Investigational Product ID:");
 	    JTextField invProductIdField = new JTextField(20);
 	    customizeTextField(invProductIdField);
+	    JLabel trialIdLabel = new JLabel("Trial ID:");
+	    JTextField trialIdField = new JTextField(20);
+	    customizeTextField(trialIdField);
 	    JButton chooseButton = new JButton("Choose");
 	    customizeButton(chooseButton);
+	    
+	    JTextArea invProductInfoArea = new JTextArea();
+	    invProductInfoArea.setEditable(false);
+	    invProductInfoArea.setLineWrap(true);
+	    invProductInfoArea.setWrapStyleWord(true);
+	    formPanel.add(invProductInfoArea, "span, grow, wrap");
 
+	    
 	    chooseButton.addActionListener(e -> {
 	        try {
 	            int doctorId = Integer.parseInt(doctorIdField.getText());
 	            int invProductId = Integer.parseInt(invProductIdField.getText());
-	            doctormanager.chooseInvProductById(doctorId, invProductId);
+	            int trialId = Integer.parseInt(trialIdField.getText());
+	            InvestigationalProduct invP = doctormanager.chooseInvProductById(doctorId, invProductId, trialId);
+	            
+	            Doctor d = doctormanager.searchDoctorById(doctorId);
+	            
+	            invP.setDoctor(d);
+	            
+	            invProductInfoArea.setText("Investigational product Id: " + invP.getInvProduct_id() + "\n"
+	                    + "Type: " + invP.getType() + "\n"
+	                    + "Description: " + (invP.getDescription() != null ? invP.getDescription() : "--"));
+	            
 	            JOptionPane.showMessageDialog(contentPanel, "Investigational product chosen successfully!");
 	        } catch (NumberFormatException ex) {
 	            JOptionPane.showMessageDialog(contentPanel, "Please enter valid IDs!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1319,10 +1348,12 @@ public class ClinicalTrialGUI extends JFrame {
 	    });
 
 	    formPanel.add(doctorIdLabel);
-	    formPanel.add(doctorIdField);
+	    formPanel.add(doctorIdField, "grow");
 	    formPanel.add(invProductIdLabel);
-	    formPanel.add(invProductIdField);
-	    formPanel.add(chooseButton);
+	    formPanel.add(invProductIdField, "grow");
+	    formPanel.add(trialIdLabel);
+	    formPanel.add(trialIdField, "grow");
+	    formPanel.add(chooseButton, "span, align center");
 
 	    contentPanel.add(formPanel, BorderLayout.CENTER);
 	    contentPanel.revalidate();
@@ -1739,7 +1770,7 @@ public class ClinicalTrialGUI extends JFrame {
    }
    
    
-   private void addNewInvProduct() {
+   private void addNewInvProduct(String email) {
 	   contentPanel.removeAll();
 	   	JPanel formPanel = new JPanel();
 	   	formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
@@ -1765,13 +1796,15 @@ public class ClinicalTrialGUI extends JFrame {
 	           String moneyStr = moneyField.getText();
 	          
 	           try {
+	        	   Engineer eng = engineermanager.searchEngineerByEmail(email);
 	               Integer moneyAmount = Integer.parseInt(moneyStr);
-	               InvestigationalProduct iP = new InvestigationalProduct(moneyAmount, type, description);
-	              engineermanager.createInvPr(iP);
+	               InvestigationalProduct iP = new InvestigationalProduct(moneyAmount, type, description, eng);
+	               engineermanager.createInvPr(iP);
 	           }catch (Exception exp) {
 	               exp.printStackTrace();
 	           }
 	       });
+	       
 	       formPanel.add(descriptionLabel);
 	       formPanel.add(descriptionField, "growx, wrap");
 	       formPanel.add(typeLabel);
