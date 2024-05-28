@@ -69,12 +69,13 @@ public class InvestigationalProduct implements Serializable{
 
 	
 	
-	public InvestigationalProduct(Integer amount, String description, String type, Engineer engineer) {
+	public InvestigationalProduct(String description, String type, Integer amount, Engineer engineer) {
 		super();
 		this.amount = amount;
 		this.description = description;
 		this.type = type;
 		this.engineer = engineer;
+		this.trial = new ArrayList<Trial>();
 	}
 
 

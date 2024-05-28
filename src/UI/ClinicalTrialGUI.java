@@ -478,7 +478,7 @@ public class ClinicalTrialGUI extends JFrame {
               
            case "engineer":
            	buttons = new JButton[]{new JButton("Add a new engineer"), new JButton("Show all engineers in DB"),
-                 		 new JButton("Add a new Inv Product"), new JButton("Show all Inv Pr"),
+                 		 new JButton("Add a new Inv Product"), new JButton("Show all Inv Pr"), new JButton("Show all Inv Pr of CT"),
                  		 new JButton("Print engineer to xml"), new JButton("Load engineer from xml")};
            	break;
               
@@ -605,8 +605,11 @@ public class ClinicalTrialGUI extends JFrame {
 	                    case "Add a new Inv Product":
 	                        addNewInvProduct(email);
 	                        break;
-	                    case "Show all Inv Pr of trial":
+	                    case "Show all Inv Pr":
 	                        showAllInvPr();
+	                        break;
+	                    case "Show all Inv Pr of CT":
+	                        showAllInvPrCT();
 	                        break;
 	                    case "Print engineer to xml":
 	                        printEngineerToXML(u);
@@ -1798,7 +1801,7 @@ public class ClinicalTrialGUI extends JFrame {
 	           try {
 	        	   Engineer eng = engineermanager.searchEngineerByEmail(email);
 	               Integer moneyAmount = Integer.parseInt(moneyStr);
-	               InvestigationalProduct iP = new InvestigationalProduct(moneyAmount, type, description, eng);
+	               InvestigationalProduct iP = new InvestigationalProduct(description, type, moneyAmount, eng);
 	               engineermanager.createInvPr(iP);
 	           }catch (Exception exp) {
 	               exp.printStackTrace();
@@ -1829,7 +1832,7 @@ public class ClinicalTrialGUI extends JFrame {
 	            invProduct.getType(),
 	            invProduct.getAmount(),
 	            invProduct.getEngineer().getEngineer_id(),
-	            invProduct.getDoctor().getDoctor_id()
+	            (invProduct.getDoctor() != null) ? invProduct.getDoctor().getDoctor_id() : null
 	        };
 	        model.addRow(rowData);
 	    }
@@ -1841,6 +1844,30 @@ public class ClinicalTrialGUI extends JFrame {
 	    contentPanel.repaint();
    }
    
+   
+   
+   private void showAllInvPrCT() { //modify to adapt just 1 trial
+	   List<InvestigationalProduct> invPr = doctormanager.getlistInvProd();
+		String[] columnNames = {"ID", "Description", "Type", "Amount Money", "Engineer ID", "Doctor ID"}; //column names
+	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // Create table model
+	    for (InvestigationalProduct invProduct : invPr) {
+	        Object[] rowData = {
+	            invProduct.getInvProduct_id(),
+	            invProduct.getDescription(),
+	            invProduct.getType(),
+	            invProduct.getAmount(),
+	            invProduct.getEngineer().getEngineer_id(),
+	            (invProduct.getDoctor() != null) ? invProduct.getDoctor().getDoctor_id() : null
+	        };
+	        model.addRow(rowData);
+	    }
+	    JTable table = new JTable(model);
+	    JScrollPane scrollPane = new JScrollPane(table);
+	    contentPanel.removeAll();
+	    contentPanel.add(scrollPane, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
+   }
       
    
    private void printAdminToXML(User u) {
