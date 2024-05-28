@@ -721,6 +721,22 @@ public class ClinicalTrialGUI extends JFrame {
                 BorderFactory.createLineBorder(new Color(173, 150, 149), 1),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
     }
+    
+    private static void customizeTextArea(JTextArea textArea) {
+    	textArea.setFont(new Font("Cambria", Font.PLAIN, 18));
+    	textArea.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(173, 150, 149), 1),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+    }
+    
+    
+    private static void customizeTable(JTable table) {
+    	table.setFont(new Font("Cambria", Font.PLAIN, 18));
+    	table.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(173, 150, 149), 1),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+    }
+    
 
 
     

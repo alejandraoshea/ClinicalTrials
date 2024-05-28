@@ -25,5 +25,7 @@ public interface AdministratorManager {
 	public Reports getReportByID(Integer report_id);
 	public Administrator searchAdminByEmail(String email);
 	
+	
+	public Double getSuccessRateTrial(Trial trial);
 
 }

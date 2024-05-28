@@ -27,6 +27,8 @@ public class Trial implements Serializable{
 	private String requirements;
 	@XmlElement
 	private Integer totalAmountInvested;
+	@XmlElement
+	private Float rateSuccess; 
 	@XmlTransient
 	private List<Patient> patients;
 	@XmlTransient
@@ -133,6 +135,21 @@ public class Trial implements Serializable{
 	}
 
 
+	
+
+
+	public Float getRateSuccess() {
+		return rateSuccess;
+	}
+
+
+
+
+	public void setRateSuccess(Float rateSuccess) {
+		this.rateSuccess = rateSuccess;
+	}
+
+
 
 
 	public List<Patient> getPatients() {
@@ -191,10 +208,11 @@ public class Trial implements Serializable{
 
 
 
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(admin, investigationalProduct, patients, requirements, sponsor, totalAmountInvested,
-				trial_id, trialsApplications);
+		return Objects.hash(admin, investigationalProduct, patients, rateSuccess, requirements, sponsor,
+				totalAmountInvested, trial_id, trialsApplications);
 	}
 
 
@@ -211,8 +229,8 @@ public class Trial implements Serializable{
 		Trial other = (Trial) obj;
 		return Objects.equals(admin, other.admin)
 				&& Objects.equals(investigationalProduct, other.investigationalProduct)
-				&& Objects.equals(patients, other.patients) && Objects.equals(requirements, other.requirements)
-				&& Objects.equals(sponsor, other.sponsor)
+				&& Objects.equals(patients, other.patients) && Objects.equals(rateSuccess, other.rateSuccess)
+				&& Objects.equals(requirements, other.requirements) && Objects.equals(sponsor, other.sponsor)
 				&& Objects.equals(totalAmountInvested, other.totalAmountInvested)
 				&& Objects.equals(trial_id, other.trial_id)
 				&& Objects.equals(trialsApplications, other.trialsApplications);

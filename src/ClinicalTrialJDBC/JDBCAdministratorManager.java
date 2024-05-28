@@ -364,7 +364,6 @@ private JDBCManager manager;
 		// TODO Auto-generated method stub
 		Administrator admin =  null; 
 		
-		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM administrator WHERE email= \"" + email + "\"";
@@ -384,5 +383,36 @@ private JDBCManager manager;
 		}catch(Exception e) {e.printStackTrace();}
 		return admin;
 	}
+
+	@Override
+	public Double getSuccessRateTrial(Trial trial) {
+		// TODO Auto-generated method stub
+		Double successRate = 0.0; 
+		Integer id = trial.getTrial_id();		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM trialSuccessRates WHERE id = " + id;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			//Integer id = rs.getInt("id");
+			String name = rs.getString("name");
+			String mail = rs.getString("email");
+			Integer phone = rs.getInt("phone");
+			
+		    
+		    rs.close();
+		    stmt.close();
+		    
+		}catch(Exception e) {e.printStackTrace();}
+		
+		
+		
+		return null;
+	}
+	
+	
+	
+	
 	
 }

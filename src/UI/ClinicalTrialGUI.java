@@ -106,7 +106,6 @@ public class ClinicalTrialGUI extends JFrame {
                    if( u!= null && u.getRole().getName().equals("administrator")) {
                    	role = "admin";
                    	showMenu(u, role);
-                   	
                    }else if( u!= null && u.getRole().getName().equals("doctor")) {
                    	role = "doctor";
                    	showMenu(u, role);
@@ -446,7 +445,7 @@ public class ClinicalTrialGUI extends JFrame {
       
        JButton[] buttons;
        switch (role) {
-       	case "admin":
+       	case "administrator":
        		buttons = new JButton[]{new JButton("Add a new Clinical Trial"),
        				new JButton("Add a new Administrator"), new JButton("Show all the patients in DB"),
        				new JButton("Show all the admins in DB"), new JButton("Show amount invested"),
@@ -1323,7 +1322,6 @@ public class ClinicalTrialGUI extends JFrame {
 	    invProductInfoArea.setEditable(false);
 	    invProductInfoArea.setLineWrap(true);
 	    invProductInfoArea.setWrapStyleWord(true);
-	    formPanel.add(invProductInfoArea, "span, grow, wrap");
 
 	    
 	    chooseButton.addActionListener(e -> {
@@ -1357,6 +1355,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    formPanel.add(trialIdLabel);
 	    formPanel.add(trialIdField, "grow");
 	    formPanel.add(chooseButton, "span, align center");
+	    formPanel.add(invProductInfoArea, "span, grow, wrap");
 
 	    contentPanel.add(formPanel, BorderLayout.CENTER);
 	    contentPanel.revalidate();
