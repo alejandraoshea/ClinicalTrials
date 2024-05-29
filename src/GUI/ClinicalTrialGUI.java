@@ -470,7 +470,7 @@ public class ClinicalTrialGUI extends JFrame {
         
         JButton[] buttons;
         switch (role) {
-        	case "admin":
+        	case "administrator":
         		buttons = new JButton[]{new JButton("Add a new Clinical Trial"), 
         				new JButton("Add a new Administrator"), new JButton("Show all the patients in DB"), 
         				new JButton("Show all the admins in DB"), new JButton("Show amount invested in a CT"), 

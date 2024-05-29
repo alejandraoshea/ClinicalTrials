@@ -127,18 +127,6 @@ public JDBCManager() {
 					+ "FOREIGN KEY(trial_id) REFERENCES trial(id));";
 			stmt.executeUpdate(sql);
 			
-			
-			
-			sql = "CREATE VIEW  trialSuccessRates AS "
-                    + "SELECT trial.id, "
-                    + "trial.requirements, "
-                    + "trial.amountMoneyInvestedTotal, trial.admin_id, "
-                    + "COUNT(patient.id) AS total_patients, "
-                    + "SUM(patient.cured) AS cured_patients, "
-                    + "IFNULL(SUM(patient.cured)*100.0/COUNT(patient.id),0) AS successRate "
-                    + "FROM trial LEFT JOIN patient ON trial.id = patient.trial_id "
-                    + "GROUP BY trial.id, trial.requirements, trial.amountMoneyInvestedTotal, trial.admin_id);";
-			
 		}catch(SQLException e) {
 			if(!e.getMessage().contains("already exists")) 
 			{

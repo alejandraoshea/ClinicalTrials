@@ -67,10 +67,23 @@ public class JDBCSponsorManager implements SponsorManager{
 	public void updateInvestment(Integer trial_id, Integer sponsor_id, Integer amountMoney) {
 		// TODO Auto-generated method stub
 		try {
+			String sql1 = "SELECT amountOfMoneyInvested FROM invest WHERE trial_id = ? AND sponsor_id = ?";
+			PreparedStatement selectStmt = manager.getConnection().prepareStatement(sql1);
+			selectStmt.setInt(1,  trial_id);
+			selectStmt.setInt(2, sponsor_id);
+			ResultSet rs1 = selectStmt.executeQuery();
+			
+			Integer currentAmount = 0;
+			if(rs1.next()) {
+				currentAmount = rs1.getInt("amountOfMoneyInvested");
+			}
+			
+			Integer newAmount = currentAmount + amountMoney;
+			
 			String sql = "UPDATE invest SET amountOfMoneyInvested =? WHERE trial_id =? AND sponsor_id =?";
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			
-			prep.setInt(1, amountMoney);
+			prep.setInt(1, newAmount);
 			prep.setInt(2, trial_id);
 			prep.setInt(3, sponsor_id);
 			prep.executeUpdate();

@@ -76,12 +76,10 @@ private JDBCManager manager;
 		
 			ResultSet rs = stmt.executeQuery(sql);
 			
-			//String requirements = rs.getString("requirements");
-			moneyInvested = rs.getInt("amountMoneyInvestedTotal");
-			
-		    //Trial trial = new Trial(trial_id, requirements, amountMoney);
-		    //moneyInvested = trial.getTotalAmountInvested();
-		    
+			if(rs.next()) {
+				moneyInvested = rs.getInt("amountMoneyInvestedTotal");
+			}
+
 		    rs.close();
 		    stmt.close();
 		}catch(Exception e) {
@@ -102,7 +100,7 @@ private JDBCManager manager;
 			prep.setInt(2, id);
 			prep.executeUpdate();
 			
-			String sql2 = "UPDATE trialApplication SET dateApproved = CURRENT DATE WHERE id =?;";
+			String sql2 = "UPDATE trialApplication SET dateApproved = CURRENT_DATE WHERE id =?;";
 			PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
 			
 			prep2.setInt(1, id);
@@ -112,8 +110,6 @@ private JDBCManager manager;
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		
 	}
 
 	@Override
@@ -391,14 +387,21 @@ private JDBCManager manager;
 		Integer id = trial.getTrial_id();		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM trialSuccessRates WHERE id = " + id;
+			String sql = "SELECT trial.id, "
+                    + "trial.requirements, trial.amountMoneyInvestedTotal, trial.admin_id, "
+                    + "COUNT(patient.id) AS total_patients, "
+                    + "SUM(patient.cured) AS cured_patients, "
+                    + "IFNULL(SUM(patient.cured)*100.0/COUNT(patient.id),0) AS successRate "
+                    + "FROM trial LEFT JOIN patient ON trial.id = patient.trial_id "
+                    + "GROUP BY trial.id, trial.requirements, trial.amountMoneyInvestedTotal, trial.admin_id);";
+			
 		
 			ResultSet rs = stmt.executeQuery(sql);
 			
 			//Integer id = rs.getInt("id");
-			String name = rs.getString("name");
-			String mail = rs.getString("email");
-			Integer phone = rs.getInt("phone");
+			//String name = rs.getString("requirements");
+			//String mail = rs.getString("amountMoneyInveste");
+			//Integer phone = rs.getInt("phone");
 			
 		    
 		    rs.close();

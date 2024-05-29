@@ -104,7 +104,7 @@ public class ClinicalTrialGUI extends JFrame {
                    }
                   
                    if( u!= null && u.getRole().getName().equals("administrator")) {
-                   	role = "admin";
+                   	role = "administrator";
                    	showMenu(u, role);
                    }else if( u!= null && u.getRole().getName().equals("doctor")) {
                    	role = "doctor";
@@ -464,7 +464,7 @@ public class ClinicalTrialGUI extends JFrame {
                
            case "patient":
                buttons = new JButton[]{new JButton("Apply to a CT"), new JButton("Get the state of request"),
-              		 new JButton("Show all reports of patient"), new JButton("Show all Clinical Trials"),
+              		 new JButton("Show all my reports"), new JButton("Show all Clinical Trials"),
               		 new JButton("Print patient to xml"), new JButton("Load patient from xml")};
                break;  
               
@@ -579,6 +579,9 @@ public class ClinicalTrialGUI extends JFrame {
 	                        break;
 	                    case "Add a new sponsor":
 	                        addNewSponsor();
+	                        break;
+	                    case "Show all my reports":
+	                        showAllMyReports(email);
 	                        break;
 	                    case "Show all Clinical Trials":
 	                        showAllTrials();
@@ -1701,6 +1704,46 @@ public class ClinicalTrialGUI extends JFrame {
 	               }
 	           }
 	       });
+   }
+   
+   
+   
+   private void showAllMyReports(String email) {
+	   contentPanel.removeAll();
+	   	
+	       contentPanel.revalidate();
+	       contentPanel.repaint();
+	   	try {
+	                   Patient patient = patientmanager.searchPatientByEmail(email);
+	                   List<Reports> reports = patientmanager.getListReportsOfPatient(patient);
+	                   if (reports != null && !reports.isEmpty()) {
+	                       String[] columnNames = {"Report ID", "Medical History", "Treatment", "Doctor ID", "My ID"};
+	                       DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+	                       for (Reports rep : reports) {
+	                           Object[] rowData = {
+	                               rep.getReport_id(),
+	                               rep.getMedicalHistory(),
+	                               rep.getTreatment(), 
+	                               rep.getDoctor().getDoctor_id(),
+	                               rep.getPatient().getPatient_id()
+	                           };
+	                           model.addRow(rowData);
+	                       }
+	                       JTable table = new JTable(model);
+	                       JScrollPane scrollPane = new JScrollPane(table);
+	                       contentPanel.removeAll();
+	                       contentPanel.add(scrollPane, BorderLayout.CENTER);
+	                       contentPanel.revalidate();
+	                       contentPanel.repaint();
+	                   } else {
+	                       JOptionPane.showMessageDialog(menuFrame, "No reports found for the given Patient ID.", "Info", JOptionPane.INFORMATION_MESSAGE);
+	                   }
+	               } catch (NumberFormatException ex) {
+	                   JOptionPane.showMessageDialog(menuFrame, "Please enter a valid Patient ID.", "Error", JOptionPane.ERROR_MESSAGE);
+	               } catch (Exception ex) {
+	                   ex.printStackTrace();
+	                   JOptionPane.showMessageDialog(menuFrame, "An error occurred while fetching the patients.", "Error", JOptionPane.ERROR_MESSAGE);
+	               }
    }
    
    
