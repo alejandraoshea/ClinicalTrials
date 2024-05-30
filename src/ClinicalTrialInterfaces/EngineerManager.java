@@ -16,4 +16,5 @@ public interface EngineerManager {
 	public Engineer searchEngineerById(Integer engineer_id);
 	public List<InvestigationalProduct> getListInvPrOfEngineer(Integer engineer_id);
 	public Engineer searchEngineerByEmail(String email);
+	public List<InvestigationalProduct> getlistInvProd();
 }

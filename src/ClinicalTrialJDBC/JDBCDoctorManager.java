@@ -1,5 +1,6 @@
 package ClinicalTrialJDBC;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -10,6 +11,7 @@ import ClinicalTrialInterfaces.DoctorManager;
 import clinicaltrialsPOJO.Administrator;
 import clinicaltrialsPOJO.Doctor;
 import clinicaltrialsPOJO.InvestigationalProduct;
+import clinicaltrialsPOJO.Patient;
 import clinicaltrialsPOJO.Reports;
 
 public class JDBCDoctorManager implements DoctorManager{
@@ -275,6 +277,55 @@ public class JDBCDoctorManager implements DoctorManager{
 		    
 		}catch(Exception e) {e.printStackTrace();}
 		return doctor;
+	}
+
+
+	@Override
+	public void updateCuredState(Integer patient_id, Boolean newCured) {
+		// TODO Auto-generated method stub
+		try {
+			String sql = "UPDATE patient SET cured = ? WHERE id =?;";
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			
+			prep.setBoolean(1, newCured);
+			prep.setInt(2, patient_id);
+			prep.executeUpdate();
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	@Override
+	public List<Patient> getListOfMyPatients(Integer doctor_id) {
+		List<Patient> patients = new ArrayList<Patient>();
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM patient WHERE doctor_id = " + doctor_id;
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				Integer patient_id = rs.getInt("id");
+				String name = rs.getString("name");
+				String email = rs.getString("email");
+				Integer phone = rs.getInt("phone");
+				Date date = rs.getDate("dateOfBirth");
+				String bloodT = rs.getString("bloodType");
+				String disease = rs.getString("nameOfDisease");
+				Boolean cured = rs.getBoolean("cured");
+				Patient patient = new Patient (patient_id, name, email, phone, date, bloodT, disease, cured);
+				patients.add(patient);
+			}
+			
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return patients;
 	}
 
 	

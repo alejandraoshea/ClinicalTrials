@@ -457,8 +457,8 @@ public class ClinicalTrialGUI extends JFrame {
        	 case "doctor":
                 buttons = new JButton[]{new JButton("Add new doctor"), new JButton("Show all the doctors in DB"),
                		 new JButton("Assign doctor to a patient"), new JButton("Update speciality of a doctor"),
-               		 new JButton("Create a report"), new JButton("Assign report to patient"),
-               		 new JButton("Show all reports of patient"), new JButton("Choose investigational product"),
+               		 new JButton("Create a report"), new JButton("Assign report to patient"), new JButton("Show all my patients"),
+               		 new JButton("Show all reports of patient"), new JButton("Update cured state patient"), new JButton("Choose investigational product"),
                		 new JButton("Print doctor to xml"), new JButton("Load doctor from xml")};
                 break;
                
@@ -526,6 +526,9 @@ public class ClinicalTrialGUI extends JFrame {
 	                    case "Show all patients of CT":
 	                        showAllPatientsOfCT();
 	                        break;
+	                    case "Show all my patients":
+	                        showAllMyPatients(email);
+	                        break;
 	                    case "Show all the sponsors":
 	                        showAllSponsors();
 	                        break;
@@ -556,6 +559,9 @@ public class ClinicalTrialGUI extends JFrame {
 	                    case "Show all reports of patient":
 	                        showAllReportsOfPatient();
 	                        break;
+	                    case "Update cured state patient":
+	                    	updateCuredStatePatient();
+	                    	break;
 	                    case "Choose investigational product":
 	                        chooseInvestigationalProduct();
 	                        break;
@@ -1014,6 +1020,48 @@ public class ClinicalTrialGUI extends JFrame {
        });
    }
   
+   
+   private void showAllMyPatients(String email) {
+       try {
+           Doctor doctor = doctormanager.searchDoctorByEmail(email);
+           Integer id = doctor.getDoctor_id();
+           List<Patient> patients = doctormanager.getListOfMyPatients(id);
+           
+           if (patients != null && !patients.isEmpty()) {
+               String[] columnNames = {"ID", "Name", "Email", "Phone", "Date of birth", "Cured", "Blood Type", "Name of disease"};
+               DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+               for (Patient patient : patients) {
+                   Object[] rowData = {
+                       patient.getPatient_id(),
+                       patient.getName(),
+                       patient.getEmail(),
+                       patient.getPhone(),
+                       patient.getDateOfBirth(),
+                       patient.isCured(),
+                       patient.getBloodType(),
+                       patient.getDisease()
+                   };
+                   model.addRow(rowData);
+               }
+               //error
+               
+               SwingUtilities.invokeLater(() -> {
+	               JTable table = new JTable(model);
+	               JScrollPane scrollPane = new JScrollPane(table);
+	               contentPanel.removeAll();
+	               contentPanel.add(scrollPane, BorderLayout.CENTER);
+	               contentPanel.revalidate();
+	               contentPanel.repaint();
+               });
+           } else {
+               JOptionPane.showMessageDialog(menuFrame, "No patients found.", "Info", JOptionPane.INFORMATION_MESSAGE);
+           }
+       } catch (Exception ex) {
+           ex.printStackTrace();
+           JOptionPane.showMessageDialog(menuFrame, "An error occurred while fetching the patients.", "Error", JOptionPane.ERROR_MESSAGE);
+       }
+   }
+	   
   
   
    private void addNewDoctor() {
@@ -1302,6 +1350,53 @@ public class ClinicalTrialGUI extends JFrame {
 	   
    
    
+   private void updateCuredStatePatient() {
+	   contentPanel.removeAll();
+	    JPanel formPanel = new JPanel();
+	    formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]40[]"));
+
+	    JLabel patientIdLabel = new JLabel("Patient ID:");
+	    JTextField patientIdField = new JTextField(20);
+	    customizeTextField(patientIdField);
+	    
+	    JLabel curedStateLabel = new JLabel("Cured State:");
+	    ButtonGroup curedStateGroup = new ButtonGroup();
+	    //add customize
+	    curedYes = new JRadioButton("Yes");
+        curedNo = new JRadioButton("No");
+        curedStateGroup.add(curedYes);
+        curedStateGroup.add(curedNo);
+	    
+        
+        JButton updateButton = new JButton("Update");
+        customizeButton(updateButton);
+        
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	Integer patientId = Integer.parseInt(patientIdField.getText());
+	            Patient patient = patientmanager.searchPatientById(patientId);
+
+                Boolean newState = curedYes.isSelected();
+                
+                doctormanager.updateCuredState(patientId, newState);
+            }
+        });
+        
+        
+	    formPanel.add(patientIdLabel);
+	    formPanel.add(patientIdField, "growx, wrap 20");
+
+        formPanel.add(curedStateLabel);
+        formPanel.add(curedYes, "split 2");
+        formPanel.add(curedNo, "wrap 40");
+        
+        formPanel.add(updateButton, "span, align center");
+
+        contentPanel.add(formPanel, BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }
    
    
    private void chooseInvestigationalProduct() {
@@ -1674,7 +1769,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                   Patient patient = patientmanager.searchPatientById(patient_id);
 	                   List<Reports> reports = patientmanager.getListReportsOfPatient(patient);
 	                   if (reports != null && !reports.isEmpty()) {
-	                       String[] columnNames = {"ID", "Medical History", "Treatment", "Doctor ID", "Patient ID"};
+	                       String[] columnNames = {"Report ID", "Medical History", "Treatment", "Doctor ID", "Patient ID"};
 	                       DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 	                       for (Reports rep : reports) {
 	                           Object[] rowData = {
@@ -1717,15 +1812,15 @@ public class ClinicalTrialGUI extends JFrame {
 	                   Patient patient = patientmanager.searchPatientByEmail(email);
 	                   List<Reports> reports = patientmanager.getListReportsOfPatient(patient);
 	                   if (reports != null && !reports.isEmpty()) {
-	                       String[] columnNames = {"Report ID", "Medical History", "Treatment", "Doctor ID", "My ID"};
+	                       String[] columnNames = {"My ID", "Report ID", "Medical History", "Treatment", "Doctor ID"};
 	                       DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 	                       for (Reports rep : reports) {
 	                           Object[] rowData = {
+		                           rep.getPatient().getPatient_id(),
 	                               rep.getReport_id(),
 	                               rep.getMedicalHistory(),
 	                               rep.getTreatment(), 
 	                               rep.getDoctor().getDoctor_id(),
-	                               rep.getPatient().getPatient_id()
 	                           };
 	                           model.addRow(rowData);
 	                       }
@@ -1864,17 +1959,17 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void showAllInvPr() {
-	   List<InvestigationalProduct> invPr = doctormanager.getlistInvProd();
-		String[] columnNames = {"ID", "Description", "Type", "Amount Money", "Engineer ID", "Doctor ID"}; //column names
+	   List<InvestigationalProduct> invPr = engineermanager.getlistInvProd();
+		String[] columnNames = {"ID", "Description", "Type", "Amount Money"}; //column names
 	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // Create table model
 	    for (InvestigationalProduct invProduct : invPr) {
 	        Object[] rowData = {
 	            invProduct.getInvProduct_id(),
 	            invProduct.getDescription(),
 	            invProduct.getType(),
-	            invProduct.getAmount(),
-	            invProduct.getEngineer().getEngineer_id(),
-	            (invProduct.getDoctor() != null) ? invProduct.getDoctor().getDoctor_id() : null
+	            invProduct.getAmount()
+	            //(invProduct.getEngineer() != null) ? invProduct.getEngineer().getEngineer_id(): null,
+	            //(invProduct.getDoctor() != null) ? invProduct.getDoctor().getDoctor_id() : null
 	        };
 	        model.addRow(rowData);
 	    }
@@ -1890,8 +1985,8 @@ public class ClinicalTrialGUI extends JFrame {
    
    private void showAllInvPrCT() { //modify to adapt just 1 trial
 	   List<InvestigationalProduct> invPr = doctormanager.getlistInvProd();
-		String[] columnNames = {"ID", "Description", "Type", "Amount Money", "Engineer ID", "Doctor ID"}; //column names
-	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // Create table model
+		String[] columnNames = {"ID", "Description", "Type", "Amount Money", "Engineer ID", "Doctor ID"}; 
+	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); 
 	    for (InvestigationalProduct invProduct : invPr) {
 	        Object[] rowData = {
 	            invProduct.getInvProduct_id(),

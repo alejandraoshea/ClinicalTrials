@@ -164,6 +164,35 @@ public class JDBCEngineerManager implements EngineerManager{
 	
 	
 	@Override
+	public List<InvestigationalProduct> getlistInvProd() {
+		List<InvestigationalProduct> invProducts= new ArrayList<InvestigationalProduct>();
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM investigationalProduct";
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()){
+				Integer id = rs.getInt("id");
+				String description = rs.getString("description");
+				String type = rs.getString("type");
+				Integer amountMoney = rs.getInt("amountMoney");
+				InvestigationalProduct invProduct = new InvestigationalProduct(id, amountMoney, description, type);
+				invProducts.add(invProduct);
+			}
+			
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return invProducts;
+	}
+	
+	
+	
+	@Override
 	public List<InvestigationalProduct> getListInvPrOfEngineer(Integer engineer_id) {
 		List<InvestigationalProduct> invPr = new ArrayList<>();
 		

@@ -78,6 +78,17 @@ public class InvestigationalProduct implements Serializable{
 		this.trial = new ArrayList<Trial>();
 	}
 
+	
+	
+	public InvestigationalProduct(Integer invProduct_id, Integer amount, String description, String type, Engineer engineer) {
+		super();
+		this.invProduct_id = invProduct_id;
+		this.amount = amount;
+		this.description = description;
+		this.type = type;
+		this.engineer = engineer;
+		this.trial = new ArrayList<Trial>();
+	}
 
 
 	public InvestigationalProduct(Integer invProduct_id) {
