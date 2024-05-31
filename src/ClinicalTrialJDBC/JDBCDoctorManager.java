@@ -179,12 +179,6 @@ public class JDBCDoctorManager implements DoctorManager{
 			prep2.setInt(1, investigationalProduct_id);
 			prep2.setInt(2, trial_id);
 			prep2.executeUpdate();
-			
-			/*String sql3 =  "UPDATE investigationalProduct SET doctor_id= ? WHERE id= ?;";
-		    PreparedStatement prep = manager.getConnection().prepareStatement(sql3);
-			prep.setInt(1, doctor_id);
-			prep.setInt(2, investigationalProduct_id);
-			prep.executeUpdate();*/
 		    
 		    rs.close();
 		    stmt.close();

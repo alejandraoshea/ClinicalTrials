@@ -25,4 +25,6 @@ public interface XMLManager {
 	public void engineer2xml(Integer id);
 	public Engineer xml2Engineer(File xml);
 
+	
+	public void simpleTransform(String sourcePath, String xsltPath,String resultDir);
 }

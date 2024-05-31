@@ -185,6 +185,7 @@ private JDBCManager manager;
 		return trial;
 	}
 
+	
 	@Override
 	public void deletePatientbyId(Integer patient_id) {
 		// TODO Auto-generated method stub
@@ -324,6 +325,7 @@ private JDBCManager manager;
 		    stmt.close();
 		    
 		}catch(Exception e) {e.printStackTrace();}
+		
 		return admin;
 	}
 	
@@ -381,37 +383,49 @@ private JDBCManager manager;
 	}
 
 	@Override
-	public Double getSuccessRateTrial(Trial trial) {
+	public List<Double> getSuccessRateTrial() {
 		// TODO Auto-generated method stub
-		Double successRate = 0.0; 
-		Integer id = trial.getTrial_id();		
+		List<Double> successRate = new ArrayList<Double>(); 		
+		
+		List<Trial> trials = getListOfTrials();
+		List<Integer> trials_id = new ArrayList<Integer>();
+		
+		for(Trial trial : trials) {
+			Integer t_id = trial.getTrial_id();
+			trials_id.add(t_id);
+		}
+		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT trial.id, "
-                    + "trial.requirements, trial.amountMoneyInvestedTotal, trial.admin_id, "
-                    + "COUNT(patient.id) AS total_patients, "
-                    + "SUM(patient.cured) AS cured_patients, "
-                    + "IFNULL(SUM(patient.cured)*100.0/COUNT(patient.id),0) AS successRate "
-                    + "FROM trial LEFT JOIN patient ON trial.id = patient.trial_id "
-                    + "GROUP BY trial.id, trial.requirements, trial.amountMoneyInvestedTotal, trial.admin_id);";
+			Integer totalPatientsCT = 0;
+			Integer curedPatients = 0;
 			
-		
-			ResultSet rs = stmt.executeQuery(sql);
-			
-			//Integer id = rs.getInt("id");
-			//String name = rs.getString("requirements");
-			//String mail = rs.getString("amountMoneyInveste");
-			//Integer phone = rs.getInt("phone");
-			
-		    
-		    rs.close();
-		    stmt.close();
-		    
+			for(Integer trialID : trials_id) {
+				String queryTotalPatients = "SELECT COUNT(*) AS total_patients FROM patient WHERE trial_id = " + trialID;
+				ResultSet rs = stmt.executeQuery(queryTotalPatients);
+			    
+				rs.next();
+			    totalPatientsCT = rs.getInt("total_patients");
+			    rs.close();
+			    
+			    String querycuredPatients = "SELECT COUNT(*) AS curedPatients FROM patient WHERE cured = 1 AND trial_id = " + trialID;
+			    rs = stmt.executeQuery(querycuredPatients);
+			    rs.next();
+			    curedPatients = rs.getInt("curedPatients");
+			    rs.close();
+			    
+			    if(totalPatientsCT>0) {
+			    	Double successRateTrial = (double) (curedPatients/totalPatientsCT);
+			    	successRate.add(successRateTrial);
+			    }
+			    else {
+			    	successRate.add(0.0);
+			    }
+			}
+
 		}catch(Exception e) {e.printStackTrace();}
-		
-		
-		
-		return null;
+
+		return successRate;
 	}
 	
 	

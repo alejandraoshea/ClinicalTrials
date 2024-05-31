@@ -199,10 +199,7 @@ public class ClinicalTrialGUI extends JFrame {
            if(u!=null) {
         	   String role = u.getRole().getName();
         	   showMenu(u, role);
-           }else {
-        	   JOptionPane.showMessageDialog(null, "Login failed. Please click on the login button", "Login Failed", JOptionPane.WARNING_MESSAGE);
            }
-          
        } catch (Exception e) {
            e.printStackTrace();
        }
@@ -450,7 +447,7 @@ public class ClinicalTrialGUI extends JFrame {
        				new JButton("Add a new Administrator"), new JButton("Show all the patients in DB"),
        				new JButton("Show all the admins in DB"), new JButton("Show amount invested"),
        				new JButton("Update acceptance state of a patient"), new JButton("Assign patient to a CT"),
-       				new JButton("Delete a patient of a CT"), new JButton("Show all patients of CT"),
+       				new JButton("Delete a patient of a CT"), new JButton("Show all patients of CT"), new JButton("Show Success Rates"),
        				new JButton("Print admin to xml"), new JButton("Load admin from xml")};
        		break;
           
@@ -532,6 +529,9 @@ public class ClinicalTrialGUI extends JFrame {
 	                    case "Show all the sponsors":
 	                        showAllSponsors();
 	                        break;
+	                    case "Show Success Rates":
+	                        showSuccessRates();
+	                        break;    
 	                    case "Print admin to xml":
 	                        printAdminToXML(u);
 	                        break;
@@ -1043,7 +1043,6 @@ public class ClinicalTrialGUI extends JFrame {
                    };
                    model.addRow(rowData);
                }
-               //error
                
                SwingUtilities.invokeLater(() -> {
 	               JTable table = new JTable(model);
@@ -1520,7 +1519,7 @@ public class ClinicalTrialGUI extends JFrame {
    
    private void getStateOfRequest() {
 	   contentPanel.removeAll();
-	    JPanel formPanel = new JPanel(new GridLayout(2, 1, 10, 10));
+	    JPanel formPanel = new JPanel(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
 
 	    JLabel patientIdLabel = new JLabel("Patient ID:");
 	    JTextField patientIdField = new JTextField(20);
@@ -1652,9 +1651,18 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    
+   private void showSuccessRates() {
+	   contentPanel.removeAll();
+	   List<Double> sucessRates = adminmanager.getSuccessRateTrial();
+	   
+	   
+	   
+   }
+   
+   
    private void createInvestment() {
 	   contentPanel.removeAll();
-	    JPanel formPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+	    JPanel formPanel = new JPanel(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
 
 	    JLabel trialIdLabel = new JLabel("Trial ID:");
 	    JTextField trialIdField = new JTextField(20);
@@ -1700,7 +1708,7 @@ public class ClinicalTrialGUI extends JFrame {
    
    private void updateInvestment() {
 	   contentPanel.removeAll();
-	    JPanel formPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+	    JPanel formPanel = new JPanel(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
 
 	    JLabel trialIdLabel = new JLabel("Trial ID:");
 	    JTextField trialIdField = new JTextField(20);
@@ -1746,8 +1754,7 @@ public class ClinicalTrialGUI extends JFrame {
    private void showAllReportsOfPatient() {
 	   contentPanel.removeAll();
 	   	
-	   	JPanel inputPanel = new JPanel();
-	       inputPanel.setLayout(new FlowLayout());
+	   	JPanel inputPanel = new JPanel(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
 	       JLabel patientIDLabel = new JLabel("Patient ID: ");
 	       JTextField patientIDField = new JTextField(20);
 	       customizeTextField(patientIDField);
@@ -1805,40 +1812,39 @@ public class ClinicalTrialGUI extends JFrame {
    
    private void showAllMyReports(String email) {
 	   contentPanel.removeAll();
-	   	
-	       contentPanel.revalidate();
-	       contentPanel.repaint();
+       contentPanel.revalidate();
+       contentPanel.repaint();
 	   	try {
-	                   Patient patient = patientmanager.searchPatientByEmail(email);
-	                   List<Reports> reports = patientmanager.getListReportsOfPatient(patient);
-	                   if (reports != null && !reports.isEmpty()) {
-	                       String[] columnNames = {"My ID", "Report ID", "Medical History", "Treatment", "Doctor ID"};
-	                       DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-	                       for (Reports rep : reports) {
-	                           Object[] rowData = {
-		                           rep.getPatient().getPatient_id(),
-	                               rep.getReport_id(),
-	                               rep.getMedicalHistory(),
-	                               rep.getTreatment(), 
-	                               rep.getDoctor().getDoctor_id(),
-	                           };
-	                           model.addRow(rowData);
-	                       }
-	                       JTable table = new JTable(model);
-	                       JScrollPane scrollPane = new JScrollPane(table);
-	                       contentPanel.removeAll();
-	                       contentPanel.add(scrollPane, BorderLayout.CENTER);
-	                       contentPanel.revalidate();
-	                       contentPanel.repaint();
-	                   } else {
-	                       JOptionPane.showMessageDialog(menuFrame, "No reports found for the given Patient ID.", "Info", JOptionPane.INFORMATION_MESSAGE);
-	                   }
-	               } catch (NumberFormatException ex) {
-	                   JOptionPane.showMessageDialog(menuFrame, "Please enter a valid Patient ID.", "Error", JOptionPane.ERROR_MESSAGE);
-	               } catch (Exception ex) {
-	                   ex.printStackTrace();
-	                   JOptionPane.showMessageDialog(menuFrame, "An error occurred while fetching the patients.", "Error", JOptionPane.ERROR_MESSAGE);
-	               }
+	       Patient patient = patientmanager.searchPatientByEmail(email);
+	       List<Reports> reports = patientmanager.getListReportsOfPatient(patient);
+	       if (reports != null && !reports.isEmpty()) {
+	           String[] columnNames = {"My ID", "Report ID", "Medical History", "Treatment", "Doctor ID"};
+	           DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+	           for (Reports rep : reports) {
+	               Object[] rowData = {
+	                   rep.getPatient().getPatient_id(),
+	                   rep.getReport_id(),
+	                   rep.getMedicalHistory(),
+	                   rep.getTreatment(), 
+	                   rep.getDoctor().getDoctor_id(),
+	               };
+	               model.addRow(rowData);
+	           }
+	           JTable table = new JTable(model);
+	           JScrollPane scrollPane = new JScrollPane(table);
+	           contentPanel.removeAll();
+	           contentPanel.add(scrollPane, BorderLayout.CENTER);
+	           contentPanel.revalidate();
+	           contentPanel.repaint();
+           } else {
+               JOptionPane.showMessageDialog(menuFrame, "No reports found for the given Patient ID.", "Info", JOptionPane.INFORMATION_MESSAGE);
+           }
+       } catch (NumberFormatException ex) {
+           JOptionPane.showMessageDialog(menuFrame, "Please enter a valid Patient ID.", "Error", JOptionPane.ERROR_MESSAGE);
+       } catch (Exception ex) {
+           ex.printStackTrace();
+           JOptionPane.showMessageDialog(menuFrame, "An error occurred while fetching the patients.", "Error", JOptionPane.ERROR_MESSAGE);
+       }
    }
    
    
@@ -1857,32 +1863,32 @@ public class ClinicalTrialGUI extends JFrame {
 	    JTextField emailField = new JTextField(20);
 	    customizeTextField(emailField);
 	   	
-	       JButton createButton = new JButton("Create");
-	       customizeButton(createButton);
-	      
-	       createButton.addActionListener(e -> {
-	           String name = nameField.getText();
-	           String phone = phoneField.getText();
-	           String email = emailField.getText();
-	          
-	           try {
-	               Integer phoneNumber = Integer.parseInt(phone);
-	               Engineer eng = new Engineer(name, email, phoneNumber);
-	               engineermanager.createEngineer(eng);
-	           }catch (Exception exp) {
-	               exp.printStackTrace();
-	           }
-	       });
-	       formPanel.add(nameLabel);
-	       formPanel.add(nameField, "growx, wrap");
-	       formPanel.add(phoneLabel);
-	       formPanel.add(phoneField, "growx, wrap");
-	       formPanel.add(emailLabel);
-	       formPanel.add(emailField, "growx, wrap");
-	       formPanel.add(createButton, "span, align center");
-	       contentPanel.add(formPanel, BorderLayout.CENTER);
-	       contentPanel.revalidate();
-	       contentPanel.repaint();
+       JButton createButton = new JButton("Create");
+       customizeButton(createButton);
+      
+       createButton.addActionListener(e -> {
+       String name = nameField.getText();
+       String phone = phoneField.getText();
+       String email = emailField.getText();
+          
+           try {
+               Integer phoneNumber = Integer.parseInt(phone);
+               Engineer eng = new Engineer(name, email, phoneNumber);
+               engineermanager.createEngineer(eng);
+           }catch (Exception exp) {
+               exp.printStackTrace();
+           }
+       });
+       formPanel.add(nameLabel);
+       formPanel.add(nameField, "growx, wrap");
+       formPanel.add(phoneLabel);
+       formPanel.add(phoneField, "growx, wrap");
+       formPanel.add(emailLabel);
+       formPanel.add(emailField, "growx, wrap");
+       formPanel.add(createButton, "span, align center");
+       contentPanel.add(formPanel, BorderLayout.CENTER);
+       contentPanel.revalidate();
+       contentPanel.repaint();
    }
    
    
@@ -1905,8 +1911,6 @@ public class ClinicalTrialGUI extends JFrame {
 	    contentPanel.add(scrollPane, BorderLayout.CENTER);
 	    contentPanel.revalidate();
 	    contentPanel.repaint();
-	    
-	    
    }
    
    

@@ -26,6 +26,6 @@ public interface AdministratorManager {
 	public Administrator searchAdminByEmail(String email);
 	
 	
-	public Double getSuccessRateTrial(Trial trial);
+	public List<Double> getSuccessRateTrial();
 
 }
