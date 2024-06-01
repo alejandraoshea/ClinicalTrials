@@ -1653,12 +1653,63 @@ public class ClinicalTrialGUI extends JFrame {
    
    private void showSuccessRates() {
 	   contentPanel.removeAll();
-	   List<Double> sucessRates = adminmanager.getSuccessRateTrial();
+	   List<Double> successRates = adminmanager.getSuccessRateTrial();
 	   
+	   JPanel histogramPanel = new JPanel() {
+		   @Override
+		   protected void paintComponent(Graphics g) {
+			   super.paintComponent(g);
+			   drawHistogram(g, successRates);
+		   }
+		   
+		   private void drawHistogram(Graphics g, List<Double> successRates) {
+			   int width = getWidth();
+		       int height = getHeight();
+		       int padding = 30;
+		       int labelPadding = 30;
+		       int barWidth = (width - (2 * padding)) / successRates.size();
+		       int maxBarHeight = height - 2 * padding - labelPadding;
+
+		       for (int i = 0; i < successRates.size(); i++) {
+		           int barHeight = (int) (successRates.get(i) * maxBarHeight);
+		           int x = padding + (i * barWidth);
+		           int y = height - padding - barHeight;
+		           g.setColor(Color.magenta);
+		           g.fillRect(x, y, barWidth, barHeight);
+
+		           g.setColor(Color.BLACK);
+		           String values = String.format("%.2f", successRates.get(i));
+		           int valueWidth = g.getFontMetrics().stringWidth(values);
+		           g.drawString(values, x + (barWidth-valueWidth/2), y-5);
+		       }
+		       
+		       g.setColor(Color.BLACK);
+		       g.drawLine(padding, height - padding, width - padding, height - padding); // x-axis
+		       g.drawLine(padding, padding, padding, height - padding); // y-axis
+
+		       for (int i = 0; i < successRates.size(); i++) {
+		           int x = padding + (i * barWidth) + (barWidth / 2);
+		           String trialLabel = "Trial " + (i + 1);
+		           int trialLabelWidth = g.getFontMetrics().stringWidth(trialLabel);
+		           g.drawString(trialLabel, x - trialLabelWidth / 2, height - padding + labelPadding - 10);
+		       }       
+		   }
+		   
+	   };
 	   
+       histogramPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
+       contentPanel.add(histogramPanel, BorderLayout.CENTER);
+
+       contentPanel.revalidate();
+       contentPanel.repaint();
 	   
    }
    
+   
+   
+   
+   
+  
    
    private void createInvestment() {
 	   contentPanel.removeAll();

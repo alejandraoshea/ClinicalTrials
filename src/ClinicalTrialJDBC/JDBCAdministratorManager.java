@@ -402,20 +402,24 @@ private JDBCManager manager;
 			
 			for(Integer trialID : trials_id) {
 				String queryTotalPatients = "SELECT COUNT(*) AS total_patients FROM patient WHERE trial_id = " + trialID;
-				ResultSet rs = stmt.executeQuery(queryTotalPatients);
+				ResultSet rsTotal = stmt.executeQuery(queryTotalPatients);
 			    
-				rs.next();
-			    totalPatientsCT = rs.getInt("total_patients");
-			    rs.close();
+				rsTotal.next();
+			    totalPatientsCT = rsTotal.getInt("total_patients");
+			    System.out.println(totalPatientsCT);
+			    rsTotal.close();
+			    
 			    
 			    String querycuredPatients = "SELECT COUNT(*) AS curedPatients FROM patient WHERE cured = 1 AND trial_id = " + trialID;
-			    rs = stmt.executeQuery(querycuredPatients);
-			    rs.next();
-			    curedPatients = rs.getInt("curedPatients");
-			    rs.close();
+			    ResultSet rsCured = stmt.executeQuery(querycuredPatients);
+			    rsCured.next();
+			    curedPatients = rsCured.getInt("curedPatients");
+			    System.out.println(curedPatients);
+			    
+			    rsCured.close();
 			    
 			    if(totalPatientsCT>0) {
-			    	Double successRateTrial = (double) (curedPatients/totalPatientsCT);
+			    	Double successRateTrial = (double) (curedPatients/totalPatientsCT)*100;
 			    	successRate.add(successRateTrial);
 			    }
 			    else {
@@ -423,6 +427,8 @@ private JDBCManager manager;
 			    }
 			}
 
+			stmt.close();
+			
 		}catch(Exception e) {e.printStackTrace();}
 
 		return successRate;
