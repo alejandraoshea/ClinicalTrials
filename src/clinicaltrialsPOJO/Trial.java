@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Trial") 
-@XmlType(propOrder = {"requirements", "totalAmountInvested"})  
+@XmlType(propOrder = {"requirements", "totalAmountInvested", "rateSuccess"})  
 public class Trial implements Serializable{
 	/**
 	 * 
@@ -28,7 +28,7 @@ public class Trial implements Serializable{
 	@XmlElement
 	private Integer totalAmountInvested;
 	@XmlElement
-	private Float rateSuccess; 
+	private Double rateSuccess; 
 	@XmlTransient
 	private List<Patient> patients;
 	@XmlTransient
@@ -138,14 +138,14 @@ public class Trial implements Serializable{
 	
 
 
-	public Float getRateSuccess() {
+	public Double getRateSuccess() {
 		return rateSuccess;
 	}
 
 
 
 
-	public void setRateSuccess(Float rateSuccess) {
+	public void setRateSuccess(Double rateSuccess) {
 		this.rateSuccess = rateSuccess;
 	}
 

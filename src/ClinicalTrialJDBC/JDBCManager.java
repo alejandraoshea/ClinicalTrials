@@ -49,9 +49,9 @@ public JDBCManager() {
 					+ "email TEXT NOT NULL, "
 					+ "dateOfBirth DATE NOT NULL, cured BOOLEAN NOT NULL, "
 					+ "bloodType TEXT CHECK (bloodtype IN ('A+', 'A-','B+', 'B-', 'AB+', 'AB-','O+', 'O-')), "
-					+ "nameOfDisease TEXT CHECK (nameOfDisease in ('esclerosis multiple', 'alzheimer', 'parkinson', 'esclerosis lateral amiotrofica')), "
-					+ "doctor_id REFERENCES doctor(id), trial_id REFERENCES trial(id),"
-					+ "trialApplication_id REFERENCES trialApplication(id),"
+					+ "nameOfDisease TEXT NOT NULL, "
+					+ "doctor_id INTEGER REFERENCES doctor(id) ON DELETE CASCADE, trial_id REFERENCES trial(id) ON DELETE CASCADE,"
+					+ "trialApplication_id INTEGER REFERENCES trialApplication(id) ON DELETE CASCADE,"
 					+ "foto BLOB);";
 			stmt.executeUpdate(sql);
 			
@@ -72,7 +72,7 @@ public JDBCManager() {
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "description TEXT NOT NULL, "
 					+ "type TEXT CHECK (type in ('drug', 'machine')), "
-					+ "engineer_id REFERENCES engineer(id), doctor_id REFERENCES doctor(id),"
+					+ "engineer_id INTEGER REFERENCES engineer(id), doctor_id INTEGER REFERENCES doctor(id),"
 					+ "amountMoney INTEGER NOT NULL);";
 			stmt.executeUpdate(sql);
 			
@@ -80,15 +80,15 @@ public JDBCManager() {
 			sql = "CREATE TABLE report("
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "medicalHistory TEXT NOT NULL, "
-					+ "doctor_id REFERENCES doctor(id), patient_id REFERENCES patient(id),"
+					+ "doctor_id INTEGER REFERENCES doctor(id), patient_id INTEGER REFERENCES patient(id),"
 					+ "treatment TEXT NOT NULL);";
 			stmt.executeUpdate(sql);
 			
 			
 			sql = "CREATE TABLE trialApplication("
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ "admin_id REFERENCES administrator(id),"
-					+ "trial_id REFERENCES trial(id), approved BOOLEAN, "
+					+ "admin_id INTEGER REFERENCES administrator(id),"
+					+ "trial_id INTEGER REFERENCES trial(id), approved BOOLEAN, "
 					+ "dateRequest DATE NOT NULL, dateApproved DATE);";
 			stmt.executeUpdate(sql);
 			
@@ -97,25 +97,25 @@ public JDBCManager() {
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ "requirements TEXT NOT NULL, "
 					+ "amountMoneyInvestedTotal INTEGER NOT NULL, "
-					+ "admin_id REFERENCES administrator(id);"; 
+					+ "admin_id INTEGER REFERENCES administrator(id);"; 
 			stmt.executeUpdate(sql);
 			
 			
 			sql = "CREATE TABLE invest("
-					+ "sponsor_id REFERENCES sponsor(id), "
-					+ "trial_id REFERENCES trial(id) , "
+					+ "sponsor_id INTEGER REFERENCES sponsor(id), "
+					+ "trial_id INTEGER REFERENCES trial(id) , "
 					+ "amountOfMoneyInvested INTEGER NOT NULL);";
 			stmt.executeUpdate(sql);
 			
 			
 			sql = "CREATE TABLE checkReport("
-					+ "report_id REFERENCES report(id), "
-					+ "sponsor_id REFERENCES sponsor(id));";
+					+ "report_id INTEGER REFERENCES report(id), "
+					+ "sponsor_id INTEGER REFERENCES sponsor(id));";
 			stmt.executeUpdate(sql);
 			
 			
-			sql = "CREATE TABLE checkReport(report_id REFERENCES report(id), "
-					+ "sponsor_id REFERENCES sponsor(id));";
+			sql = "CREATE TABLE checkReport(report_id INTEGER REFERENCES report(id), "
+					+ "sponsor_id INTEGER REFERENCES sponsor(id));";
 			stmt.executeUpdate(sql);
 			
 			

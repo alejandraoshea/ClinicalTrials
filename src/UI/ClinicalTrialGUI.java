@@ -24,13 +24,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.sql.Date;
+import java.sql.SQLException;
+
 import ClinicalTrialsXMLutils.SQLDateAdapter;
 
 
@@ -90,12 +95,12 @@ public class ClinicalTrialGUI extends JFrame {
            public void actionPerformed(ActionEvent e) {
                try {
                	String email = emailField.getText();
-                   String password = new String(passwordField.getPassword());
+                String password = new String(passwordField.getPassword());
                	
-                   User u = usermanager.checkPassword(email, password);
+                User u = usermanager.checkPassword(email, password);
                   
                   
-                   String role = null;
+                String role = null;
                   
                    if (u==null) {
                       JOptionPane.showMessageDialog(ClinicalTrialGUI.this,
@@ -180,10 +185,21 @@ public class ClinicalTrialGUI extends JFrame {
                doctormanager.createDoctor(doctor);
                rol = 2;
            } else if (selectedRole.equals("patient")) {
-               Patient patient = new Patient(additionalInfo.get("name"), email, Integer.parseInt(additionalInfo.get("phone")), Date.valueOf(additionalInfo.get("dateOfBirth")), 
-            		   additionalInfo.get("bloodType"), additionalInfo.get("nameOfDisease"), Boolean.parseBoolean(additionalInfo.get("cured")));
+        	   String dobString = additionalInfo.get("dateOfBirth");
+               Date dateOfBirth;
+               try {
+                   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                   LocalDate localdob = LocalDate.parse(dobString, formatter);
+                   dateOfBirth = Date.valueOf(localdob);
+               } catch (Exception ex) {
+                   JOptionPane.showMessageDialog(null, "Invalid date format. Please use yyyy-MM-dd.", "Error", JOptionPane.ERROR_MESSAGE);
+                   return;
+               }
+
+               Patient patient = new Patient(additionalInfo.get("name"), email, Integer.parseInt(additionalInfo.get("phone")), dateOfBirth, 
+                       additionalInfo.get("bloodType"), additionalInfo.get("nameOfDisease"), Boolean.parseBoolean(additionalInfo.get("cured")));
                patientmanager.createPatient(patient);
-           	rol = 3;
+               rol = 3;
            } else if (selectedRole.equals("sponsor")) {
            	Sponsor sponsor = new Sponsor(additionalInfo.get("name"), email, Integer.parseInt(additionalInfo.get("phone")), Integer.parseInt(additionalInfo.get("cardNumber")));
                sponsormanager.createSponsor(sponsor);
@@ -320,6 +336,18 @@ public class ClinicalTrialGUI extends JFrame {
                    String selectedBloodType = (String) bloodTypeComboBox.getSelectedItem();
                    additionalInfo.put("bloodType", selectedBloodType);
                    additionalInfo.put("cured", curedYes.isSelected() ? "true" : "false");
+                   
+                   String dobString = additionalInfo.get("dateOfBirth");
+                   Date dateOfBirth;
+                   try {
+                       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                       LocalDate localdob = LocalDate.parse(dobString, formatter);
+                       dateOfBirth = Date.valueOf(localdob);
+                       additionalInfo.put("dateOfBirth", dateOfBirth.toString());
+                   } catch (Exception ex) {
+                       JOptionPane.showMessageDialog(registrationDialog, "Invalid date format. Please use yyyy-MM-dd.", "Error", JOptionPane.ERROR_MESSAGE);
+                       return;
+                   }
                }
                signUpUser(email, password, selectedRole, additionalInfo);
                registrationDialog.dispose();
@@ -432,7 +460,7 @@ public class ClinicalTrialGUI extends JFrame {
        JPanel menuPanel = new JPanel(new BorderLayout());
        menuPanel.setBackground(Color.WHITE);
        // Sidebar for actions
-       JPanel sidebar = new JPanel(new MigLayout("wrap 1", "[grow]", "[]30[]10[]10[]10[]10[]10[]"));
+       JPanel sidebar = new JPanel(new MigLayout("wrap 1", "[grow]", "[]20[]10[]10[]10[]10[]10[]"));
        sidebar.setBackground(new Color(167, 192, 189));
        sidebar.setPreferredSize(new Dimension(300, menuFrame.getHeight()));
        JLabel homePageLabel = new JLabel("Home page");
@@ -721,7 +749,7 @@ public class ClinicalTrialGUI extends JFrame {
    private void addNewAdministrator() {
    	contentPanel.removeAll();
    	JPanel formPanel = new JPanel();
-   	formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
+   	formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][][]20[][]"));
   
    	JLabel nameLabel = new JLabel("Name:");
    	JTextField nameField = new JTextField(20);
@@ -732,6 +760,9 @@ public class ClinicalTrialGUI extends JFrame {
     JLabel emailLabel = new JLabel("Email:");
     JTextField emailField = new JTextField(20);
     customizeTextField(emailField);
+    JLabel passwordLabel = new JLabel("Password:");
+    JPasswordField passwordField = new JPasswordField(20);
+    customizeTextField(passwordField);
    	
        JButton createButton = new JButton("Create");
        customizeButton(createButton);
@@ -740,22 +771,33 @@ public class ClinicalTrialGUI extends JFrame {
            String name = nameField.getText();
            String phone = phoneField.getText();
            String email = emailField.getText();
+           String password = new String(passwordField.getPassword());
           
            try {
                Integer phoneNumber = Integer.parseInt(phone);
                Administrator admin = new Administrator(name, email, phoneNumber);
-              
                adminmanager.createAdmin(admin);
+               
+               MessageDigest md = MessageDigest.getInstance("MD5");
+               md.update(password.getBytes());
+               byte[] pass = md.digest();
+               
+               Role role = usermanager.getRole(1);
+               User u = new User(email, pass, role);
+               usermanager.newUser(u);
+               
            }catch (Exception exp) {
                exp.printStackTrace();
            }
        });
        formPanel.add(nameLabel);
-       formPanel.add(nameField, "growx, wrap");
+       formPanel.add(nameField, "growx, wrap 20");
        formPanel.add(phoneLabel);
-       formPanel.add(phoneField, "growx, wrap");
+       formPanel.add(phoneField, "growx, wrap 20");
        formPanel.add(emailLabel);
-       formPanel.add(emailField, "growx, wrap");
+       formPanel.add(emailField, "growx, wrap 20");
+       formPanel.add(passwordLabel);
+       formPanel.add(passwordField, "growx, wrap 20");
        formPanel.add(createButton, "span, align center");
        contentPanel.add(formPanel, BorderLayout.CENTER);
        contentPanel.revalidate();
@@ -766,14 +808,17 @@ public class ClinicalTrialGUI extends JFrame {
    private void showAllPatients() {
    	List<Patient> patients = adminmanager.getPatients();
 		String[] columnNames = {"ID", "Name", "Email", "Phone", "Date of birth", "Cured", "Blood Type", "Name of disease"}; //column names
-	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // Create table model
+	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); 
+	    
 	    for (Patient patient: patients) {
+	         
+	         
 	        Object[] rowData = {
 	        	patient.getPatient_id(),
 	        	patient.getName(),
 	        	patient.getEmail(),
 	        	patient.getPhone(),
-	        	patient.getDateOfBirth(),
+	        	patient.getDateOfBirth().toString(),
 	        	patient.isCured(),
 	        	patient.getBloodType(),
 	            patient.getDisease()
@@ -941,8 +986,11 @@ public class ClinicalTrialGUI extends JFrame {
 	        try {
 	            Integer patientId = Integer.parseInt(patientIdField.getText());
 	            adminmanager.deletePatientbyId(patientId);
+	            Patient patient = patientmanager.searchPatientById(patientId);
+	            Trial trial = patient.getTrial(); 
+	            trial.getPatients().remove(patient);
 	            JOptionPane.showMessageDialog(contentPanel, "Patient deleted from trial successfully!");
-	        } catch (NumberFormatException ex) {
+	        }catch (NumberFormatException ex) {
 	            JOptionPane.showMessageDialog(contentPanel, "Please enter a valid patient ID.", "Error", JOptionPane.ERROR_MESSAGE);
 	        } catch (Exception ex) {
 	            ex.printStackTrace();
@@ -1066,7 +1114,7 @@ public class ClinicalTrialGUI extends JFrame {
    private void addNewDoctor() {
 	   contentPanel.removeAll();
 	   JPanel formPanel = new JPanel();
-	   formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
+	   formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][][][]20[][]"));
 	  
 	   JLabel nameLabel = new JLabel("Name:");
        JTextField nameField = new JTextField(20);
@@ -1081,6 +1129,10 @@ public class ClinicalTrialGUI extends JFrame {
        JLabel specializationLabel = new JLabel("Specialization:");
        JTextField specializationField = new JTextField(20);
        customizeTextField(specializationField);
+       
+       JLabel passwordLabel = new JLabel("Password:");
+       JPasswordField passwordField = new JPasswordField(20);
+       customizeTextField(passwordField);
    	
        JButton createButton = new JButton("Create");
        customizeButton(createButton);
@@ -1090,11 +1142,22 @@ public class ClinicalTrialGUI extends JFrame {
        String phone = phoneField.getText();
        String email = emailField.getText();
        String specialization = specializationField.getText();
+       String password = new String(passwordField.getPassword());
 	          
        try {
            Integer phoneNumber = Integer.parseInt(phone);
+           
            Doctor doctor = new Doctor(name, phoneNumber, email, specialization);
            doctormanager.createDoctor(doctor);
+           
+           MessageDigest md = MessageDigest.getInstance("MD5");
+           md.update(password.getBytes());
+           byte[] pass = md.digest();
+           
+           Role role = usermanager.getRole(2);
+           User u = new User(email, pass, role);
+           usermanager.newUser(u);
+           
        	}catch (Exception exp) {
            exp.printStackTrace();
        	}
@@ -1107,6 +1170,8 @@ public class ClinicalTrialGUI extends JFrame {
        formPanel.add(emailField, "growx, wrap 20");
        formPanel.add(specializationLabel);
        formPanel.add(specializationField, "growx, wrap 20");
+       formPanel.add(passwordLabel);
+       formPanel.add(passwordField, "growx, wrap 20");
        
        formPanel.add(createButton, "span, align center");
        contentPanel.add(formPanel, BorderLayout.CENTER);
@@ -1542,7 +1607,7 @@ public class ClinicalTrialGUI extends JFrame {
 
 	    formPanel.add(patientIdLabel);
 	    formPanel.add(patientIdField);
-	    formPanel.add(getStateButton);
+	    formPanel.add(getStateButton, "span, align center");
 
 	    contentPanel.add(formPanel, BorderLayout.CENTER);
 	    contentPanel.revalidate();
@@ -1554,7 +1619,7 @@ public class ClinicalTrialGUI extends JFrame {
    private void addNewSponsor() {
 	   contentPanel.removeAll();
 	   JPanel formPanel = new JPanel();
-	   formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
+	   formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][][][]20[][]"));
 	  
 	   JLabel nameLabel = new JLabel("Name:");
        JTextField nameField = new JTextField(20);
@@ -1570,6 +1635,10 @@ public class ClinicalTrialGUI extends JFrame {
        JTextField cNbField = new JTextField(20);
        customizeTextField(cNbField);
    	
+       JLabel passwordLabel = new JLabel("Password:");
+       JPasswordField passwordField = new JPasswordField(20);
+       customizeTextField(passwordField);
+       
        JButton createButton = new JButton("Create");
        customizeButton(createButton);
       
@@ -1578,12 +1647,22 @@ public class ClinicalTrialGUI extends JFrame {
        String phone = phoneField.getText();
        String email = emailField.getText();
        String cardStr = cNbField.getText();
+       String password = new String(passwordField.getPassword());
 	          
        try {
            Integer phoneNumber = Integer.parseInt(phone);
            Integer cardNumber = Integer.parseInt(cardStr);
            Sponsor sponsor = new Sponsor(name, email, phoneNumber, cardNumber);
            sponsormanager.createSponsor(sponsor);
+           
+           MessageDigest md = MessageDigest.getInstance("MD5");
+           md.update(password.getBytes());
+           byte[] pass = md.digest();
+           
+           Role role = usermanager.getRole(4);
+           User u = new User(email, pass, role);
+           usermanager.newUser(u);
+           
        	}catch (Exception exp) {
            exp.printStackTrace();
        	}
@@ -1596,6 +1675,8 @@ public class ClinicalTrialGUI extends JFrame {
        formPanel.add(emailField, "growx, wrap 20");
        formPanel.add(cardNLabel);
        formPanel.add(cNbField, "growx, wrap 20");
+       formPanel.add(passwordLabel);
+       formPanel.add(passwordField, "growx, wrap 20");
        
        formPanel.add(createButton, "span, align center");
        contentPanel.add(formPanel, BorderLayout.CENTER);
@@ -1655,7 +1736,7 @@ public class ClinicalTrialGUI extends JFrame {
 	   contentPanel.removeAll();
 	   List<Double> successRates = adminmanager.getSuccessRateTrial();
 	   
-	   JPanel histogramPanel = new JPanel() {
+	   JPanel histogramPanel = new JPanel(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]")) {
 		   @Override
 		   protected void paintComponent(Graphics g) {
 			   super.paintComponent(g);
@@ -1667,42 +1748,47 @@ public class ClinicalTrialGUI extends JFrame {
 		       int height = getHeight();
 		       int padding = 30;
 		       int labelPadding = 30;
+		       int numberTrialsRow = 4; 
+		       int rows = (int) Math.ceil((double) successRates.size()/ numberTrialsRow);
 		       int barWidth = (width - (2 * padding)) / successRates.size();
 		       int maxBarHeight = height - 2 * padding - labelPadding;
 
+		       double maxSuccessRate = successRates.stream().max(Double::compare).orElse(0.0);
+		       
 		       for (int i = 0; i < successRates.size(); i++) {
-		           int barHeight = (int) (successRates.get(i) * maxBarHeight);
-		           int x = padding + (i * barWidth);
+		    	   int row = i/ numberTrialsRow;
+		    	   int col = i % numberTrialsRow;
+		    	   int barHeight = (int) ((successRates.get(i)/maxSuccessRate) * maxBarHeight);
+		           int x = padding + (col * (barWidth + padding));
 		           int y = height - padding - barHeight;
-		           g.setColor(Color.magenta);
+		           g.setColor(new Color(167, 192, 189));
 		           g.fillRect(x, y, barWidth, barHeight);
 
 		           g.setColor(Color.BLACK);
-		           String values = String.format("%.2f", successRates.get(i));
+		           String values = String.format("%.2f%%", successRates.get(i));
 		           int valueWidth = g.getFontMetrics().stringWidth(values);
-		           g.drawString(values, x + (barWidth-valueWidth/2), y-5);
+		           g.drawString(values, x + (barWidth-valueWidth)/2, y-5);
 		       }
 		       
 		       g.setColor(Color.BLACK);
-		       g.drawLine(padding, height - padding, width - padding, height - padding); // x-axis
-		       g.drawLine(padding, padding, padding, height - padding); // y-axis
-
-		       for (int i = 0; i < successRates.size(); i++) {
-		           int x = padding + (i * barWidth) + (barWidth / 2);
-		           String trialLabel = "Trial " + (i + 1);
-		           int trialLabelWidth = g.getFontMetrics().stringWidth(trialLabel);
-		           g.drawString(trialLabel, x - trialLabelWidth / 2, height - padding + labelPadding - 10);
-		       }       
+		       g.drawLine(padding, height - padding, width - padding, height - padding);
+	           g.drawLine(padding, padding, padding, height - padding); 
+   
 		   }
-		   
 	   };
 	   
-       histogramPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
-       contentPanel.add(histogramPanel, BorderLayout.CENTER);
-
+	   histogramPanel.setLayout(new MigLayout("wrap 4", "[grow]"));
+	   for(int i=0; i<successRates.size(); i++) {
+		   String trialLabel = "Trial " + (i+1);
+		   histogramPanel.add(new JLabel(trialLabel), "wrap");
+	   }
+	   
+       JScrollPane scrollPane = new JScrollPane(histogramPanel);
+       scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+       
+       contentPanel.add(scrollPane, BorderLayout.CENTER);
        contentPanel.revalidate();
        contentPanel.repaint();
-	   
    }
    
    
@@ -1743,12 +1829,12 @@ public class ClinicalTrialGUI extends JFrame {
 	    });
 
 	    formPanel.add(trialIdLabel);
-	    formPanel.add(trialIdField);
+	    formPanel.add(trialIdField, "growx, wrap 20");
 	    formPanel.add(sponsorIdLabel);
-	    formPanel.add(sponsorIdField);
+	    formPanel.add(sponsorIdField, "growx, wrap 20");
 	    formPanel.add(amountLabel);
-	    formPanel.add(amountField);
-	    formPanel.add(createButton);
+	    formPanel.add(amountField, "growx, wrap 20");	       
+	    formPanel.add(createButton, "span, align center");
 
 	    contentPanel.add(formPanel, BorderLayout.CENTER);
 	    contentPanel.revalidate();
@@ -1789,12 +1875,12 @@ public class ClinicalTrialGUI extends JFrame {
 	    });
 
 	    formPanel.add(trialIdLabel);
-	    formPanel.add(trialIdField);
+	    formPanel.add(trialIdField,"growx, wrap 20");
 	    formPanel.add(sponsorIdLabel);
-	    formPanel.add(sponsorIdField);
+	    formPanel.add(sponsorIdField, "growx, wrap 20");
 	    formPanel.add(amountLabel);
-	    formPanel.add(amountField);
-	    formPanel.add(updateButton);
+	    formPanel.add(amountField, "growx, wrap 20");
+	    formPanel.add(updateButton, "span, align center");
 
 	    contentPanel.add(formPanel, BorderLayout.CENTER);
 	    contentPanel.revalidate();
@@ -1812,52 +1898,53 @@ public class ClinicalTrialGUI extends JFrame {
 	       JButton getIDButton = new JButton("Get ID");
 	       customizeButton(getIDButton);
 	       inputPanel.add(patientIDLabel);
-	       inputPanel.add(patientIDField);
-	       inputPanel.add(getIDButton);
+	       inputPanel.add(patientIDField, "growx, wrap 20");
+	       inputPanel.add(getIDButton, "span, align center");
 	       contentPanel.add(inputPanel, BorderLayout.NORTH);
 	       contentPanel.revalidate();
 	       contentPanel.repaint();
 	   	
 	       getIDButton.addActionListener(new ActionListener() {
-	           @Override
+	    	   @Override
 	           public void actionPerformed(ActionEvent e) {
 	               String patientIDStr = patientIDField.getText();
 	               try {
 	                   Integer patient_id = Integer.parseInt(patientIDStr);
 	                   Patient patient = patientmanager.searchPatientById(patient_id);
-	                   List<Reports> reports = patientmanager.getListReportsOfPatient(patient);
-	                   if (reports != null && !reports.isEmpty()) {
-	                       String[] columnNames = {"Report ID", "Medical History", "Treatment", "Doctor ID", "Patient ID"};
-	                       DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-	                       for (Reports rep : reports) {
-	                           Object[] rowData = {
-	                               rep.getReport_id(),
-	                               rep.getMedicalHistory(),
-	                               rep.getTreatment(), 
-	                               rep.getDoctor().getDoctor_id(),
-	                               rep.getPatient().getPatient_id()
-	                           };
-	                           model.addRow(rowData);
+	                   if (patient != null) {
+	                       List<Reports> reports = patientmanager.getListReportsOfPatient(patient);
+	                       if (!reports.isEmpty()) {
+	                           String[] columnNames = {"Report ID", "Medical History", "Treatment", "Doctor ID", "Patient ID"};
+	                           DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+	                           for (Reports rep : reports) {
+	                               Object[] rowData = {
+	                                   rep.getReport_id(),
+	                                   rep.getMedicalHistory(),
+	                                   rep.getTreatment(), 
+	                                   (rep.getDoctor() != null) ? rep.getDoctor().getDoctor_id() : null, 
+	                                   rep.getPatient().getPatient_id()
+	                               };
+	                               model.addRow(rowData);
+	                           }
+	                           JTable table = new JTable(model);
+	                           JScrollPane scrollPane = new JScrollPane(table);
+	                           contentPanel.removeAll();
+	                           contentPanel.add(inputPanel, BorderLayout.NORTH);
+	                           contentPanel.add(scrollPane, BorderLayout.CENTER);
+	                           contentPanel.revalidate();
+	                           contentPanel.repaint();
+	                       } else {
+	                           JOptionPane.showMessageDialog(menuFrame, "No reports found for the given Patient ID.", "Info", JOptionPane.INFORMATION_MESSAGE);
 	                       }
-	                       JTable table = new JTable(model);
-	                       JScrollPane scrollPane = new JScrollPane(table);
-	                       contentPanel.removeAll();
-	                       contentPanel.add(inputPanel, BorderLayout.NORTH);
-	                       contentPanel.add(scrollPane, BorderLayout.CENTER);
-	                       contentPanel.revalidate();
-	                       contentPanel.repaint();
 	                   } else {
-	                       JOptionPane.showMessageDialog(menuFrame, "No reports found for the given Patient ID.", "Info", JOptionPane.INFORMATION_MESSAGE);
+	                       JOptionPane.showMessageDialog(menuFrame, "Patient not found for the given ID.", "Info", JOptionPane.INFORMATION_MESSAGE);
 	                   }
 	               } catch (NumberFormatException ex) {
 	                   JOptionPane.showMessageDialog(menuFrame, "Please enter a valid Patient ID.", "Error", JOptionPane.ERROR_MESSAGE);
-	               } catch (Exception ex) {
-	                   ex.printStackTrace();
-	                   JOptionPane.showMessageDialog(menuFrame, "An error occurred while fetching the patients.", "Error", JOptionPane.ERROR_MESSAGE);
-	               }
+	               } 
 	           }
 	       });
-   }
+	   }
    
    
    
@@ -1902,7 +1989,7 @@ public class ClinicalTrialGUI extends JFrame {
    private void addNewEngineer() {
 	   contentPanel.removeAll();
 	   	JPanel formPanel = new JPanel();
-	   	formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
+	   	formPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][][]20[][]"));
 	  
 	   	JLabel nameLabel = new JLabel("Name:");
 	   	JTextField nameField = new JTextField(20);
@@ -1914,6 +2001,10 @@ public class ClinicalTrialGUI extends JFrame {
 	    JTextField emailField = new JTextField(20);
 	    customizeTextField(emailField);
 	   	
+       JLabel passwordLabel = new JLabel("Password:");
+       JPasswordField passwordField = new JPasswordField(20);
+       customizeTextField(passwordField);
+	       
        JButton createButton = new JButton("Create");
        customizeButton(createButton);
       
@@ -1921,21 +2012,32 @@ public class ClinicalTrialGUI extends JFrame {
        String name = nameField.getText();
        String phone = phoneField.getText();
        String email = emailField.getText();
+       String password = new String(passwordField.getPassword());
           
            try {
                Integer phoneNumber = Integer.parseInt(phone);
                Engineer eng = new Engineer(name, email, phoneNumber);
                engineermanager.createEngineer(eng);
+               
+               MessageDigest md = MessageDigest.getInstance("MD5");
+               md.update(password.getBytes());
+               byte[] pass = md.digest();
+               
+               Role role = usermanager.getRole(5);
+               User u = new User(email, pass, role);
+               usermanager.newUser(u);
            }catch (Exception exp) {
                exp.printStackTrace();
            }
        });
        formPanel.add(nameLabel);
-       formPanel.add(nameField, "growx, wrap");
+       formPanel.add(nameField, "growx, wrap 20");
        formPanel.add(phoneLabel);
-       formPanel.add(phoneField, "growx, wrap");
+       formPanel.add(phoneField, "growx, wrap 20");
        formPanel.add(emailLabel);
-       formPanel.add(emailField, "growx, wrap");
+       formPanel.add(emailField, "growx, wrap 20");
+       formPanel.add(passwordLabel);
+       formPanel.add(passwordField, "growx, wrap 20");
        formPanel.add(createButton, "span, align center");
        contentPanel.add(formPanel, BorderLayout.CENTER);
        contentPanel.revalidate();
@@ -2136,7 +2238,8 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void loadAdmin() {
-       JPanel panel = new JPanel(new MigLayout("fill"));
+	   contentPanel.removeAll();
+       JPanel panel = new JPanel(new MigLayout("wrap 2", "[grow]", "[]20[][]"));
        JTextArea textArea = new JTextArea();
        textArea.setEditable(false);
        JScrollPane scrollPane = new JScrollPane(textArea);
@@ -2149,15 +2252,25 @@ public class ClinicalTrialGUI extends JFrame {
 	   			File file = new File("./xmls/External-Admin.xml");
 	   			admin = xmlmanager.xml2Admin(file);
 	           if (admin != null) {
-	        	   String[] columnNames = {"Admin ID", "Name", "Email", "Phone"};
+	        	   String[] columnNames = {"Name", "Email", "Phone", "Trial Requirements", "Total Amount Invested (Trial)"};
 	                DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 	                Object[] rowData = {
-	                    admin.getAdmin_id(),
 	                    admin.getName(),
 	                    admin.getEmail(),
-	                    admin.getPhone()
+	                    admin.getPhone(),
+	                    "", ""
 	                };
 	                model.addRow(rowData);
+	                
+	                List<Trial> trials = admin.getTrials();
+	                for (Trial trial : trials) {
+	                    Object[] trialRowData = {
+	                        "", "", "", 
+	                        trial.getRequirements(),
+	                        trial.getTotalAmountInvested()
+	                    };
+	                    model.addRow(trialRowData);
+	                }
 	                
 	                JTable table = new JTable(model);
 	                JScrollPane tableScrollPane = new JScrollPane(table);
@@ -2188,6 +2301,7 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void loadDoctor() {
+	   contentPanel.removeAll();
 	   JFrame frame = new JFrame("Doctor Loader");
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        frame.setSize(400, 300);
@@ -2235,6 +2349,7 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void loadPatient() {
+	   contentPanel.removeAll();
 	   JFrame frame = new JFrame("Patient Loader");
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        frame.setSize(400, 300);
@@ -2285,6 +2400,7 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void loadSponsor() {
+	   contentPanel.removeAll();
        JPanel panel = new JPanel(new MigLayout("fill"));
        JTextArea textArea = new JTextArea();
        textArea.setEditable(false);
@@ -2329,6 +2445,7 @@ public class ClinicalTrialGUI extends JFrame {
  
   
    private void loadEngineer() {
+	   contentPanel.removeAll();
 	   JPanel panel = new JPanel(new MigLayout("fill"));
        JTextArea textArea = new JTextArea();
        textArea.setEditable(false);

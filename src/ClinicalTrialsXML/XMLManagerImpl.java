@@ -61,8 +61,6 @@ public class XMLManagerImpl implements XMLManager{
 			
 			File file = new File("./xmls/Doctor.xml");
 			marshaller.marshal(doctor, file);
-			
-			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -104,10 +102,10 @@ public class XMLManagerImpl implements XMLManager{
 		adminmanager = new JDBCAdministratorManager(manager);
 		
 		try {
-			trials = adminmanager.getListOfTrials();
 			admin = adminmanager.searchAdminById(id);
-			admin.getTrials();
-					
+			trials = adminmanager.getListOfTrials();
+			admin.setTrials(trials);
+			
 			JAXBContext jaxbContext = JAXBContext.newInstance(Administrator.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
 			
@@ -118,8 +116,9 @@ public class XMLManagerImpl implements XMLManager{
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
+	
+	
 
 	@Override
 	public Administrator xml2Admin(File xml) {

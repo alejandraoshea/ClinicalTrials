@@ -5,21 +5,25 @@
 	<!ATTLIST Administrator email CDATA #REQUIRED> 
 	<!ELEMENT name (#PCDATA)> 
 	<!ELEMENT phone (#PCDATA)> 
-	<!ELEMENT trials (trials+)> 
-	<!ELEMENT trial (#PCDATA)>
+	<!ELEMENT trials (trial*)> 
+	<!ELEMENT trial (requirements, totalAmountInvested)>
 		<!ELEMENT requirements (#PCDATA)>
 		<!ELEMENT totalAmountInvested (#PCDATA)>
 
 ]>
 
 
-
-<Administrator email = "nerealeria@gmail.com"> 
-	<name>Nerea</name>
-	<phone>659992451</phone>
-	<trials> 
-		<trial>
+<Administrator email="rodrigofdez@gmail.com">
+    <name>Rodrigo</name>
+    <phone>690112119</phone>
+    <trials>
+        <trial>
+            <requirements>Neurological disease</requirements>
+            <totalAmountInvested>8000</totalAmountInvested>
+        </trial>
+        <trial>
+			<requirements>early stage, female, family history with the disease (alzheimer)</requirements>
+			<totalAmountInvested>120000</totalAmountInvested>
 		</trial>
-	</trials>
-
+    </trials>
 </Administrator>

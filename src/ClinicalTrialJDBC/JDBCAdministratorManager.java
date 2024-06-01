@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,9 +194,7 @@ private JDBCManager manager;
 		try {
 			String sql = "DELETE FROM patient WHERE id=?";
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-			
 			prep.setInt(1, patient_id);
-			
 			prep.executeUpdate();			
 			
 		}catch(Exception e){
@@ -240,23 +240,25 @@ private JDBCManager manager;
 		// TODO Auto-generated method stub
 		List<Patient> patients = new ArrayList<>();
 		
-		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM patient WHERE trial_id=" + trial_id;
 		
 			ResultSet rs = stmt.executeQuery(sql);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			
 			while(rs.next()) {
 				Integer patient_id = rs.getInt("id");
 				String name = rs.getString("name");
 				String email = rs.getString("email");
 				Integer phone = rs.getInt("phone");
-				Date date = rs.getDate("dateOfBirth");
+				String dateStr = rs.getString("dateOfBirth");
+				LocalDate localDob = LocalDate.parse(dateStr, formatter);
+				Date dateOfBirth = Date.valueOf(localDob);
 				String bloodT = rs.getString("bloodType");
 				String disease = rs.getString("nameOfDisease");
 				Boolean cured = rs.getBoolean("cured");
-				Patient patient = new Patient (patient_id, name, email, phone, date, bloodT, disease, cured);
+				Patient patient = new Patient (patient_id, name, email, phone, dateOfBirth, bloodT, disease, cured);
 				patients.add(patient);
 			}
 		  rs.close();
@@ -272,26 +274,29 @@ private JDBCManager manager;
 	@Override
 	public List<Patient> getPatients() {
 		// TODO Auto-generated method stub
-		List<Patient> patients = new ArrayList<>();
-		
+		List<Patient> patients = new ArrayList<Patient>();
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM patient";
 		
 			ResultSet rs = stmt.executeQuery(sql);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			
 			while(rs.next()) {
 				Integer patient_id = rs.getInt("id");
 				String name = rs.getString("name");
 				Integer phone = rs.getInt("phone");
 				String email = rs.getString("email");
-				Date date = rs.getDate("dateOfBirth");
+				//String dateStr = rs.getString("dateOfBirth");
+				//LocalDate localDob = LocalDate.parse(dateStr, formatter);
+				//Date dateOfBirth = Date.valueOf(localDob);
+				Date dateOfBirth = rs.getDate("dateOfBirth");
 				Boolean cured = rs.getBoolean("cured");
 				String bloodT = rs.getString("bloodType");
 				String disease = rs.getString("nameOfDisease");
 			
-				Patient patient = new Patient (patient_id, name, email, phone, date, bloodT, disease, cured);
+				Patient patient = new Patient (patient_id, name, email, phone, dateOfBirth, bloodT, disease, cured);
 				patients.add(patient);
 			}
 		  rs.close();
@@ -397,29 +402,29 @@ private JDBCManager manager;
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			Integer totalPatientsCT = 0;
-			Integer curedPatients = 0;
-			
+
 			for(Integer trialID : trials_id) {
+				Integer totalPatientsCT = 0;
+				Integer curedPatients = 0;
+				
 				String queryTotalPatients = "SELECT COUNT(*) AS total_patients FROM patient WHERE trial_id = " + trialID;
 				ResultSet rsTotal = stmt.executeQuery(queryTotalPatients);
+			    if(rsTotal.next()) {
+			    	totalPatientsCT = rsTotal.getInt("total_patients");
+			    }
 			    
-				rsTotal.next();
-			    totalPatientsCT = rsTotal.getInt("total_patients");
-			    System.out.println(totalPatientsCT);
 			    rsTotal.close();
-			    
 			    
 			    String querycuredPatients = "SELECT COUNT(*) AS curedPatients FROM patient WHERE cured = 1 AND trial_id = " + trialID;
 			    ResultSet rsCured = stmt.executeQuery(querycuredPatients);
-			    rsCured.next();
-			    curedPatients = rsCured.getInt("curedPatients");
-			    System.out.println(curedPatients);
-			    
+			    if(rsCured.next()) {
+			    	curedPatients = rsCured.getInt("curedPatients");
+			    }
 			    rsCured.close();
 			    
+			    
 			    if(totalPatientsCT>0) {
-			    	Double successRateTrial = (double) (curedPatients/totalPatientsCT)*100;
+			    	Double successRateTrial = ((double) curedPatients/totalPatientsCT)*100;
 			    	successRate.add(successRateTrial);
 			    }
 			    else {
