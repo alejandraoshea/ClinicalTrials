@@ -1,15 +1,17 @@
 <?xml version = "1.0" encoding = "UTF-8" standalone = "yes"?> 
 
 <!DOCTYPE Sponsor [ 
-<!ELEMENT Sponsor (name, phone)> 
+<!ELEMENT Sponsor (name, phone, cardNumber)> 
 	<!ATTLIST Sponsor email CDATA #REQUIRED> 
 	<!ELEMENT name (#PCDATA)> 
 	<!ELEMENT phone (#PCDATA)> 
+	<!ELEMENT cardNumber (#PCDATA)> 
 ]>
 
-<Sponsor email = "borjaleria@gmail.com"> 
-  <name>Borja</name>
-  <phone>600111222</phone>
+<Sponsor email = "sofiabernal@gmail.com"> 
+  <name>Sofia</name>
+  <phone>611712312</phone>
+  <cardNumber>094776590678</cardNumber>
 </Sponsor>
 
 

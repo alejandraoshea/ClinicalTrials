@@ -249,8 +249,9 @@ private static void updatePassword() throws Exception {
 				System.out.println("7. Assign Patient to Trial"); 
 				System.out.println("8. Delete a Patient of a Trial"); 
 				System.out.println("9. Print all the patients of a Clinical Trial");
-				System.out.println("10. Print admin to xml");
-				System.out.println("11. Load Admins from xml File"); 
+				System.out.println("10. Show the success rates of the trials");
+				System.out.println("11. Print admin to xml");
+				System.out.println("12. Load Admins from xml File"); 
 				System.out.println("0. Return.\n"); 
          
 				choice = Integer.parseInt(reader.readLine()); 
@@ -284,9 +285,12 @@ private static void updatePassword() throws Exception {
 					getAllPatientsCT(); 
 					break; 
 				case 10: 
-					printMeAdmin(id); 
+					printAllSuccessRates(); 
 					break; 	
 				case 11: 
+					printMeAdmin(id); 
+					break; 	
+				case 12: 
 					loadAdmins(); 
 					break; 
 				case 0: 
@@ -394,6 +398,15 @@ private static void updatePassword() throws Exception {
 		System.out.println(patients);
 	}
 
+	
+	private static void printAllSuccessRates() {
+		List<Double> successRates = adminmanager.getSuccessRateTrial();
+		for(int i = 0; i<successRates.size(); i++) {
+			System.out.println("The success of the trial " + (i+1) + "is: " + successRates.get(i) + "\n");
+		}
+	}
+	
+	
 	private static void printMeAdmin(Integer id) {
 		xmlmanager.admin2xml(id);
 	}

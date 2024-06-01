@@ -22,7 +22,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Patient")
-@XmlType(propOrder = {"name", "phone",  "bloodType", "disease", "cured", "doctor","dateOfBirth"})
+@XmlType(propOrder = {"namePatient", "phonePatient",  "bloodType", "disease", "cured","dateOfBirth"})
 
 public class Patient implements Serializable{
 	/**
@@ -33,11 +33,11 @@ public class Patient implements Serializable{
 	@XmlTransient
 	private Integer patient_id;
 	@XmlAttribute
-	private String email;
+	private String emailPatient;
 	@XmlElement
-	private String name; 
+	private String namePatient; 
 	@XmlElement
-	private Integer phone;
+	private Integer phonePatient;
 	@XmlElement
 	private Date dateOfBirth; 
 	@XmlElement
@@ -50,7 +50,7 @@ public class Patient implements Serializable{
 	private byte[] photo;
 	@XmlTransient
 	private List<Reports> reports;
-	@XmlElement
+	@XmlTransient
 	private Doctor doctor;  //1 to N relation
 	@XmlTransient
 	private Trial trial; //1 to N relation
@@ -69,12 +69,12 @@ public class Patient implements Serializable{
 
 
 
-	public Patient(Integer patient_id, String email, String name, Integer phone, Date dateOfBirth) {
+	public Patient(Integer patient_id, String email, String namePatient, Integer phonePatient, Date dateOfBirth) {
 		super();
 		this.patient_id = patient_id;
-		this.email = email;
-		this.name = name;
-		this.phone = phone;
+		this.emailPatient = email;
+		this.namePatient = namePatient;
+		this.phonePatient = phonePatient;
 		this.dateOfBirth = dateOfBirth;
 		this.reports = new ArrayList<Reports>();
 		this.trialApplications = new ArrayList<TrialsApplication>();
@@ -83,13 +83,13 @@ public class Patient implements Serializable{
 
 
 
-	public Patient(Integer patient_id, String name, String email, Integer phone, Date dateOfBirth, String bloodType,
+	public Patient(Integer patient_id, String namePatient, String email, Integer phonePatient, Date dateOfBirth, String bloodType,
 			String disease, boolean cured) {
 		super();
 		this.patient_id = patient_id;
-		this.name = name;
-		this.email = email;
-		this.phone = phone;
+		this.namePatient = namePatient;
+		this.emailPatient = email;
+		this.phonePatient = phonePatient;
 		this.dateOfBirth = dateOfBirth;
 		this.bloodType = bloodType;
 		this.disease = disease;
@@ -101,12 +101,12 @@ public class Patient implements Serializable{
 	
 	
 	
-	public Patient(String name, String email, Integer phone, Date dateOfBirth, String bloodType, String disease,
+	public Patient(String namePatient, String email, Integer phonePatient, Date dateOfBirth, String bloodType, String disease,
 			boolean cured, byte[] photo) {
 		super();
-		this.name = name;
-		this.email = email;
-		this.phone = phone;
+		this.namePatient = namePatient;
+		this.emailPatient = email;
+		this.phonePatient = phonePatient;
 		this.dateOfBirth = dateOfBirth;
 		this.bloodType = bloodType;
 		this.disease = disease;
@@ -118,24 +118,24 @@ public class Patient implements Serializable{
 
 
 
-	public Patient(Integer patient_id, String name, String email, Integer phone) {
+	public Patient(Integer patient_id, String namePatient, String email, Integer phonePatient) {
 		super();
 		this.patient_id = patient_id;
-		this.name = name;
-		this.email = email;
-		this.phone = phone;
+		this.namePatient = namePatient;
+		this.emailPatient = email;
+		this.phonePatient = phonePatient;
 		this.reports = new ArrayList<Reports>();
 		this.trialApplications = new ArrayList<TrialsApplication>();
 	}
 
 
 
-	public Patient(String name, String email, Integer phone, Date dateOfBirth, String bloodType, String disease,
+	public Patient(String namePatient, String email, Integer phonePatient, Date dateOfBirth, String bloodType, String disease,
 			boolean cured) {
 		super();
-		this.name = name;
-		this.email = email;
-		this.phone = phone;
+		this.namePatient = namePatient;
+		this.emailPatient = email;
+		this.phonePatient = phonePatient;
 		this.dateOfBirth = dateOfBirth;
 		this.bloodType = bloodType;
 		this.disease = disease;
@@ -148,11 +148,11 @@ public class Patient implements Serializable{
 	
 	
 
-	public Patient(String name, String email, Integer phone, Date dateOfBirth) {
+	public Patient(String namePatient, String email, Integer phonePatient, Date dateOfBirth) {
 		super();
-		this.name = name;
-		this.email = email;
-		this.phone = phone;
+		this.namePatient = namePatient;
+		this.emailPatient = email;
+		this.phonePatient = phonePatient;
 		this.dateOfBirth = dateOfBirth;
 		this.reports = new ArrayList<Reports>();
 		this.trialApplications = new ArrayList<TrialsApplication>();
@@ -179,31 +179,40 @@ public class Patient implements Serializable{
 	public void setPatient_id(Integer patient_id) {
 		this.patient_id = patient_id;
 	}
+
 	
-	public String getName() {
-		return name;
+	public String getNamePatient() {
+		return namePatient;
+	}
+
+
+	public void setNamePatient(String namePatient) {
+		this.namePatient = namePatient;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
-	}
 	
-	public String getEmail() {
-		return email;
+	public String getEmailPatient() {
+		return emailPatient;
 	}
-	
-	public void setEmail(String email) {
-		this.email = email;
+
+
+	public void setEmailPatient(String emailPatient) {
+		this.emailPatient = emailPatient;
 	}
-	
-	public Integer getPhone() {
-		return phone;
+
+
+
+	public Integer getPhonePatient() {
+		return phonePatient;
 	}
-	
-	public void setPhone(Integer phone) {
-		this.phone = phone;
+
+
+	public void setPhonePatient(Integer phonePatient) {
+		this.phonePatient = phonePatient;
 	}
-	
+
+
+
 	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -314,8 +323,8 @@ public class Patient implements Serializable{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + Arrays.hashCode(photo);
-		result = prime * result + Objects.hash(bloodType, cured, dateOfBirth, disease, doctor, email, name, patient_id,
-				phone, reports, trial, trialApplications);
+		result = prime * result + Objects.hash(bloodType, cured, dateOfBirth, disease, doctor, emailPatient, namePatient, patient_id,
+				phonePatient, reports, trial, trialApplications);
 		return result;
 	}
 
@@ -333,9 +342,9 @@ public class Patient implements Serializable{
 		Patient other = (Patient) obj;
 		return Objects.equals(bloodType, other.bloodType) && cured == other.cured
 				&& Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(disease, other.disease)
-				&& Objects.equals(doctor, other.doctor) && Objects.equals(email, other.email)
-				&& Objects.equals(name, other.name) && Objects.equals(patient_id, other.patient_id)
-				&& Objects.equals(phone, other.phone) && Arrays.equals(photo, other.photo)
+				&& Objects.equals(doctor, other.doctor) && Objects.equals(emailPatient, other.emailPatient)
+				&& Objects.equals(namePatient, other.namePatient) && Objects.equals(patient_id, other.patient_id)
+				&& Objects.equals(phonePatient, other.phonePatient) && Arrays.equals(photo, other.photo)
 				&& Objects.equals(reports, other.reports) && Objects.equals(trial, other.trial)
 				&& Objects.equals(trialApplications, other.trialApplications);
 	}
@@ -345,7 +354,7 @@ public class Patient implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Patient [patient_id=" + patient_id + ", email=" + email + ", name=" + name + ", phone=" + phone
+		return "Patient [patient_id=" + patient_id + ", email=" + emailPatient + ", namePatient=" + namePatient + ", phonePatient=" + phonePatient
 				+ ", dateOfBirth=" + dateOfBirth + ", bloodType=" + bloodType + ", disease=" + disease + ", cured="
 				+ cured + ", photo=" + Arrays.toString(photo) + ", reports=" + reports + ", doctor=" + doctor
 				+ ", trial=" + trial + ", trialApplications=" + trialApplications + "]";

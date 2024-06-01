@@ -603,7 +603,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                        applyToCT(u);
 	                        break;
 	                    case "Get the state of request":
-	                        getStateOfRequest();
+	                        getStateOfRequest(email);
 	                        break;
 	                    case "Print patient to xml":
 	                    	printPatientToXML(u);
@@ -815,9 +815,9 @@ public class ClinicalTrialGUI extends JFrame {
 	         
 	        Object[] rowData = {
 	        	patient.getPatient_id(),
-	        	patient.getName(),
-	        	patient.getEmail(),
-	        	patient.getPhone(),
+	        	patient.getNamePatient(),
+	        	patient.getEmailPatient(),
+	        	patient.getPhonePatient(),
 	        	patient.getDateOfBirth().toString(),
 	        	patient.isCured(),
 	        	patient.getBloodType(),
@@ -1038,9 +1038,9 @@ public class ClinicalTrialGUI extends JFrame {
                        for (Patient patient : patients) {
                            Object[] rowData = {
                                patient.getPatient_id(),
-                               patient.getName(),
-                               patient.getEmail(),
-                               patient.getPhone(),
+                               patient.getNamePatient(),
+                               patient.getEmailPatient(),
+                               patient.getPhonePatient(),
                                patient.getDateOfBirth(),
                                patient.isCured(),
                                patient.getBloodType(),
@@ -1081,9 +1081,9 @@ public class ClinicalTrialGUI extends JFrame {
                for (Patient patient : patients) {
                    Object[] rowData = {
                        patient.getPatient_id(),
-                       patient.getName(),
-                       patient.getEmail(),
-                       patient.getPhone(),
+                       patient.getNamePatient(),
+                       patient.getEmailPatient(),
+                       patient.getPhonePatient(),
                        patient.getDateOfBirth(),
                        patient.isCured(),
                        patient.getBloodType(),
@@ -1493,14 +1493,16 @@ public class ClinicalTrialGUI extends JFrame {
 	            int trialId = Integer.parseInt(trialIdField.getText());
 	            InvestigationalProduct invP = doctormanager.chooseInvProductById(doctorId, invProductId, trialId);
 	            
+	            if(invP != null) {
 	            Doctor d = doctormanager.searchDoctorById(doctorId);
 	            
-	            invP.setDoctor(d);
-	            
-	            invProductInfoArea.setText("Investigational product Id: " + invP.getInvProduct_id() + "\n"
-	                    + "Type: " + invP.getType() + "\n"
-	                    + "Description: " + (invP.getDescription() != null ? invP.getDescription() : "--"));
-	            
+	            if(d!=null) {
+		            invP.setDoctor(d);
+		            invProductInfoArea.setText("Investigational product Id: " + invP.getInvProduct_id() + "\n"
+		                    + "Type: " + invP.getType() + "\n"
+		                    + "Description: " + (invP.getDescription() != null ? invP.getDescription() : "--"));
+	            }
+	            }
 	            JOptionPane.showMessageDialog(contentPanel, "Investigational product chosen successfully!");
 	        } catch (NumberFormatException ex) {
 	            JOptionPane.showMessageDialog(contentPanel, "Please enter valid IDs!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1582,20 +1584,18 @@ public class ClinicalTrialGUI extends JFrame {
    }
    
    
-   private void getStateOfRequest() {
+   private void getStateOfRequest(String email) {
 	   contentPanel.removeAll();
 	    JPanel formPanel = new JPanel(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]"));
 
-	    JLabel patientIdLabel = new JLabel("Patient ID:");
-	    JTextField patientIdField = new JTextField(20);
-	    customizeTextField(patientIdField);
 	    JButton getStateButton = new JButton("Get State");
 	    customizeButton(getStateButton);
 
 	    getStateButton.addActionListener(e -> {
 	        try {
-	            int patientId = Integer.parseInt(patientIdField.getText());
-	            boolean state = patientmanager.getStateRequest(patientId);
+	        	Patient patient = patientmanager.searchPatientByEmail(email);
+	            Integer patientId = patient.getPatient_id();
+	            Boolean state = patientmanager.getStateRequest(patientId);
 	            JOptionPane.showMessageDialog(contentPanel, "The state of the request of the patient is: " + state);
 	        } catch (NumberFormatException ex) {
 	            JOptionPane.showMessageDialog(contentPanel, "Please enter a valid patient ID!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1605,8 +1605,6 @@ public class ClinicalTrialGUI extends JFrame {
 	        }
 	    });
 
-	    formPanel.add(patientIdLabel);
-	    formPanel.add(patientIdField);
 	    formPanel.add(getStateButton, "span, align center");
 
 	    contentPanel.add(formPanel, BorderLayout.CENTER);
@@ -2302,145 +2300,182 @@ public class ClinicalTrialGUI extends JFrame {
    
    private void loadDoctor() {
 	   contentPanel.removeAll();
-	   JFrame frame = new JFrame("Doctor Loader");
-       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       frame.setSize(400, 300);
+	    JPanel panel = new JPanel(new MigLayout("wrap 2", "[grow]", "[]20[][]"));
+	    JTextArea textArea = new JTextArea();
+	    textArea.setEditable(false);
+	    JScrollPane scrollPane = new JScrollPane(textArea);
 
-       JPanel panel = new JPanel(new MigLayout("fill"));
-       JTextArea textArea = new JTextArea();
-       textArea.setEditable(false);
-       JScrollPane scrollPane = new JScrollPane(textArea);
+	    JButton loadButton = new JButton("Load Doctor");
+	    customizeButton(loadButton);
+	    loadButton.addActionListener(e -> {
+	        try {
+	            Doctor doctor = null;
+	            File file = new File("./xmls/External-Doctor.xml");
+	            doctor = xmlmanager.xml2Doctor(file);
+	            if (doctor != null) {
+	                String[] columnNames = {"Name", "Email", "Phone", "Specialization", "Patient Name", "Patient Phone", "Patient Blood Type", "Patient Disease", "Patient Cured", "Patient DOB", "Invest Prod Amount", "Invest Prod Description", "Invest Prod Type"};
+	                DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+	                
+	                // Doctor data
+	                Object[] doctorData = {
+	                    doctor.getName(),
+	                    doctor.getEmail(),
+	                    doctor.getPhone(),
+	                    doctor.getSpecialization(),
+	                    "", "", "", "", "", "", "", "", ""
+	                };
+	                model.addRow(doctorData);
+	                
+	                // Patient data
+	                for (Patient patient : doctor.getPatients()) {
+	                    Object[] patientData = {
+	                        "", "", "", "",
+	                        patient.getNamePatient(),
+	                        patient.getPhonePatient(),
+	                        patient.getBloodType(),
+	                        patient.getDisease(),
+	                        patient.isCured(),
+	                        patient.getDateOfBirth(),
+	                        "", "", ""
+	                    };
+	                    model.addRow(patientData);
+	                }
+	                
+	                // Investigational Product data
+	                for (InvestigationalProduct invProd : doctor.getInvestigationalProducts()) {
+	                    Object[] invProdData = {
+	                        "", "", "", "", "", "", "", "", "", "",
+	                        invProd.getAmount(),
+	                        invProd.getDescription(),
+	                        invProd.getType()
+	                    };
+	                    model.addRow(invProdData);
+	                }
+	                
+	                JTable table = new JTable(model);
+	                JScrollPane tableScrollPane = new JScrollPane(table);
 
-       JButton loadButton = new JButton("Load doctor");
-       loadButton.addActionListener(e -> {
-    	   Doctor d = null;  
-   			File file = new File("./xmls/External-Doctor.xml");
-   			d = xmlmanager.xml2Doctor(file);
-           if (d != null) {
-        	   String[] columnNames = {"ID", "Name", "Email", "Phone", "Specialization"}; //column names
-               DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-               Object[] rowData = {
-	    		   d.getDoctor_id(),
-	    		   d.getEmail(),
-	    		   d.getPhone(),
-	    		   d.getSpecialization()
-               };
-               model.addRow(rowData);
+	                panel.removeAll();
+	                panel.add(tableScrollPane, "grow, push, wrap");
+	                panel.add(loadButton, "align center");
+	                panel.revalidate();
+	                panel.repaint();
+	                
+	            } else {
+	                textArea.setText("Failed to load doctor.");
+	            }
+	        } catch (Exception exp) {
+	            exp.printStackTrace();
+	            //fix doesnt work
+	        }
+	    });
 
-               JTable table = new JTable(model);
-               JScrollPane tableScrollPane = new JScrollPane(table);
-               
-               contentPanel.removeAll();
-               contentPanel.add(tableScrollPane, "grow, push, wrap");
-               contentPanel.add(loadButton, "align center");
-               contentPanel.revalidate();
-               contentPanel.repaint();
-           } else {
-               textArea.setText("Failed to load doctor.");
-           }
-       });
-
-       panel.add(scrollPane, "grow, push, wrap");
-       panel.add(loadButton, "align center");
-       contentPanel.add(panel, BorderLayout.CENTER);
-       contentPanel.revalidate();
-       contentPanel.repaint();
+	    panel.add(scrollPane, "grow, push, wrap");
+	    panel.add(loadButton, "align center");
+	    contentPanel.add(panel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
 	}
    
    
    private void loadPatient() {
 	   contentPanel.removeAll();
-	   JFrame frame = new JFrame("Patient Loader");
-       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       frame.setSize(400, 300);
+	    JPanel panel = new JPanel(new MigLayout("wrap 2", "[grow]", "[]20[][]"));
+	    JTextArea textArea = new JTextArea();
+	    textArea.setEditable(false);
+	    JScrollPane scrollPane = new JScrollPane(textArea);
 
-       JPanel panel = new JPanel(new MigLayout("fill"));
-       JTextArea textArea = new JTextArea();
-       textArea.setEditable(false);
-       JScrollPane scrollPane = new JScrollPane(textArea);
+	    JButton loadButton = new JButton("Load Patient");
+	    customizeButton(loadButton);
+	    loadButton.addActionListener(e -> {
+	        try {
+	            Patient patient = null;
+	            File file = new File("./xmls/External-Patient.xml");
+	            patient = xmlmanager.xml2Patient(file);
+	            if (patient != null) {
+	                String[] columnNames = {"ID", "Name", "Email", "Phone", "Date of Birth", "Cured", "Blood Type", "Disease"};
+	                DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+	                Object[] rowData = {
+	                    patient.getPatient_id(),
+	                    patient.getNamePatient(),
+	                    patient.getEmailPatient(),
+	                    patient.getPhonePatient(),
+	                    patient.getDateOfBirth(),
+	                    patient.isCured(),
+	                    patient.getBloodType(),
+	                    patient.getDisease()
+	                };
+	                model.addRow(rowData);
 
-       JButton loadButton = new JButton("Load patient");
-       loadButton.addActionListener(e -> {
-    	   Patient patient = null; 
-   			File file = new File("./xmls/External-Patient.xml");
-   			patient = xmlmanager.xml2Patient(file);
-           if (patient != null) {
-        	   String[] columnNames = {"ID", "Name", "Email", "Phone", "Date of birth", "Cured", "Blood Type", "Name of disease"}; //column names
-               DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-               Object[] rowData = {
-	    		   patient.getPatient_id(),
-	    		   patient.getEmail(),
-	    		   patient.getPhone(),
-	    		   patient.getDateOfBirth(),
-	    		   patient.isCured(),
-	    		   patient.getBloodType(),
-	    		   patient.getDisease()
-               };
-               model.addRow(rowData);
+	                JTable table = new JTable(model);
+	                JScrollPane tableScrollPane = new JScrollPane(table);
 
-               JTable table = new JTable(model);
-               JScrollPane tableScrollPane = new JScrollPane(table);
-               
-               contentPanel.removeAll();
-               contentPanel.add(tableScrollPane, "grow, push, wrap");
-               contentPanel.add(loadButton, "align center");
-               contentPanel.revalidate();
-               contentPanel.repaint();
-           } else {
-               textArea.setText("Failed to load patient.");
-           }
-       });
+	                panel.removeAll();
+	                panel.add(tableScrollPane, "grow, push, wrap");
+	                panel.add(loadButton, "align center");
+	                panel.revalidate();
+	                panel.repaint();
 
-       panel.add(scrollPane, "grow, push, wrap");
-       panel.add(loadButton, "align center");
-       contentPanel.add(panel, BorderLayout.CENTER);
-       contentPanel.revalidate();
-       contentPanel.repaint();
+	            } else {
+	                textArea.setText("Failed to load patient.");
+	            }
+	        } catch (Exception exp) {
+	            exp.printStackTrace();
+	        }
+	    });
+
+	    panel.add(scrollPane, "grow, push, wrap");
+	    panel.add(loadButton, "align center");
+	    contentPanel.add(panel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
 	}
    
    
    private void loadSponsor() {
-	   contentPanel.removeAll();
-       JPanel panel = new JPanel(new MigLayout("fill"));
-       JTextArea textArea = new JTextArea();
-       textArea.setEditable(false);
-       JScrollPane scrollPane = new JScrollPane(textArea);
+	    contentPanel.removeAll();
+	    JPanel panel = new JPanel(new MigLayout("wrap 2", "[grow]", "[]20[][]"));
+	    JTextArea textArea = new JTextArea();
+	    textArea.setEditable(false);
+	    JScrollPane scrollPane = new JScrollPane(textArea);
 
-       JButton loadButton = new JButton("Load sponsor");
-       loadButton.addActionListener(e -> {
-    	   Sponsor s = null; 
-   			File file = new File("./xmls/External-Sponsor.xml");
-   			s = xmlmanager.xml2Sponsor(file);
-   			if (s != null) {
-	        	   String[] columnNames = {"Sponsor ID", "Name", "Email", "Phone", "Card Number"};
-	                DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-	                Object[] rowData = {
-	                    s.getSponsor_id(),
-	                    s.getName(),
-	                    s.getEmail(),
-	                    s.getPhone(),
-	                    s.getCardNumber()
-	                };
-	                model.addRow(rowData);
-	                
-	                JTable table = new JTable(model);
-	                JScrollPane tableScrollPane = new JScrollPane(table);
+	    JButton loadButton = new JButton("Load sponsor");
+	    customizeButton(loadButton);
 
-	                contentPanel.removeAll();
-	                contentPanel.add(tableScrollPane, "grow, push, wrap");
-	                contentPanel.add(loadButton, "align center");
-	                contentPanel.revalidate();
-	                contentPanel.repaint();
-           } else {
-               textArea.setText("Failed to load sponsor.");
-           }
-       });
+	    loadButton.addActionListener(e -> {
+	        Sponsor s = null;
+	        File file = new File("./xmls/External-Sponsor.xml");
+	        s = xmlmanager.xml2Sponsor(file);
+	        if (s != null) {
+	            String[] columnNames = {"Name", "Email", "Phone", "Card number"};
+	            DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+	            Object[] rowData = {
+	                s.getName(),
+	                s.getEmail(),
+	                s.getPhone(),
+	                s.getCardNumber()
+	            };
+	            model.addRow(rowData);
 
-       panel.add(scrollPane, "grow, push, wrap");
-       panel.add(loadButton, "align center");
-       contentPanel.add(panel, BorderLayout.CENTER);
-       contentPanel.revalidate();
-       contentPanel.repaint();
+	            JTable table = new JTable(model);
+	            JScrollPane tableScrollPane = new JScrollPane(table);
+
+	            contentPanel.removeAll();
+	            contentPanel.setLayout(new MigLayout("wrap 1", "[grow]", "[]20[]"));
+	            contentPanel.add(tableScrollPane, "grow, push, wrap");
+	            contentPanel.add(loadButton, "align center"); // Aligning the button to the center
+	            contentPanel.revalidate();
+	            contentPanel.repaint();
+	        } else {
+	            textArea.setText("Failed to load sponsor.");
+	        }
+	    });
+
+	    panel.add(scrollPane, "grow, push, wrap");
+	    panel.add(loadButton, "align center"); // Aligning the button to the center
+	    contentPanel.add(panel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
 	}
  
   

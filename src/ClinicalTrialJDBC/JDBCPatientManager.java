@@ -33,9 +33,9 @@ public class JDBCPatientManager implements PatientManager{
 					+ "VALUES (?,?,?,?,?,?,?)";
 			
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-			prep.setString(1, patient.getName());
-			prep.setInt(2, patient.getPhone());
-			prep.setString(3, patient.getEmail());
+			prep.setString(1, patient.getNamePatient());
+			prep.setInt(2, patient.getPhonePatient());
+			prep.setString(3, patient.getEmailPatient());
 			prep.setDate(4, patient.getDateOfBirth());
 			prep.setBoolean(5, patient.isCured());
 			prep.setString(6, patient.getBloodType());
@@ -57,8 +57,16 @@ public class JDBCPatientManager implements PatientManager{
 		boolean stateRequest = false;
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT approved FROM trialApplication WHERE patient_id=" + patient_id;
-			ResultSet rs = stmt.executeQuery(sql);
+			String sql1 = "SELECT trialApplication_id FROM patient WHERE id=" + patient_id;
+			ResultSet rs = stmt.executeQuery(sql1);
+			
+			Integer trialAppId = null;
+			if(rs.next()) {
+				trialAppId = rs.getInt("trialApplication_id");
+			}
+			
+			String sql = "SELECT approved FROM trialApplication WHERE id=" + trialAppId;
+			rs = stmt.executeQuery(sql);
 			
 			while(rs.next()){
 				stateRequest = rs.getBoolean("approved");

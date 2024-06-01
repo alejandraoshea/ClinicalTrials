@@ -200,7 +200,7 @@ public class XMLManagerImpl implements XMLManager{
 			JAXBContext jaxbContext = JAXBContext.newInstance(Sponsor.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
 			
-			File file = new File("Sponsor.xml");
+			File file = new File("./xmls/Sponsor.xml");
 			marshaller.marshal(sponsor, file);
 		
 		}catch(Exception e) {
