@@ -141,18 +141,16 @@ public class JDBCEngineerManager implements EngineerManager{
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM engineer WHERE id=?"+engineer_id;
+			String sql = "SELECT * FROM engineer WHERE id=" + engineer_id;
 			ResultSet rs = stmt.executeQuery(sql);
 			
-			
-			Integer doctor_id = rs.getInt("id");
-			String name = rs.getString("name");
-			String email = rs.getString("email");
-			Integer phone = rs.getInt("phone");
-			String specialization = rs.getString("specialization");
-			
-		    engineer = new Engineer (engineer_id, name, email, phone);
-		    
+			if(rs.next()) {
+				Integer eng_id = rs.getInt("id");
+				String name = rs.getString("name");
+				String email = rs.getString("email");
+				Integer phone = rs.getInt("phone");
+			    engineer = new Engineer (eng_id, name, email, phone);
+			}
 		    rs.close();
 		    stmt.close();
 			
@@ -198,7 +196,7 @@ public class JDBCEngineerManager implements EngineerManager{
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM investigationalProduct WHERE engineer_id=?"+engineer_id;
+			String sql = "SELECT * FROM investigationalProduct WHERE engineer_id=" + engineer_id;
 			ResultSet rs = stmt.executeQuery(sql);
 			
 			while(rs.next()) {
@@ -207,7 +205,7 @@ public class JDBCEngineerManager implements EngineerManager{
 				String type = rs.getString("type");
 				Integer amountMoney = rs.getInt("amountMoney");
 			
-				InvestigationalProduct invP = new InvestigationalProduct(amountMoney, description, type);
+				InvestigationalProduct invP = new InvestigationalProduct(id, amountMoney, description, type);
 				invPr.add(invP);
 			}
 			
@@ -226,7 +224,7 @@ public class JDBCEngineerManager implements EngineerManager{
 	public Engineer searchEngineerByEmail(String email) {
 		// TODO Auto-generated method stub
 		Engineer eng = null;  
-		
+		System.out.println(email);
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
@@ -234,13 +232,14 @@ public class JDBCEngineerManager implements EngineerManager{
 		
 			ResultSet rs = stmt.executeQuery(sql);
 			
-			Integer id = rs.getInt("id");
-			String name = rs.getString("name");
-			String mail = rs.getString("email");
-			Integer phone = rs.getInt("phone");			
-			
-		    eng = new Engineer (id, name, mail, phone);
-		    
+			if(rs.next()) {
+				Integer id = rs.getInt("id");
+				String name = rs.getString("name");
+				Integer phone = rs.getInt("phone");	
+				String mail = rs.getString("email");
+				
+			    eng = new Engineer (id, name, mail, phone);
+			}
 		    rs.close();
 		    stmt.close();
 		    

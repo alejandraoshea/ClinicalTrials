@@ -164,6 +164,8 @@ public class InvestigationalProduct implements Serializable{
 		this.doctor = doctor;
 	}
 
+	
+	
 
 
 	@Override

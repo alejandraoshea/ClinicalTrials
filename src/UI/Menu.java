@@ -409,6 +409,7 @@ private static void updatePassword() throws Exception {
 	
 	private static void printMeAdmin(Integer id) {
 		xmlmanager.admin2xml(id);
+		 xmlmanager.simpleTransform("./xmls/Admin.xml", "./xmls/admin-style.xslt", "./xmls/admin.html");
 	}
 	
 	
@@ -647,6 +648,7 @@ private static void updatePassword() throws Exception {
 	
 	private static void printMeDoctor(Integer id) {
 		xmlmanager.doctor2xml(id);
+		xmlmanager.simpleTransform("./xmls/Doctor.xml", "./xmls/doctor-style.xslt", "./xmls/doctor.html");
 	}
 	
 	
@@ -762,6 +764,7 @@ private static void updatePassword() throws Exception {
 		
 		private static void printMePatient(Integer id) {
 			xmlmanager.patient2xml(id);
+			xmlmanager.simpleTransform("./xmls/Patient.xml", "./xmls/patient-style.xslt", "./xmls/patient.html");
 		}
 		
 
@@ -787,8 +790,9 @@ private static void updatePassword() throws Exception {
 					System.out.println("4. Create an investment.");
 					System.out.println("5. Update an investment.");
 					System.out.println("6. Print all the reports of a trial.");
-					System.out.println("7. Print me to xml.");
-					System.out.println("8. Load from xml.");
+					System.out.println("7. Show the success rates of the trials");
+					System.out.println("8. Print me to xml.");
+					System.out.println("9. Load from xml.");
 					System.out.println("0. Return.\n");	
 						
 					choice = Integer.parseInt(reader.readLine());
@@ -816,12 +820,16 @@ private static void updatePassword() throws Exception {
 					case 6:
 						getListReportsOfPatient();
 						break;
-						
+
 					case 7:
+						printAllSuccessRates();
+						break;	
+						
+					case 8:
 						printMeSponsor(id);
 						break;
 						
-					case 8:
+					case 9:
 						loadSponsor();
 						break;
 						
@@ -929,6 +937,7 @@ private static void updatePassword() throws Exception {
 		
 		private static void printMeSponsor(Integer id) {
 			xmlmanager.sponsor2xml(id);
+			xmlmanager.simpleTransform("./xmls/Sponsor.xml", "./xmls/sponsor-style.xslt", "./xmls/sponsor.html");
 		}
 		
 
@@ -1072,6 +1081,7 @@ private static void updatePassword() throws Exception {
 	    
 	    private static void printMeEngineer(Integer id) {
 			xmlmanager.engineer2xml(id);
+			xmlmanager.simpleTransform("./xmls/Engineer.xml", "./xmls/engineer-style.xslt", "./xmls/engineer.html");
 		}
 		
 

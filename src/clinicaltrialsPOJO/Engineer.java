@@ -34,7 +34,7 @@ public class Engineer implements Serializable{
 	private Integer phone;
 	@XmlElementWrapper(name = "investigationalProducts")
 	@XmlElement(name = "investigationalProduct")
-	private List<InvestigationalProduct> investigationalProduct;
+	private List<InvestigationalProduct> investigationalProducts;
 	
 	
 	
@@ -42,7 +42,7 @@ public class Engineer implements Serializable{
 	
 	public Engineer() {
 		super();
-		this.investigationalProduct = new ArrayList<InvestigationalProduct>();
+		this.investigationalProducts = new ArrayList<InvestigationalProduct>();
 	}
 
 
@@ -53,7 +53,7 @@ public class Engineer implements Serializable{
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
-		this.investigationalProduct = new ArrayList<InvestigationalProduct>();
+		this.investigationalProducts = new ArrayList<InvestigationalProduct>();
 	}
 	
 	
@@ -63,7 +63,7 @@ public class Engineer implements Serializable{
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
-		this.investigationalProduct = new ArrayList<InvestigationalProduct>();
+		this.investigationalProducts = new ArrayList<InvestigationalProduct>();
 	}
 
 
@@ -101,19 +101,19 @@ public class Engineer implements Serializable{
 		this.phone = phone;
 	}
 	
-	public List<InvestigationalProduct> getInvestigationalProduct() {
-		return investigationalProduct;
+	public List<InvestigationalProduct> getInvestigationalProducts() {
+		return investigationalProducts;
 	}
 
 
-	public void setInvestigationalProduct(List<InvestigationalProduct> investigationalProduct) {
-		this.investigationalProduct = investigationalProduct;
+	public void setInvestigationalProducts(List<InvestigationalProduct> investigationalProduct) {
+		this.investigationalProducts = investigationalProduct;
 	}
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, engineer_id, investigationalProduct, name, phone);
+		return Objects.hash(email, engineer_id, investigationalProducts, name, phone);
 	}
 
 
@@ -127,7 +127,7 @@ public class Engineer implements Serializable{
 			return false;
 		Engineer other = (Engineer) obj;
 		return Objects.equals(email, other.email) && Objects.equals(engineer_id, other.engineer_id)
-				&& Objects.equals(investigationalProduct, other.investigationalProduct)
+				&& Objects.equals(investigationalProducts, other.investigationalProducts)
 				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone);
 	}
 
@@ -135,7 +135,7 @@ public class Engineer implements Serializable{
 	@Override
 	public String toString() {
 		return "Engineer [engineer_id=" + engineer_id + ", name=" + name + ", email=" + email + ", phone=" + phone
-				+ ", investigationalProduct=" + investigationalProduct + "]";
+				+ ", investigationalProduct=" + investigationalProducts + "]";
 	}
 		
 }

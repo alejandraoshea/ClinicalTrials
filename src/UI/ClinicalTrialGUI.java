@@ -496,7 +496,7 @@ public class ClinicalTrialGUI extends JFrame {
            case "sponsor":
            	buttons = new JButton[]{new JButton("Add a new sponsor"), new JButton("Show all Clinical Trials"),
                  		 new JButton("Create an investment"),
-                 		new JButton("Update an investment"), new JButton("Show all reports of patient"),
+                 		new JButton("Update an investment"), new JButton("Show all reports of patient"), new JButton("Show Success Rates"),
                  		 new JButton("Print sponsor to xml"), new JButton("Load sponsor from xml")};
                break;
               
@@ -2229,7 +2229,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    	String email = u.getEmail();
 	    	Engineer eng = engineermanager.searchEngineerByEmail(email);
 	    	Integer id = eng.getEngineer_id();
-	        xmlmanager.sponsor2xml(id);
+	        xmlmanager.engineer2xml(id);
 	        xmlmanager.simpleTransform("./xmls/Engineer.xml", "./xmls/engineer-style.xslt", "./xmls/engineer.html");
 	        JOptionPane.showMessageDialog(contentPanel, "Engineer data printed to XML successfully!");
 	    } catch (Exception ex) {
@@ -2510,48 +2510,70 @@ public class ClinicalTrialGUI extends JFrame {
  
   
    private void loadEngineer() {
-	   contentPanel.removeAll();
-	   JPanel panel = new JPanel(new MigLayout("fill"));
-       JTextArea textArea = new JTextArea();
-       textArea.setEditable(false);
-       JScrollPane scrollPane = new JScrollPane(textArea);
+	    contentPanel.removeAll();
+	    JPanel panel = new JPanel(new MigLayout("wrap 2", "[grow]", "[]20[][]"));
+	    JTextArea textArea = new JTextArea();
+	    textArea.setEditable(false);
+	    JScrollPane scrollPane = new JScrollPane(textArea);
 
-       JButton loadButton = new JButton("Load Engineer");
-       loadButton.addActionListener(e -> {
-    	   Engineer engineer = null;
-   			File file = new File("./xmls/External-Engineer.xml");
-   			engineer = xmlmanager.xml2Engineer(file);
-   			if (engineer != null) {
-        	   String[] columnNames = {"Engineer ID", "Name", "Email", "Phone"};
-               DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-               Object[] rowData = {
-                   engineer.getEngineer_id(),
-                   engineer.getName(),
-                   engineer.getEmail(),
-                   engineer.getPhone()
-               };
-               model.addRow(rowData);
+	    JButton loadButton = new JButton("Load Engineer");
+	    customizeButton(loadButton);
+	    
+	    loadButton.addActionListener(e -> {
+	        try {
+	            Engineer engineer = null;
+	            File file = new File("./xmls/External-Engineer.xml");
+	            engineer = xmlmanager.xml2Engineer(file);
+	            if (engineer != null) {
+	                String[] columnNames = {"Name", "Email", "Phone", "Inv Product amount",
+	                		"Inv Product description",
+	                		"Inv Product type"};
+	                DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+	                
+	                Object[] engineerData = {
+	                    engineer.getName(),
+	                    engineer.getEmail(),
+	                    engineer.getPhone(),
+	                    "", "", "" 
+	                };
+	                model.addRow(engineerData);
 
-               JTable table = new JTable(model);
-               JScrollPane tableScrollPane = new JScrollPane(table);
-               
-               contentPanel.removeAll();
-               contentPanel.add(tableScrollPane, "grow, push, wrap");
-               contentPanel.add(loadButton, "align center");
-               contentPanel.revalidate();
-               contentPanel.repaint();
-           } else {
-               textArea.setText("Failed to load Engineer.");
-           }
-       });
+	                List<InvestigationalProduct> invProducts = engineer.getInvestigationalProducts();
+	                
+	                for (InvestigationalProduct invProd : invProducts) {
+	                    Object[] invProdData = {
+	                        "", "", "",
+	                        invProd.getAmount(),
+	                        invProd.getDescription(),
+	                        invProd.getType()
+	                    };
+	                    model.addRow(invProdData);
+	                }
 
-       panel.add(scrollPane, "grow, push, wrap");
-       panel.add(loadButton, "align center");
-       contentPanel.add(panel, BorderLayout.CENTER);
-       contentPanel.revalidate();
-       contentPanel.repaint();
+	                JTable table = new JTable(model);
+	                JScrollPane tableScrollPane = new JScrollPane(table);
+
+	                panel.removeAll();
+	                panel.add(tableScrollPane, "grow, push, wrap");
+	                panel.add(loadButton, "align center");
+	                panel.revalidate();
+	                panel.repaint();
+	                
+	            } else {
+	                textArea.setText("Failed to load Engineer.");
+	            }
+	        } catch (Exception exp) {
+	            exp.printStackTrace();
+	        }
+	    });
+
+	    panel.add(scrollPane, "grow, push, wrap");
+	    panel.add(loadButton, "align center");
+	    contentPanel.add(panel, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
 	}
-   
+
   
   
    public static void main(String[] args) {

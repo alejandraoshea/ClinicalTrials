@@ -334,5 +334,27 @@ public class JDBCDoctorManager implements DoctorManager{
 		return patients;
 	}
 
+
+	@Override
+	public Integer searchDoctorIDByIdPatient(Integer patientId) {
+		// TODO Auto-generated method stub
+		Integer doctorId = null;
+		
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT doctor_id FROM patient WHERE id=" + patientId;
+		
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			if(rs.next()) {
+				doctorId = rs.getInt("doctor_id");
+			}
+		    rs.close();
+		    stmt.close();
+		    
+		}catch(Exception e) {e.printStackTrace();}
+		return doctorId;
+	}
 	
 }

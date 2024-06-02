@@ -4,22 +4,30 @@
 <!DOCTYPE Engineer [ 
 <!ELEMENT Engineer (name, phone, investigationalProducts)> 
 	<!ATTLIST Engineer email CDATA #REQUIRED> 
-	<!ELEMENT name (#PCDATA)> 
-	<!ELEMENT phone (#PCDATA)> 
-	<!ELEMENT investigationalProducts (investigationalProduct+)>
-	<!ELEMENT investigationalProduct (#PCDATA)>
+		<!ELEMENT name (#PCDATA)> 
+		<!ELEMENT phone (#PCDATA)> 
+		<!ELEMENT investigationalProducts (investigationalProduct*)>
+		<!ELEMENT investigationalProduct (amount, description, type)>
 		<!ELEMENT amount (#PCDATA)> 
 		<!ELEMENT description (#PCDATA)> 
 		<!ELEMENT type (#PCDATA)> 
 ]>
 
-<Engineer email = "willsmith@gmail.com"> 
-  <name>Will</name>
-  <phone>612345678</phone>
-  <investigationalProducts> 
-  	<investigationalProduct>drug</investigationalProduct>
-  	<investigationalProduct>machine</investigationalProduct>
-  </investigationalProducts>
+<Engineer email = "phoenix@gmail.com"> 
+	<name>Phoenix</name>
+	<phone>600111115</phone>
+	<investigationalProducts> 
+		<investigationalProduct>
+			<amount>1000</amount>
+        	<description>Advanced surgical machine</description>
+        	<type>machine</type>
+		</investigationalProduct>
+        <investigationalProduct>
+            <amount>1020</amount>
+            <description>New drug for cure alzheimer</description>
+            <type>drug</type>
+        </investigationalProduct>
+	</investigationalProducts>
 </Engineer>
 
 

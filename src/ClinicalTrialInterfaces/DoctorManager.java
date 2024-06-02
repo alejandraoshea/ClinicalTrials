@@ -18,6 +18,7 @@ public interface DoctorManager {
 	public List<InvestigationalProduct> getlistInvProd(); 
 	public InvestigationalProduct chooseInvProductById(Integer investigationalProduct_id,Integer doctor_id, Integer trial_id);
 	public Doctor searchDoctorById(Integer doctor_id);
+	public Integer searchDoctorIDByIdPatient(Integer patientId);
 	public Doctor searchDoctorByEmail(String email);
 	public void updateCuredState(Integer patient_id, Boolean newCured);
 	public List<Patient> getListOfMyPatients(Integer id);

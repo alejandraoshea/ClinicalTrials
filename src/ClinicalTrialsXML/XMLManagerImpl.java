@@ -57,12 +57,12 @@ public class XMLManagerImpl implements XMLManager{
 	public void doctor2xml(Integer id) {
 		// TODO Auto-generated method stub
 		Doctor doctor = null;
-		List<Patient> patients = new ArrayList<Patient>();
+		List<InvestigationalProduct> invPr = new ArrayList<InvestigationalProduct>();
 		
 		try {
 			doctor = doctormanager.searchDoctorById(id);
-			//search for the patients of the doctor
-			patients = adminmanager.getPatients();
+			invPr = doctormanager.getlistInvProd();
+			doctor.setInvestigationalProducts(invPr);
 					
 			JAXBContext jaxbContext = JAXBContext.newInstance(Doctor.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
@@ -147,9 +147,20 @@ public class XMLManagerImpl implements XMLManager{
 	public void patient2xml(Integer id) {
 		// TODO Auto-generated method stub
 		Patient patient = null;
+		Doctor doctor = null; 
+		List<InvestigationalProduct> invPr = new ArrayList<InvestigationalProduct>();
 		
 		try {
 			patient = patientmanager.searchPatientById(id);
+			
+			Integer doctorId = doctormanager.searchDoctorIDByIdPatient(id);
+			doctor = doctormanager.searchDoctorById(doctorId);
+			
+			invPr = doctormanager.getlistInvProd();
+			doctor.setInvestigationalProducts(invPr);
+			
+			patient.setDoctor(doctor);
+			
 			
 			JAXBContext jaxbContext = JAXBContext.newInstance(Patient.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
@@ -229,13 +240,13 @@ public class XMLManagerImpl implements XMLManager{
 	public void engineer2xml(Integer id) {
 		// TODO Auto-generated method stub
 		Engineer engineer = null;
-	    List<InvestigationalProduct> invPr = new ArrayList<InvestigationalProduct>();
+	    List<InvestigationalProduct> invPr = new ArrayList<>();
 	    
 	    try {
-	        
+	    	engineer = engineermanager.searchEngineerById(id);
 	    	invPr = engineermanager.getListInvPrOfEngineer(id);
-			engineer = engineermanager.searchEngineerById(id);
-			engineer.getInvestigationalProduct().addAll(invPr);
+			engineer.setInvestigationalProducts(invPr);
+			
 	        
 	        JAXBContext jaxbContext = JAXBContext.newInstance(Engineer.class);
 	        Marshaller marshaller = jaxbContext.createMarshaller();
@@ -278,11 +289,8 @@ public class XMLManagerImpl implements XMLManager{
 	public void simpleTransform(String sourcePath, String xsltPath,String resultDir) {
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		try {
-			File xmlFile = new File(sourcePath);
-			File xsltFile = new File(xsltPath);
-			Transformer transformer = tFactory.newTransformer(new StreamSource(xsltFile));
-			File resultDirFile = new File(resultDir);
-			transformer.transform(new StreamSource(xmlFile),new StreamResult(resultDirFile));
+			Transformer transformer = tFactory.newTransformer(new StreamSource(new File(xsltPath)));
+			transformer.transform(new StreamSource(new File(sourcePath)),new StreamResult(new File(resultDir)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
