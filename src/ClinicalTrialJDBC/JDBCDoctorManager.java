@@ -269,14 +269,15 @@ public class JDBCDoctorManager implements DoctorManager{
 		
 			ResultSet rs = stmt.executeQuery(sql);
 			
-			Integer id = rs.getInt("id");
-			String name = rs.getString("name");
-			String mail = rs.getString("email");
-			Integer phone = rs.getInt("phone");
-			String specialization = rs.getString("specialization");
-			
-		    doctor = new Doctor (id, name, mail, phone, specialization);
-		    
+			if(rs.next()) {
+				Integer id = rs.getInt("id");
+				String name = rs.getString("name");
+				String mail = rs.getString("email");
+				Integer phone = rs.getInt("phone");
+				String specialization = rs.getString("specialization");
+				
+			    doctor = new Doctor (id, name, mail, phone, specialization);
+			}
 		    rs.close();
 		    stmt.close();
 		    

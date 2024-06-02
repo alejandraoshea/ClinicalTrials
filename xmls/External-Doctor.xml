@@ -1,46 +1,32 @@
 <?xml version = "1.0" encoding = "UTF-8" standalone = "yes"?>
 
 <!DOCTYPE Doctor [ 
-<!ELEMENT Doctor (name, phone, specialization, patients, investigationalProducts)> 
-    <!ATTLIST Doctor email CDATA #REQUIRED> 
-    <!ELEMENT name (#PCDATA)> 
-    <!ELEMENT phone (#PCDATA)> 
-    <!ELEMENT specialization (#PCDATA)> 
-    <!ELEMENT patients (patient*)> 
-    <!ELEMENT patient (namePatient, phonePatient, bloodType, disease, cured, dateOfBirth)> 
-        <!ATTLIST patient emailPatient CDATA #REQUIRED>
-        <!ELEMENT namePatient (#PCDATA)> 
-        <!ELEMENT phonePatient (#PCDATA)> 
-        <!ELEMENT bloodType (#PCDATA)> 
-        <!ELEMENT disease (#PCDATA)> 
-        <!ELEMENT cured (#PCDATA)> 
-        <!ELEMENT dateOfBirth (#PCDATA)> 
-    <!ELEMENT investigationalProducts (investigationalProduct*)> 
-    <!ELEMENT investigationalProduct (amount, description, type)> 
-        <!ELEMENT amount (#PCDATA)> 
-        <!ELEMENT description (#PCDATA)> 
-        <!ELEMENT type (#PCDATA)> 
+<!ELEMENT Doctor (name, phone, specialization, investigationalProducts)> 
+	<!ATTLIST Doctor email CDATA #REQUIRED> 
+    	<!ELEMENT name (#PCDATA)> 
+    	<!ELEMENT phone (#PCDATA)> 
+    	<!ELEMENT specialization (#PCDATA)> 
+    	<!ELEMENT investigationalProducts (investigationalProduct*)> 
+    	<!ELEMENT investigationalProduct (amount, description, type)> 
+        	<!ELEMENT amount (#PCDATA)> 
+        	<!ELEMENT description (#PCDATA)> 
+        	<!ELEMENT type (#PCDATA)> 
 ]>
 
-<Doctor email="juangarcia@gmail.com"> 
-    <name>Juan</name>
-    <phone>612345678</phone>
-    <specialization>Surgeon</specialization>
-    <patients>
-        <patient emailPatient ="patricia@gmail.com">
-            <namePatient>John Doe</namePatient>
-            <phonePatient>123456789</phonePatient>
-            <bloodType>O+</bloodType>
-            <disease>Flu</disease>
-            <cured>true</cured>
-            <dateOfBirth>1985-05-15</dateOfBirth>
-        </patient>
-    </patients>
+<Doctor email="anafdez@gmail.com"> 
+    <name>Ana</name>
+    <phone>610000002</phone>
+    <specialization>neurosurgeon</specialization>
     <investigationalProducts> 
         <investigationalProduct>
-            <amount>5</amount>
+            <amount>1000</amount>
             <description>Advanced surgical machine</description>
-            <type>Machine</type>
+            <type>machine</type>
+        </investigationalProduct>
+        <investigationalProduct>
+            <amount>1020</amount>
+            <description>New drug for cure alzheimer</description>
+            <type>drug</type>
         </investigationalProduct>
     </investigationalProducts>
 </Doctor>

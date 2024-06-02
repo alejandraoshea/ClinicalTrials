@@ -22,7 +22,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Patient")
-@XmlType(propOrder = {"namePatient", "phonePatient",  "bloodType", "disease", "cured","dateOfBirth"})
+@XmlType(propOrder = {"namePatient", "phonePatient",  "bloodType", "disease", "cured","dateOfBirth", "doctor"})
 
 public class Patient implements Serializable{
 	/**
@@ -39,6 +39,7 @@ public class Patient implements Serializable{
 	@XmlElement
 	private Integer phonePatient;
 	@XmlElement
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date dateOfBirth; 
 	@XmlElement
 	private String bloodType;
@@ -50,7 +51,7 @@ public class Patient implements Serializable{
 	private byte[] photo;
 	@XmlTransient
 	private List<Reports> reports;
-	@XmlTransient
+	@XmlElement
 	private Doctor doctor;  //1 to N relation
 	@XmlTransient
 	private Trial trial; //1 to N relation

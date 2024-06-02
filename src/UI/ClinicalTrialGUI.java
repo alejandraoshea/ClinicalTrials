@@ -71,7 +71,7 @@ public class ClinicalTrialGUI extends JFrame {
        sponsormanager = new JDBCSponsorManager(jdbcmanager);
        engineermanager = new JDBCEngineerManager(jdbcmanager);
        usermanager = new JPAUserManager();
-       xmlmanager = new XMLManagerImpl();
+       xmlmanager = new XMLManagerImpl(jdbcmanager);
       
        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        this.setTitle("Clinical Trial Database");
@@ -2168,6 +2168,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    	Administrator admin = adminmanager.searchAdminByEmail(email);
 	    	Integer id = admin.getAdmin_id();
 	        xmlmanager.admin2xml(id);
+	        xmlmanager.simpleTransform("./xmls/Admin.xml", "./xmls/admin-style.xslt", "./xmls/admin.html");
 	        JOptionPane.showMessageDialog(contentPanel, "Administrator data printed to XML successfully!");
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
@@ -2181,6 +2182,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    	Doctor d = doctormanager.searchDoctorByEmail(email);
 	    	Integer id = d.getDoctor_id();
 	        xmlmanager.doctor2xml(id);
+	        xmlmanager.simpleTransform("./xmls/Doctor.xml", "./xmls/doctor-style.xslt", "./xmls/doctor.html");
 	        JOptionPane.showMessageDialog(contentPanel, "Doctor data printed to XML successfully!");
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
@@ -2196,6 +2198,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    	Patient p = patientmanager.searchPatientByEmail(email);
 	    	Integer id = p.getPatient_id();
 	        xmlmanager.patient2xml(id);
+	        xmlmanager.simpleTransform("./xmls/Patient.xml", "./xmls/patient-style.xslt", "./xmls/patient.html");
 	        JOptionPane.showMessageDialog(contentPanel, "Patient data printed to XML successfully!");
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
@@ -2211,6 +2214,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    	Sponsor s = sponsormanager.searchSponsorByEmail(email);
 	    	Integer id = s.getSponsor_id();
 	        xmlmanager.sponsor2xml(id);
+	        xmlmanager.simpleTransform("./xmls/Sponsor.xml", "./xmls/sponsor-style.xslt", "./xmls/sponsor.html");
 	        JOptionPane.showMessageDialog(contentPanel, "Sponsor data printed to XML successfully!");
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
@@ -2226,6 +2230,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    	Engineer eng = engineermanager.searchEngineerByEmail(email);
 	    	Integer id = eng.getEngineer_id();
 	        xmlmanager.sponsor2xml(id);
+	        xmlmanager.simpleTransform("./xmls/Engineer.xml", "./xmls/engineer-style.xslt", "./xmls/engineer.html");
 	        JOptionPane.showMessageDialog(contentPanel, "Engineer data printed to XML successfully!");
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
@@ -2392,20 +2397,45 @@ public class ClinicalTrialGUI extends JFrame {
 	            Patient patient = null;
 	            File file = new File("./xmls/External-Patient.xml");
 	            patient = xmlmanager.xml2Patient(file);
+	            Patient p = patientmanager.searchPatientByEmail(patient.getEmailPatient());
+	            
+	            Doctor d = patient.getDoctor();
+				
 	            if (patient != null) {
-	                String[] columnNames = {"ID", "Name", "Email", "Phone", "Date of Birth", "Cured", "Blood Type", "Disease"};
+	            	String[] columnNames = {"Entity", "Name", "Email", "Phone", "Date of Birth", "Cured", "Blood Type", "Disease", "Specialization", "Amount", "Description", "Type"};
 	                DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-	                Object[] rowData = {
-	                    patient.getPatient_id(),
+
+	                // Patient details
+	                Object[] patientRowData = {
+	                    "Patient",
 	                    patient.getNamePatient(),
 	                    patient.getEmailPatient(),
 	                    patient.getPhonePatient(),
 	                    patient.getDateOfBirth(),
 	                    patient.isCured(),
 	                    patient.getBloodType(),
-	                    patient.getDisease()
+	                    patient.getDisease(),
+	                    "", "", "", ""
 	                };
-	                model.addRow(rowData);
+	                model.addRow(patientRowData);
+	                
+	                
+	                Object[] doctorRowData = {
+	                    "Doctor",
+	                    d.getName(),
+	                    d.getEmail(),
+	                    d.getPhone(),
+	                    "", "", "", "", d.getSpecialization(), "", "", ""
+	                };
+	                model.addRow(doctorRowData);
+
+	                for (InvestigationalProduct product : d.getInvestigationalProducts()) {
+	                    Object[] productRowData = {
+	                        "Product",
+	                        "", "", "", "", "", "", "", "", product.getAmount(), product.getDescription(), product.getType()
+	                    };
+	                    model.addRow(productRowData);
+	                }
 
 	                JTable table = new JTable(model);
 	                JScrollPane tableScrollPane = new JScrollPane(table);
@@ -2415,7 +2445,6 @@ public class ClinicalTrialGUI extends JFrame {
 	                panel.add(loadButton, "align center");
 	                panel.revalidate();
 	                panel.repaint();
-
 	            } else {
 	                textArea.setText("Failed to load patient.");
 	            }
@@ -2424,6 +2453,7 @@ public class ClinicalTrialGUI extends JFrame {
 	        }
 	    });
 
+	    
 	    panel.add(scrollPane, "grow, push, wrap");
 	    panel.add(loadButton, "align center");
 	    contentPanel.add(panel, BorderLayout.CENTER);

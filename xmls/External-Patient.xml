@@ -3,44 +3,45 @@
 
 <!DOCTYPE Patient [ 
 
-<!ELEMENT Patient (name, phone, bloodType, disease, cured, doctor, dateOfBirth)> 
-      <!ATTLIST Patient email CDATA #REQUIRED> 
-          <!ELEMENT name (#PCDATA)> 
-          <!ELEMENT phone (#PCDATA)> 
-          <!ELEMENT bloodType (#PCDATA)> 
-          <!ELEMENT disease (#PCDATA)> 
-          <!ELEMENT cured (#PCDATA)> 
-          <!ELEMENT doctor (name, phone, specialization, patients, investigationalProducts)> 
-          <!ELEMENT dateOfBirth (#PCDATA)> 
+<!ELEMENT Patient (namePatient, phonePatient, bloodType, disease, cured, dateOfBirth, doctor?)> 
+	<!ATTLIST Patient emailPatient CDATA #REQUIRED> 
+		<!ELEMENT namePatient (#PCDATA)> 
+    	<!ELEMENT phonePatient (#PCDATA)> 
+    	<!ELEMENT bloodType (#PCDATA)> 
+    	<!ELEMENT disease (#PCDATA)> 
+    	<!ELEMENT cured (#PCDATA)> 
+    	<!ELEMENT dateOfBirth (#PCDATA)> 
+    
+		<!ELEMENT doctor (name, phone, specialization, investigationalProducts*)> 
+		<!ATTLIST doctor email CDATA #REQUIRED> 
+        <!ELEMENT name (#PCDATA)> 
+        <!ELEMENT phone (#PCDATA)> 
+        <!ELEMENT specialization (#PCDATA)> 
+        <!ELEMENT investigationalProducts (investigationalProduct*)> 
+        <!ELEMENT investigationalProduct (amount, description, type)>
+        <!ELEMENT amount (#PCDATA)>
+        <!ELEMENT description (#PCDATA)>
+        <!ELEMENT type (#PCDATA)>
+]>
 
-          <!ELEMENT Doctor (name, phone, specialization, patients,investigationalProducts)> 
-          <!ATTLIST Doctor email CDATA #REQUIRED> 
-          <!ELEMENT name (#PCDATA)> 
-          <!ELEMENT phone (#PCDATA)> 
-          <!ELEMENT specialization (#PCDATA)> 
-          <!ELEMENT patients (patient+)> 
-          <!ELEMENT patient (#PCDATA)> 
-          <!ELEMENT investigationalProducts (investigationalProduct+)> 
-          <!ELEMENT investigationalProduct (#PCDATA)>
-    ]>
 
-
-<Patient email = "bradpitt@gmail.com"> 
-  <name>Brad</name>
-  <phone>612345678</phone>
-  <bloodType>A+</bloodType>
-  <disease>Parkinson</disease>
+<Patient emailPatient = "pedro@gmail.com"> 
+  <namePatient>Pedro</namePatient> 
+  <phonePatient>51490152</phonePatient>
+  <bloodType>O+</bloodType>
+  <disease>Alzheimer</disease>
   <cured>false</cured>
-  <dateOfBirth>1963-12-18</dateOfBirth>
-  <doctor email = "juangarcia@gmail.com"> 
-    <name>Juan</name>
-    <phone>612345678</phone>
-    <specialization> Surgeon </specialization>
-    <patients> 
-      <patient>2</patient>
-    </patients>
+  <dateOfBirth>1966-09-02</dateOfBirth>
+  <doctor email = "jacobo@gmail.com">
+    <name>Jacobo</name>
+    <phone>6100002</phone>
+    <specialization>surgeon</specialization>
     <investigationalProducts> 
-      <investigationalProduct> machine </investigationalProduct>
+		<investigationalProduct>
+			<amount>1200</amount>
+			<description>new drug for parkinson with dopamine</description>    	
+			<type>machine</type>
+			</investigationalProduct>
     </investigationalProducts>
   </doctor>
 </Patient>

@@ -42,14 +42,22 @@ public class XMLManagerImpl implements XMLManager{
 	SponsorManager sponsormanager;
     EngineerManager engineermanager;
     
+    public XMLManagerImpl(JDBCManager m) {
+		super();
+		this.manager = m;
+		this.adminmanager = new JDBCAdministratorManager(manager);
+		this.doctormanager = new JDBCDoctorManager(manager);
+		this.patientmanager = new JDBCPatientManager(manager);
+		this.sponsormanager = new JDBCSponsorManager(manager);
+		this.engineermanager = new JDBCEngineerManager(manager);
+	}
+    
+    
 	@Override
 	public void doctor2xml(Integer id) {
 		// TODO Auto-generated method stub
 		Doctor doctor = null;
 		List<Patient> patients = new ArrayList<Patient>();
-		manager = new JDBCManager();
-		doctormanager = new JDBCDoctorManager(manager);
-		adminmanager = new JDBCAdministratorManager(manager);
 		
 		try {
 			doctor = doctormanager.searchDoctorById(id);
@@ -71,20 +79,17 @@ public class XMLManagerImpl implements XMLManager{
 	public Doctor xml2Doctor(File xml) {
 		// TODO Auto-generated method stub
 		Doctor doctor = null;
-		manager = new JDBCManager();
-		doctormanager = new JDBCDoctorManager(manager);
 		
 		//read doctor from xml file
 		try {
-		JAXBContext jaxbContext = JAXBContext.newInstance(Doctor.class);
-		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-		
-		doctor = (Doctor) unmarshaller.unmarshal(xml);
-		
-		doctormanager.createDoctor(doctor);
-		//we will add it to the database
-	
-		
+			JAXBContext jaxbContext = JAXBContext.newInstance(Doctor.class);
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+			
+			doctor = (Doctor) unmarshaller.unmarshal(xml);
+			
+			doctormanager.createDoctor(doctor);
+			//we will add it to the database
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -98,8 +103,6 @@ public class XMLManagerImpl implements XMLManager{
 		// TODO Auto-generated method stub
 		Administrator admin = null;
 		List<Trial> trials = new ArrayList<Trial>();
-		manager = new JDBCManager();
-		adminmanager = new JDBCAdministratorManager(manager);
 		
 		try {
 			admin = adminmanager.searchAdminById(id);
@@ -124,8 +127,6 @@ public class XMLManagerImpl implements XMLManager{
 	public Administrator xml2Admin(File xml) {
 		// TODO Auto-generated method stub
 		Administrator admin = null;
-		manager = new JDBCManager();
-		adminmanager = new JDBCAdministratorManager(manager);
 
 		try {
 		JAXBContext jaxbContext = JAXBContext.newInstance(Administrator.class);
@@ -146,9 +147,6 @@ public class XMLManagerImpl implements XMLManager{
 	public void patient2xml(Integer id) {
 		// TODO Auto-generated method stub
 		Patient patient = null;
-		manager = new JDBCManager();
-		patientmanager = new JDBCPatientManager(manager);
-
 		
 		try {
 			patient = patientmanager.searchPatientById(id);
@@ -162,23 +160,27 @@ public class XMLManagerImpl implements XMLManager{
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-	
 	}
+	
 
 	@Override
 	public Patient xml2Patient(File xml) {
 		// TODO Auto-generated method stub
 		Patient patient = null;
-		manager = new JDBCManager();
-		patientmanager = new JDBCPatientManager(manager);
+		Doctor doctor = null;
 		
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Patient.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			
+
 			patient = (Patient) unmarshaller.unmarshal(xml);
-			patientmanager.createPatient(patient);
+			doctor = doctormanager.searchDoctorByEmail(patient.getDoctor().getEmail());
+			
+			if(doctor!=null) {
+				patient.setDoctor(doctor);
+				patientmanager.createPatient(patient);
+			}
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -189,10 +191,7 @@ public class XMLManagerImpl implements XMLManager{
 	@Override
 	public void sponsor2xml(Integer id) {
 		// TODO Auto-generated method stub
-		Sponsor sponsor = null;
-		manager = new JDBCManager();
-		sponsormanager = new JDBCSponsorManager(manager);
-		
+		Sponsor sponsor = null;		
 			
 		try {
 			sponsor = sponsormanager.searchSponsorById(id);
@@ -212,8 +211,6 @@ public class XMLManagerImpl implements XMLManager{
 	public Sponsor xml2Sponsor(File xml) {
 		// TODO Auto-generated method stub
 		Sponsor sponsor = null;
-		manager = new JDBCManager();
-		sponsormanager = new JDBCSponsorManager(manager);
 		
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Sponsor.class);
@@ -232,8 +229,6 @@ public class XMLManagerImpl implements XMLManager{
 	public void engineer2xml(Integer id) {
 		// TODO Auto-generated method stub
 		Engineer engineer = null;
-	    manager = new JDBCManager();
-	    engineermanager = new JDBCEngineerManager(manager);
 	    List<InvestigationalProduct> invPr = new ArrayList<InvestigationalProduct>();
 	    
 	    try {
@@ -259,9 +254,7 @@ public class XMLManagerImpl implements XMLManager{
 	public Engineer xml2Engineer(File xml) {
 		// TODO Auto-generated method stub
 		Engineer engineer = null;
-	    manager = new JDBCManager();
-	    engineermanager = new JDBCEngineerManager(manager);
-	    
+
 	    try {
 	        
 	        JAXBContext jaxbContext = JAXBContext.newInstance(Engineer.class);
@@ -285,8 +278,11 @@ public class XMLManagerImpl implements XMLManager{
 	public void simpleTransform(String sourcePath, String xsltPath,String resultDir) {
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		try {
-			Transformer transformer = tFactory.newTransformer(new StreamSource(new File(xsltPath)));
-			transformer.transform(new StreamSource(new File(sourcePath)),new StreamResult(new File(resultDir)));
+			File xmlFile = new File(sourcePath);
+			File xsltFile = new File(xsltPath);
+			Transformer transformer = tFactory.newTransformer(new StreamSource(xsltFile));
+			File resultDirFile = new File(resultDir);
+			transformer.transform(new StreamSource(xmlFile),new StreamResult(resultDirFile));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -40,7 +40,6 @@ public class JDBCPatientManager implements PatientManager{
 			prep.setBoolean(5, patient.isCured());
 			prep.setString(6, patient.getBloodType());
 			prep.setString(7, patient.getDisease());
-			
 			prep.executeUpdate();				
 		}catch(Exception e){
 			e.printStackTrace();

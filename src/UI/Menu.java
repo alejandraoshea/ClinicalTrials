@@ -53,7 +53,7 @@ public class Menu {
 		sponsormanager = new JDBCSponsorManager(jdbcmanager);
 		engineermanager = new JDBCEngineerManager(jdbcmanager);
 		usermanager = new JPAUserManager();
-		xmlmanager = new XMLManagerImpl();
+		xmlmanager = new XMLManagerImpl(jdbcmanager);
 		
 		try {
 			int choice;

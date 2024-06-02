@@ -8,10 +8,10 @@
 	<!ELEMENT cardNumber (#PCDATA)> 
 ]>
 
-<Sponsor email = "sofiabernal@gmail.com"> 
-  <name>Sofia</name>
-  <phone>611712312</phone>
-  <cardNumber>094776590678</cardNumber>
+<Sponsor email = "lunafdez@gmail.com"> 
+  <name>Luna</name>
+  <phone>611714522</phone>
+  <cardNumber>0947734678</cardNumber>
 </Sponsor>
 
 
