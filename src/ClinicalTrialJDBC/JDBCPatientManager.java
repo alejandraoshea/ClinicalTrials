@@ -95,10 +95,15 @@ public class JDBCPatientManager implements PatientManager{
 			
 			Integer patient_id = rs.getInt("id");
 			String name = rs.getString("name");
-			String email = rs.getString("email");
+			String mail = rs.getString("email");
 			Integer phone = rs.getInt("phone");
-			
-		    patient = new Patient (patient_id, name, email, phone);
+			Date date = rs.getDate("dateOfBirth");
+			Boolean cured = rs.getBoolean("cured");
+			String bloodT = rs.getString("bloodType");
+			String disease = rs.getString("nameOfDisease");
+		
+			patient = new Patient (patient_id, name, mail, phone, date, bloodT, disease, cured);
+		    
 		    
 		    rs.close();
 		    stmt.close();

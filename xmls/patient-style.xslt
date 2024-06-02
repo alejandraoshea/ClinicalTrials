@@ -1,7 +1,6 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:output method="xml" encoding="UTF-8" indent="yes" standalone="yes"/>
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:output method="html" indent="yes" />
 
-    <!-- Template to match Patient element -->
     <xsl:template match="/Patient">
         <html>
             <head>
@@ -17,14 +16,12 @@
                 <p><b>Cured:</b> <xsl:value-of select="cured" /></p>
                 <p><b>Date of Birth:</b> <xsl:value-of select="dateOfBirth" /></p>
                 
-                <!-- Display doctor information -->
                 <h3>Doctor Details</h3>
                 <p><b>Email:</b> <xsl:value-of select="doctor/@email" /></p>
                 <p><b>Name:</b> <xsl:value-of select="doctor/name" /></p>
                 <p><b>Phone:</b> <xsl:value-of select="doctor/phone" /></p>
                 <p><b>Specialization:</b> <xsl:value-of select="doctor/specialization" /></p>
                 
-                <!-- Display investigational products -->
                 <h3>Investigational Products</h3>
                 <table border="1">
                     <tr>

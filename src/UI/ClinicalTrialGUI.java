@@ -238,6 +238,7 @@ public class ClinicalTrialGUI extends JFrame {
        JLabel roleLabel = new JLabel("Role:");
        String[] typesUsers = {"Administrator", "Doctor", "Patient", "Sponsor", "Engineer"};
        roleType = new JComboBox<>(typesUsers);
+       customizeComboBox(roleType);
        
        JPanel additionalRegistration = new JPanel(new MigLayout("wrap 2", "[][grow]", "[][][][]20[]"));
        additionalRegistration.setBackground(new Color(167, 192, 189));
@@ -282,6 +283,7 @@ public class ClinicalTrialGUI extends JFrame {
                    JLabel bloodTypeLabel = new JLabel("Blood Type:");
                    String[] bloodTypes = {"A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"};
                    bloodTypeComboBox = new JComboBox<>(bloodTypes);
+                   customizeComboBox(bloodTypeComboBox);
 
                    JLabel diseaseLabel = new JLabel("Name of Disease:");
                    JTextField diseaseField = new JTextField(20);
@@ -448,6 +450,21 @@ public class ClinicalTrialGUI extends JFrame {
 	}
    
    
+   private static void customizeTextArea(JTextArea textArea) {
+	   textArea.setFont(new Font("Cambria", Font.PLAIN, 18));
+	   textArea.setBorder(BorderFactory.createCompoundBorder(
+               BorderFactory.createLineBorder(new Color(173, 150, 149), 1),
+               BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+   }
+   
+   private static void customizeTable(JTable table) {
+	   table.setFont(new Font("Cambria", Font.PLAIN, 14));
+	   table.getTableHeader().setFont(new Font("Cambria", Font.BOLD, 12));
+	    table.setRowHeight(30);
+	    table.setBorder(BorderFactory.createCompoundBorder(
+	            BorderFactory.createLineBorder(new Color(173, 150, 149), 1),
+	            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+   }
    
   
    private void showMenu(User u, String role) {
@@ -711,6 +728,7 @@ public class ClinicalTrialGUI extends JFrame {
   
    	JLabel requirementsLabel = new JLabel("Requirements:");
        JTextArea requirementsTextArea = new JTextArea(5, 20);
+       customizeTextArea(requirementsTextArea);
        JScrollPane requirementsScrollPane = new JScrollPane(requirementsTextArea);
        JLabel amountLabel = new JLabel("Amount Invested:");
        JTextField amountTextField = new JTextField(20);
@@ -740,6 +758,7 @@ public class ClinicalTrialGUI extends JFrame {
        formPanel.add(amountTextField, "growx, wrap");
        formPanel.add(createButton, "span, align center");
        contentPanel.add(formPanel, BorderLayout.CENTER);
+       contentPanel.add(requirementsScrollPane, BorderLayout.CENTER);
        contentPanel.revalidate();
        contentPanel.repaint();
    	
@@ -812,7 +831,6 @@ public class ClinicalTrialGUI extends JFrame {
 	    
 	    for (Patient patient: patients) {
 	         
-	         
 	        Object[] rowData = {
 	        	patient.getPatient_id(),
 	        	patient.getNamePatient(),
@@ -826,6 +844,7 @@ public class ClinicalTrialGUI extends JFrame {
 	        model.addRow(rowData);
 	    }
 	    JTable table = new JTable(model);
+	    customizeTable(table);
 	    JScrollPane scrollPane = new JScrollPane(table);
 	    contentPanel.removeAll();
 	    contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -848,6 +867,7 @@ public class ClinicalTrialGUI extends JFrame {
 	        model.addRow(rowData);
 	    }
 	    JTable table = new JTable(model);
+	    customizeTable(table);
 	    JScrollPane scrollPane = new JScrollPane(table);
 	    contentPanel.removeAll();
 	    contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -869,6 +889,7 @@ public class ClinicalTrialGUI extends JFrame {
    		 	model.addRow(rowData);
 	    }
 	    JTable table = new JTable(model);
+	    customizeTable(table);
 	    JScrollPane scrollPane = new JScrollPane(table);
 	    contentPanel.removeAll();
 	    contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -1012,18 +1033,13 @@ public class ClinicalTrialGUI extends JFrame {
    	contentPanel.removeAll();
    	
    	JPanel inputPanel = new JPanel();
-       inputPanel.setLayout(new FlowLayout());
+   	
+       inputPanel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][]20[]"));
        JLabel trialIDLabel = new JLabel("Clinical Trial ID:");
        JTextField trialIDField = new JTextField(20);
        customizeTextField(trialIDField);
        JButton getIDButton = new JButton("Get ID");
        customizeButton(getIDButton);
-       inputPanel.add(trialIDLabel);
-       inputPanel.add(trialIDField);
-       inputPanel.add(getIDButton);
-       contentPanel.add(inputPanel, BorderLayout.NORTH);
-       contentPanel.revalidate();
-       contentPanel.repaint();
    	
        getIDButton.addActionListener(new ActionListener() {
            @Override
@@ -1049,6 +1065,7 @@ public class ClinicalTrialGUI extends JFrame {
                            model.addRow(rowData);
                        }
                        JTable table = new JTable(model);
+                       customizeTable(table);
                        JScrollPane scrollPane = new JScrollPane(table);
                        contentPanel.removeAll();
                        contentPanel.add(inputPanel, BorderLayout.NORTH);
@@ -1066,6 +1083,13 @@ public class ClinicalTrialGUI extends JFrame {
                }
            }
        });
+       
+       inputPanel.add(trialIDLabel);
+       inputPanel.add(trialIDField, "growx, wrap 20");
+       inputPanel.add(getIDButton, "span, align center");
+       contentPanel.add(inputPanel, BorderLayout.NORTH);
+       contentPanel.revalidate();
+       contentPanel.repaint();
    }
   
    
@@ -1094,6 +1118,7 @@ public class ClinicalTrialGUI extends JFrame {
                
                SwingUtilities.invokeLater(() -> {
 	               JTable table = new JTable(model);
+	               customizeTable(table);
 	               JScrollPane scrollPane = new JScrollPane(table);
 	               contentPanel.removeAll();
 	               contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -1196,6 +1221,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    }
 	    
 	    JTable table = new JTable(model);
+	    customizeTable(table);
 	    JScrollPane scrollPane = new JScrollPane(table);
 	    contentPanel.removeAll();
 	    contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -1306,10 +1332,12 @@ public class ClinicalTrialGUI extends JFrame {
 	  
 	   	JLabel medicalHLabel = new JLabel("Medical History:");
 	    JTextArea medHTextArea = new JTextArea(5, 20);
+	    customizeTextArea(medHTextArea);
 	    JScrollPane mHScrollPane = new JScrollPane(medHTextArea);
 	    
 	    JLabel treatmentLabel = new JLabel("Treatment:");
 	    JTextArea treatmentTextArea = new JTextArea(5, 20);
+	    customizeTextArea(treatmentTextArea);
 	    JScrollPane trmtScrollPane = new JScrollPane(treatmentTextArea);
 	    
 	    JLabel docIDLabel = new JLabel("Doctor ID:");
@@ -1481,6 +1509,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    customizeButton(chooseButton);
 	    
 	    JTextArea invProductInfoArea = new JTextArea();
+	    customizeTextArea(invProductInfoArea);
 	    invProductInfoArea.setEditable(false);
 	    invProductInfoArea.setLineWrap(true);
 	    invProductInfoArea.setWrapStyleWord(true);
@@ -1697,6 +1726,7 @@ public class ClinicalTrialGUI extends JFrame {
 	        model.addRow(rowData);
 	    }
 	    JTable table = new JTable(model);
+	    customizeTable(table);
 	    JScrollPane scrollPane = new JScrollPane(table);
 	    contentPanel.removeAll();
 	    contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -1720,6 +1750,7 @@ public class ClinicalTrialGUI extends JFrame {
 	        model.addRow(rowData);
 	    }
 	    JTable table = new JTable(model);
+	    customizeTable(table);
 	    JScrollPane scrollPane = new JScrollPane(table);
 	    contentPanel.removeAll();
 	    contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -1731,67 +1762,62 @@ public class ClinicalTrialGUI extends JFrame {
    
    
    private void showSuccessRates() {
-	   contentPanel.removeAll();
-	   List<Double> successRates = adminmanager.getSuccessRateTrial();
-	   
-	   JPanel histogramPanel = new JPanel(new MigLayout("wrap 2", "[][grow]", "[][][]20[][]")) {
-		   @Override
-		   protected void paintComponent(Graphics g) {
-			   super.paintComponent(g);
-			   drawHistogram(g, successRates);
-		   }
-		   
-		   private void drawHistogram(Graphics g, List<Double> successRates) {
-			   int width = getWidth();
-		       int height = getHeight();
-		       int padding = 30;
-		       int labelPadding = 30;
-		       int numberTrialsRow = 4; 
-		       int rows = (int) Math.ceil((double) successRates.size()/ numberTrialsRow);
-		       int barWidth = (width - (2 * padding)) / successRates.size();
-		       int maxBarHeight = height - 2 * padding - labelPadding;
+	    contentPanel.removeAll();
+	    List<Double> successRates = adminmanager.getSuccessRateTrial();
 
-		       double maxSuccessRate = successRates.stream().max(Double::compare).orElse(0.0);
-		       
-		       for (int i = 0; i < successRates.size(); i++) {
-		    	   int row = i/ numberTrialsRow;
-		    	   int col = i % numberTrialsRow;
-		    	   int barHeight = (int) ((successRates.get(i)/maxSuccessRate) * maxBarHeight);
-		           int x = padding + (col * (barWidth + padding));
-		           int y = height - padding - barHeight;
-		           g.setColor(new Color(167, 192, 189));
-		           g.fillRect(x, y, barWidth, barHeight);
+	    JPanel histogramPanel = new JPanel(new MigLayout("wrap 3", "[][grow]", "[][][][]10[][]"));
 
-		           g.setColor(Color.BLACK);
-		           String values = String.format("%.2f%%", successRates.get(i));
-		           int valueWidth = g.getFontMetrics().stringWidth(values);
-		           g.drawString(values, x + (barWidth-valueWidth)/2, y-5);
-		       }
-		       
-		       g.setColor(Color.BLACK);
-		       g.drawLine(padding, height - padding, width - padding, height - padding);
-	           g.drawLine(padding, padding, padding, height - padding); 
-   
-		   }
-	   };
-	   
-	   histogramPanel.setLayout(new MigLayout("wrap 4", "[grow]"));
-	   for(int i=0; i<successRates.size(); i++) {
-		   String trialLabel = "Trial " + (i+1);
-		   histogramPanel.add(new JLabel(trialLabel), "wrap");
-	   }
-	   
-       JScrollPane scrollPane = new JScrollPane(histogramPanel);
-       scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-       
-       contentPanel.add(scrollPane, BorderLayout.CENTER);
-       contentPanel.revalidate();
-       contentPanel.repaint();
-   }
-   
-   
-   
-   
+	    for (int i = 0; i < successRates.size(); i++) {
+	        final int index = i; 
+	        JPanel singleHistogramPanel = new JPanel() {
+	            @Override
+	            protected void paintComponent(Graphics g) {
+	                super.paintComponent(g);
+	                drawHistogram(g, successRates.get(index));
+	            }
+
+	            private void drawHistogram(Graphics g, double successRate) {
+	                int width = getWidth();
+	                int height = getHeight();
+	                int padding = 10;
+	                int labelPadding = 30;
+	                int barWidth = (width - 2 * padding)/2;
+	                int maxBarHeight = height - 2 * padding - labelPadding;
+
+	                double maxSuccessRate = 100.0; 
+	                int barHeight = (int) ((successRate / maxSuccessRate) * maxBarHeight);
+	                int x = padding;
+	                int y = height - padding - barHeight;
+
+	                g.setColor(new Color(167, 192, 189));
+	                g.fillRect(x, y, barWidth, barHeight);
+
+	                g.setColor(Color.BLACK);
+	                String values = String.format("%.2f%%", successRate);
+	                int valueWidth = g.getFontMetrics().stringWidth(values);
+	                g.drawString(values, x + (barWidth - valueWidth) / 2, y - 5);
+
+	                g.drawLine(padding, height - padding, width - padding, height - padding);
+	                g.drawLine(padding, padding, padding, height - padding);
+	            }
+	        };
+	        singleHistogramPanel.setPreferredSize(new Dimension(200, 300));
+	        histogramPanel.add(singleHistogramPanel, "grow");
+
+	        String trialLabel = "Trial " + (index + 1);
+	        histogramPanel.add(new JLabel(trialLabel),  "grow, wrap");
+	    }
+
+	    JScrollPane scrollPane = new JScrollPane(histogramPanel);
+	    //scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+	    contentPanel.setLayout(new BorderLayout());
+	    contentPanel.add(scrollPane, BorderLayout.CENTER);
+	    contentPanel.revalidate();
+	    contentPanel.repaint();
+	}
+
    
   
    
@@ -1925,6 +1951,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                               model.addRow(rowData);
 	                           }
 	                           JTable table = new JTable(model);
+	                           customizeTable(table);
 	                           JScrollPane scrollPane = new JScrollPane(table);
 	                           contentPanel.removeAll();
 	                           contentPanel.add(inputPanel, BorderLayout.NORTH);
@@ -1966,7 +1993,9 @@ public class ClinicalTrialGUI extends JFrame {
 	               };
 	               model.addRow(rowData);
 	           }
+	           
 	           JTable table = new JTable(model);
+	           customizeTable(table);
 	           JScrollPane scrollPane = new JScrollPane(table);
 	           contentPanel.removeAll();
 	           contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -2057,6 +2086,7 @@ public class ClinicalTrialGUI extends JFrame {
 	        model.addRow(rowData);
 	    }
 	    JTable table = new JTable(model);
+	    customizeTable(table);
 	    JScrollPane scrollPane = new JScrollPane(table);
 	    contentPanel.removeAll();
 	    contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -2129,6 +2159,7 @@ public class ClinicalTrialGUI extends JFrame {
 	        model.addRow(rowData);
 	    }
 	    JTable table = new JTable(model);
+	    customizeTable(table);
 	    JScrollPane scrollPane = new JScrollPane(table);
 	    contentPanel.removeAll();
 	    contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -2154,6 +2185,7 @@ public class ClinicalTrialGUI extends JFrame {
 	        model.addRow(rowData);
 	    }
 	    JTable table = new JTable(model);
+	    customizeTable(table);
 	    JScrollPane scrollPane = new JScrollPane(table);
 	    contentPanel.removeAll();
 	    contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -2244,6 +2276,7 @@ public class ClinicalTrialGUI extends JFrame {
 	   contentPanel.removeAll();
        JPanel panel = new JPanel(new MigLayout("wrap 2", "[grow]", "[]20[][]"));
        JTextArea textArea = new JTextArea();
+       customizeTextArea(textArea);
        textArea.setEditable(false);
        JScrollPane scrollPane = new JScrollPane(textArea);
 
@@ -2276,6 +2309,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                }
 	                
 	                JTable table = new JTable(model);
+	                customizeTable(table);
 	                JScrollPane tableScrollPane = new JScrollPane(table);
 
 	                panel.removeAll();
@@ -2307,6 +2341,7 @@ public class ClinicalTrialGUI extends JFrame {
 	   contentPanel.removeAll();
 	    JPanel panel = new JPanel(new MigLayout("wrap 2", "[grow]", "[]20[][]"));
 	    JTextArea textArea = new JTextArea();
+	    customizeTextArea(textArea);
 	    textArea.setEditable(false);
 	    JScrollPane scrollPane = new JScrollPane(textArea);
 
@@ -2358,6 +2393,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                }
 	                
 	                JTable table = new JTable(model);
+	                customizeTable(table);
 	                JScrollPane tableScrollPane = new JScrollPane(table);
 
 	                panel.removeAll();
@@ -2387,6 +2423,7 @@ public class ClinicalTrialGUI extends JFrame {
 	   contentPanel.removeAll();
 	    JPanel panel = new JPanel(new MigLayout("wrap 2", "[grow]", "[]20[][]"));
 	    JTextArea textArea = new JTextArea();
+	    customizeTextArea(textArea);
 	    textArea.setEditable(false);
 	    JScrollPane scrollPane = new JScrollPane(textArea);
 
@@ -2438,6 +2475,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                }
 
 	                JTable table = new JTable(model);
+	                customizeTable(table);
 	                JScrollPane tableScrollPane = new JScrollPane(table);
 
 	                panel.removeAll();
@@ -2466,6 +2504,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    contentPanel.removeAll();
 	    JPanel panel = new JPanel(new MigLayout("wrap 2", "[grow]", "[]20[][]"));
 	    JTextArea textArea = new JTextArea();
+	    customizeTextArea(textArea);
 	    textArea.setEditable(false);
 	    JScrollPane scrollPane = new JScrollPane(textArea);
 
@@ -2488,6 +2527,7 @@ public class ClinicalTrialGUI extends JFrame {
 	            model.addRow(rowData);
 
 	            JTable table = new JTable(model);
+	            customizeTable(table);
 	            JScrollPane tableScrollPane = new JScrollPane(table);
 
 	            contentPanel.removeAll();
@@ -2513,6 +2553,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    contentPanel.removeAll();
 	    JPanel panel = new JPanel(new MigLayout("wrap 2", "[grow]", "[]20[][]"));
 	    JTextArea textArea = new JTextArea();
+	    customizeTextArea(textArea);
 	    textArea.setEditable(false);
 	    JScrollPane scrollPane = new JScrollPane(textArea);
 
@@ -2551,6 +2592,7 @@ public class ClinicalTrialGUI extends JFrame {
 	                }
 
 	                JTable table = new JTable(model);
+	                customizeTable(table);
 	                JScrollPane tableScrollPane = new JScrollPane(table);
 
 	                panel.removeAll();

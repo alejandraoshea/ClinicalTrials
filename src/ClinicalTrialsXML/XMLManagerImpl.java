@@ -152,7 +152,6 @@ public class XMLManagerImpl implements XMLManager{
 		
 		try {
 			patient = patientmanager.searchPatientById(id);
-			
 			Integer doctorId = doctormanager.searchDoctorIDByIdPatient(id);
 			doctor = doctormanager.searchDoctorById(doctorId);
 			
@@ -160,7 +159,6 @@ public class XMLManagerImpl implements XMLManager{
 			doctor.setInvestigationalProducts(invPr);
 			
 			patient.setDoctor(doctor);
-			
 			
 			JAXBContext jaxbContext = JAXBContext.newInstance(Patient.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();

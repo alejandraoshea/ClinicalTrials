@@ -252,13 +252,11 @@ private JDBCManager manager;
 				String name = rs.getString("name");
 				String email = rs.getString("email");
 				Integer phone = rs.getInt("phone");
-				String dateStr = rs.getString("dateOfBirth");
-				LocalDate localDob = LocalDate.parse(dateStr, formatter);
-				Date dateOfBirth = Date.valueOf(localDob);
+				Date dateStr = rs.getDate("dateOfBirth");
 				String bloodT = rs.getString("bloodType");
 				String disease = rs.getString("nameOfDisease");
 				Boolean cured = rs.getBoolean("cured");
-				Patient patient = new Patient (patient_id, name, email, phone, dateOfBirth, bloodT, disease, cured);
+				Patient patient = new Patient (patient_id, name, email, phone, dateStr, bloodT, disease, cured);
 				patients.add(patient);
 			}
 		  rs.close();
