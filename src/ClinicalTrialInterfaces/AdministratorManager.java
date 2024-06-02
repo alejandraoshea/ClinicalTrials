@@ -24,8 +24,6 @@ public interface AdministratorManager {
 	public List<Patient> getPatients();
 	public Reports getReportByID(Integer report_id);
 	public Administrator searchAdminByEmail(String email);
-	
-	
 	public List<Double> getSuccessRateTrial();
 
 }
