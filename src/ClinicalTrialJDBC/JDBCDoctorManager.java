@@ -170,18 +170,14 @@ public class JDBCDoctorManager implements DoctorManager{
 				String type = rs.getString("type");
 				Integer amountMoney = rs.getInt("amountMoney");
 			
-				invP = new InvestigationalProduct(invPr_id, amountMoney, description, type);
-		    
-				System.out.println("The invP is: " + invP);
-			
-			}
+				invP = new InvestigationalProduct(invPr_id, amountMoney, description, type);		   	
 			
 			
 			String sql2 = "INSERT INTO investigationalProductChosen(invProduct_id, trial_id)"
-		    		+ "VALUES(?,?);";
+		    		+ "VALUES(?,?)";
 		    PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
 			
-			prep2.setInt(1, investigationalProduct_id);
+			prep2.setInt(1, invP.getInvProduct_id());
 			prep2.setInt(2, trial_id);
 			prep2.executeUpdate();
 			
@@ -189,10 +185,11 @@ public class JDBCDoctorManager implements DoctorManager{
 			String sql3 = "UPDATE investigationalProduct SET doctor_id = ? WHERE id = ?";
 		    PreparedStatement prep3 = manager.getConnection().prepareStatement(sql3);
 			
-			prep3.setInt(1, doctor_id);
-			prep3.setInt(2, investigationalProduct_id);
+			prep3.setInt(1, invP.getDoctor().getDoctor_id());
+			prep3.setInt(2, invP.getInvProduct_id());
 			prep3.executeUpdate();
-		    
+			
+			}
 			rs.close();
 		    stmt.close();
 		    

@@ -1520,8 +1520,7 @@ public class ClinicalTrialGUI extends JFrame {
 	            int doctorId = Integer.parseInt(doctorIdField.getText());
 	            int invProductId = Integer.parseInt(invProductIdField.getText());
 	            int trialId = Integer.parseInt(trialIdField.getText());
-	            InvestigationalProduct invP = doctormanager.chooseInvProductById(doctorId, invProductId, trialId);
-	            
+	            InvestigationalProduct invP = doctormanager.chooseInvProductById(invProductId, doctorId, trialId);
 	            
 	            if(invP != null) {
 	            Doctor d = doctormanager.searchDoctorById(doctorId);
