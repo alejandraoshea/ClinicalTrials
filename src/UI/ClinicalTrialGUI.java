@@ -1522,8 +1522,10 @@ public class ClinicalTrialGUI extends JFrame {
 	            int trialId = Integer.parseInt(trialIdField.getText());
 	            InvestigationalProduct invP = doctormanager.chooseInvProductById(doctorId, invProductId, trialId);
 	            
+	            
 	            if(invP != null) {
 	            Doctor d = doctormanager.searchDoctorById(doctorId);
+	            d.getInvestigationalProducts().add(invP);
 	            
 	            if(d!=null) {
 		            invP.setDoctor(d);
@@ -1715,7 +1717,7 @@ public class ClinicalTrialGUI extends JFrame {
    private void showAllTrials() {
 	   List<Trial> trials = adminmanager.getListOfTrials();
 		String[] columnNames = {"ID", "Requirements", "Amount Money", "Admin ID"}; //column names
-	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // Create table model
+	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); 
 	    for (Trial trial : trials) {
 	        Object[] rowData = {
 	            trial.getTrial_id(),
@@ -1738,7 +1740,7 @@ public class ClinicalTrialGUI extends JFrame {
    private void showAllSponsors() {
 	   List<Sponsor> sponsors = sponsormanager.getListOfSponsor();
 		String[] columnNames = {"ID", "Name", "Email", "Phone", "Card Number"}; //column names
-	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // Create table model
+	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); 
 	    for (Sponsor sponsor : sponsors) {
 	        Object[] rowData = {
 	            sponsor.getSponsor_id(),
@@ -1877,7 +1879,7 @@ public class ClinicalTrialGUI extends JFrame {
 	    JLabel sponsorIdLabel = new JLabel("Sponsor ID:");
 	    JTextField sponsorIdField = new JTextField(20);
 	    customizeTextField(sponsorIdField);
-	    JLabel amountLabel = new JLabel("Amount Invested:");
+	    JLabel amountLabel = new JLabel("New Amount Invested:");
 	    JTextField amountField = new JTextField(20);
 	    customizeTextField(amountField);
 	    JButton updateButton = new JButton("Update");

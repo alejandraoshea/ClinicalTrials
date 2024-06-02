@@ -342,11 +342,6 @@ private static void updatePassword() throws Exception {
 
 		}
 	
-	private static void updateAcceptancePatient(Integer patient_id) {
-		Patient patient = patientmanager.searchPatientById(patient_id); 
-		patientmanager.getStateRequest(patient_id);
-		adminmanager.updateAcceptancePatient(patient_id);
-	}
 	
 	private static Integer getAmountInvested() throws Exception{
 		System.out.println("\nType the id of the trial");
@@ -444,9 +439,10 @@ private static void updatePassword() throws Exception {
 			System.out.println("5. Create a report.");
 			System.out.println("6. Assign report to a Patient.");
 			System.out.println("7. Print all the reports of a Patient.");
-			System.out.println("8. Choose an investigational products.");
-			System.out.println("9. Print me to xml.");
-			System.out.println("10. Load doctors from xml File.");
+			System.out.println("8. Print all my patients.");
+			System.out.println("9. Choose an investigational products.");
+			System.out.println("10. Print me to xml.");
+			System.out.println("11. Load doctors from xml File.");
 			System.out.println("0. Return.\n");	
 			
 			choice = Integer.parseInt(reader.readLine());
@@ -479,17 +475,22 @@ private static void updatePassword() throws Exception {
 				getAllReportsPatient();
 				break;
 				
+				
 			case 8:
+				getAllMyPatients(id);
+				break;
+				
+			case 9:
 				getAllInvProd();
 				InvestigationalProduct invP = chooseInvProductById();
 				invP.toString();
 				break;
 				
-			case 9:
+			case 10:
 				printMeDoctor(id);
 				break;
 				
-			case 10:
+			case 11:
 				loadDoctors();
 				break;
 			case 0:
@@ -620,11 +621,14 @@ private static void updatePassword() throws Exception {
 		Reports report = adminmanager.getReportByID(report_id);
 		
 		doctormanager.assignReportToPatient(report_id, patient_id, doctor_id);
-		//trial_id
 		doctor.getReports().add(report);
 		patient.getReports().add(report);
 	}
 	
+	private static void getAllMyPatients(Integer id) throws Exception{
+		List<Patient> patients = doctormanager.getListOfMyPatients(id);
+		System.out.println(patients);
+	}
 
 	private static void getAllInvProd() throws Exception{
 		List<InvestigationalProduct> invProducts = null;
@@ -789,7 +793,7 @@ private static void updatePassword() throws Exception {
 					System.out.println("3. Print all the sponsors.");
 					System.out.println("4. Create an investment.");
 					System.out.println("5. Update an investment.");
-					System.out.println("6. Print all the reports of a trial.");
+					System.out.println("6. Print all the reports of a patient.");
 					System.out.println("7. Show the success rates of the trials");
 					System.out.println("8. Print me to xml.");
 					System.out.println("9. Load from xml.");
@@ -917,12 +921,7 @@ private static void updatePassword() throws Exception {
 			sponsormanager.updateInvestment(trial_id, sponsor_id, moneyInv);
 		}
 		
-		
-		private static void assignSponsorToTrial(Integer trial_id, Integer sponsor_id)throws Exception {
-			Sponsor sponsor = sponsormanager.searchSponsorById(sponsor_id);
-			Trial trial = new Trial(trial_id);
-			trial.getSponsor().add(sponsor);			
-		}
+	
 
 		private static void getListReportsOfPatient() throws Exception {
 			// TODO Auto-generated method stub
@@ -962,10 +961,9 @@ private static void updatePassword() throws Exception {
 					System.out.println("1. Add a new engineer.");
 					System.out.println("2. Print all the engineers in DB.");
 					System.out.println("3. Add a new Investigational product to a trial.");
-					System.out.println("4. Update an investigational product of a trial.");
-					System.out.println("5. Print all the investigational products of a trial.");
-					System.out.println("6. Print me in xml.");
-					System.out.println("7. Load engineer from xml File.");
+					System.out.println("4. Print all the investigational products of a trial.");
+					System.out.println("5. Print me in xml.");
+					System.out.println("6. Load engineer from xml File.");
 					System.out.println("0. Return.\n");	
 					
 					choice = Integer.parseInt(reader.readLine());
@@ -981,18 +979,13 @@ private static void updatePassword() throws Exception {
 					case 3:
 						createInvPr();
 						break;
-					
 					case 4:
-						updateInvPr();
-						break;
-					
-					case 5:
 						getInvPrEngineer(id);
 						break;
-					case 6:
+					case 5:
 						printMeEngineer(id);
 						break;
-					case 7:
+					case 6:
 						loadEngineer();
 						break;
 					case 0:
@@ -1054,23 +1047,6 @@ private static void updatePassword() throws Exception {
 			
 		}
 		
-		
-	    private static void updateInvPr() throws Exception{
-			System.out.println("Introduce the investigational product id: \n");
-			Integer invProduct_id = Integer.parseInt(reader.readLine());
-			System.out.println("Introduce the new description: \n");
-			String newDescription = reader.readLine();
-			
-			engineermanager.updateInvPr(invProduct_id, newDescription);
-		}
-	    
-	    
-	    private static void getInvPr() throws Exception {
-	    	System.out.println("Introduce the investigational product id: \n");
-			Integer invProduct_id = Integer.parseInt(reader.readLine());
-			engineermanager.getInvPr(invProduct_id);
-			
-		}
 	    
 	    private static void getInvPrEngineer(Integer id) throws Exception {
 	    	List<InvestigationalProduct> invPr = new ArrayList<InvestigationalProduct>();
